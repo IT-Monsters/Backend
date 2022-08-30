@@ -48,7 +48,7 @@ public class Orders {
     @Column(nullable = false)
     private StatusEnum statusEnum;
 
-    public enum StatusEnum{
+    public enum StatusEnum {
 
         PROCESSING,
 
@@ -58,7 +58,6 @@ public class Orders {
 
 
     }
-
 
 
 }

@@ -44,42 +44,44 @@ public class MemberService {
         String profileImg = image;
 
         //username 정규식 맞지 않는 경우 오류메시지 전달
-        if(email.equals(""))
+        if (email.equals("")) {
             throw new CustomException(ErrorCode.EMPTY_USERNAME);
-        else if (!Pattern.matches(emailPattern, email))
+        } else if (!Pattern.matches(emailPattern, email)) {
             throw new CustomException(ErrorCode.USERNAME_WRONG);
-        else if (memberRepository.findByEmail(email).isPresent())
+        } else if (memberRepository.findByEmail(email).isPresent()) {
             throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
+        }
 
         //nickname 정규식 맞지 않는 경우 오류메시지 전달
-        if(nickname.equals(""))
+        if (nickname.equals("")) {
             throw new CustomException(ErrorCode.EMPTY_NICKNAME);
-        else if ( 2 > nickname.length() || 8 < nickname.length() )
+        } else if (2 > nickname.length() || 8 < nickname.length()) {
             throw new CustomException(ErrorCode.NICKNAME_LEGNTH);
-        else if (!Pattern.matches(nicknamePattern, nickname))
+        } else if (!Pattern.matches(nicknamePattern, nickname)) {
             throw new CustomException(ErrorCode.NICKNAME_WRONG);
+        }
 
         //password 정규식 맞지 않는 경우 오류메시지 전달
-        if(password.equals(""))
+        if (password.equals("")) {
             throw new CustomException(ErrorCode.EMPTY_PASSWORD);
-        else if ( 8 > password.length() || 20 < password.length() )
+        } else if (8 > password.length() || 20 < password.length()) {
             throw new CustomException(ErrorCode.PASSWORD_LEGNTH);
-        else if (!Pattern.matches(passwordPattern, password))
+        } else if (!Pattern.matches(passwordPattern, password)) {
             throw new CustomException(ErrorCode.PASSWORD_WRONG);
+        }
 
         // 전화번호 검증식 필요.
-
 
         password = passwordEncoder.encode(requestDto.getPassword()); // 패스워드 암호화
 
         Member member = Member.builder()
-                .email(email)
-                .nickname(nickname)
-                .password(password)
-                .phoneNum(phoneNum)
-                .profileImg(profileImg)
-                .role(RoleEnum.USER)
-                .build();
+            .email(email)
+            .nickname(nickname)
+            .password(password)
+            .phoneNum(phoneNum)
+            .profileImg(profileImg)
+            .role(RoleEnum.USER)
+            .build();
         memberRepository.save(member);
 
         return new ResponseEntity("회원가입을 축하합니다", HttpStatus.OK);
@@ -91,12 +93,13 @@ public class MemberService {
         String emailPattern = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$"; //이메일 정규식 패턴
 
         //username 정규식 맞지 않는 경우 오류메시지 전달
-        if(email.equals(""))
+        if (email.equals("")) {
             throw new CustomException(ErrorCode.EMPTY_USERNAME);
-        else if (!Pattern.matches(emailPattern, email))
+        } else if (!Pattern.matches(emailPattern, email)) {
             throw new CustomException(ErrorCode.USERNAME_WRONG);
-        else if (memberRepository.findByEmail(email).isPresent())
+        } else if (memberRepository.findByEmail(email).isPresent()) {
             throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
+        }
 
         return new ResponseEntity("사용 가능한 이메일입니다.", HttpStatus.OK);
     }
@@ -140,9 +143,10 @@ public class MemberService {
     //소셜로그인 사용자 정보 조회
     public ResponseEntity socialUserInfo(UserDetailsImpl userDetails) {
         //로그인 한 user 정보 검색
-        Member member = memberRepository.findBySocialId(userDetails.getMember().getSocialId()).orElseThrow(
+        Member member = memberRepository.findBySocialId(userDetails.getMember().getSocialId())
+            .orElseThrow(
                 () -> new CustomException(ErrorCode.USER_NOT_FOUND)
-        );
+            );
 
         //찾은 user엔티티를 dto로 변환해서 반환하기
         SocialLoginResponseDto socialLoginResponseDto = new SocialLoginResponseDto(member, true);
@@ -160,53 +164,55 @@ public class MemberService {
         String password = requestDto.getPassword();
         String profileImage = requestDto.getProfileImage();
 
-        if(requestDto.getProfileImage() == null) {
+        if (requestDto.getProfileImage() == null) {
             profileImage = "https://buckitforimg.s3.ap-northeast-2.amazonaws.com/default_profile.png"; //기본이미지 프사
         }
 
         //username 정규식 맞지 않는 경우 오류메시지 전달
-        if(email.equals(""))
+        if (email.equals("")) {
             throw new CustomException(ErrorCode.EMPTY_USERNAME);
-        else if (!Pattern.matches(emailPattern, email))
+        } else if (!Pattern.matches(emailPattern, email)) {
             throw new CustomException(ErrorCode.USERNAME_WRONG);
-        else if (memberRepository.findByEmail(email).isPresent())
+        } else if (memberRepository.findByEmail(email).isPresent()) {
             throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
+        }
 
         //nickname 정규식 맞지 않는 경우 오류메시지 전달
-        if(nickname.equals(""))
+        if (nickname.equals("")) {
             throw new CustomException(ErrorCode.EMPTY_NICKNAME);
-        else if (memberRepository.findByNickname(nickname).isPresent())
+        } else if (memberRepository.findByNickname(nickname).isPresent()) {
             throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
-        else if ( 2 > nickname.length() || 8 < nickname.length() )
+        } else if (2 > nickname.length() || 8 < nickname.length()) {
             throw new CustomException(ErrorCode.NICKNAME_LEGNTH);
-        else if (!Pattern.matches(nicknamePattern, nickname))
+        } else if (!Pattern.matches(nicknamePattern, nickname)) {
             throw new CustomException(ErrorCode.NICKNAME_WRONG);
+        }
 
         //password 정규식 맞지 않는 경우 오류메시지 전달
-        if(password.equals(""))
+        if (password.equals("")) {
             throw new CustomException(ErrorCode.EMPTY_PASSWORD);
-        else if ( 8 > password.length() || 20 < password.length() )
+        } else if (8 > password.length() || 20 < password.length()) {
             throw new CustomException(ErrorCode.PASSWORD_LEGNTH);
-        else if (!Pattern.matches(passwordPattern, password))
+        } else if (!Pattern.matches(passwordPattern, password)) {
             throw new CustomException(ErrorCode.PASSWORD_WRONG);
+        }
 
         password = passwordEncoder.encode(requestDto.getPassword()); // 패스워드 암호화
 
-
         Member member = Member.builder()
-                .email(email)
-                .nickname(nickname)
-                .password(password)
-                .phoneNum(phoneNum)
-                .profileImg(profileImage)
-                .role(RoleEnum.USER)
-                .build();
+            .email(email)
+            .nickname(nickname)
+            .password(password)
+            .phoneNum(phoneNum)
+            .profileImg(profileImage)
+            .role(RoleEnum.USER)
+            .build();
 
         memberRepository.save(member);
         return new ResponseEntity("회원가입을 축하합니다", HttpStatus.OK);
     }
 
-    public Member getMember () {
+    public Member getMember() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

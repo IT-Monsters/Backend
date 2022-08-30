@@ -11,10 +11,11 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 
 @Entity
-@Builder @Getter
+@Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment extends Timestamped{
+public class Comment extends Timestamped {
 
 
     @Id
@@ -36,7 +37,6 @@ public class Comment extends Timestamped{
     @JoinColumn
     @ManyToOne
     private Member member;
-
 
 
 }

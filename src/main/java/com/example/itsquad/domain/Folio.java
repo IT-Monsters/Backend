@@ -14,6 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Folio { // 회원가입 할때
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +29,6 @@ public class Folio { // 회원가입 할때
     private String githubUrl;
 
     private Long career;
-
 
     @OneToOne
     private Member member;

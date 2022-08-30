@@ -16,8 +16,6 @@ import java.util.Optional;
 import static com.example.itsquad.security.jwt.JwtTokenUtils.*;
 
 
-
-
 @Component
 public class JwtDecoder {
 
@@ -26,11 +24,11 @@ public class JwtDecoder {
 
     public String decodeUsername(String token) {
         DecodedJWT decodedJWT = isValidToken(token)
-                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_AUTH_TOKEN));
+            .orElseThrow(() -> new CustomException(ErrorCode.INVALID_AUTH_TOKEN));
 
         Date expiredDate = decodedJWT
-                .getClaim(CLAIM_EXPIRED_DATE)
-                .asDate();
+            .getClaim(CLAIM_EXPIRED_DATE)
+            .asDate();
 
         Date now = new Date();
         if (expiredDate.before(now)) {
@@ -38,8 +36,8 @@ public class JwtDecoder {
         }
 
         return decodedJWT
-                .getClaim(CLAIM_USER_NAME)
-                .asString();
+            .getClaim(CLAIM_USER_NAME)
+            .asString();
     }
 
     private Optional<DecodedJWT> isValidToken(String token) {
@@ -48,8 +46,8 @@ public class JwtDecoder {
         try {
             Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET);
             JWTVerifier verifier = JWT
-                    .require(algorithm)
-                    .build();
+                .require(algorithm)
+                .build();
 
             jwt = verifier.verify(token);
         } catch (Exception e) {

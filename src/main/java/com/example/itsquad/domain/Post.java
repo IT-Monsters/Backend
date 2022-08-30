@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Post extends Timestamped{
+public class Post extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,10 +43,8 @@ public class Post extends Timestamped{
     private Boolean status;
 
 
-
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
-
 
 
     public enum ClassEnum {
@@ -67,7 +65,6 @@ public class Post extends Timestamped{
 
         accept
     }
-
 
 
 }

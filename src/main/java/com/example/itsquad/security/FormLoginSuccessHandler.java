@@ -12,13 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+
     public static final String AUTH_HEADER = "Authorization";
     public static final String TOKEN_TYPE = "BEARER";
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response,
-                                        final Authentication authentication) throws IOException {
+    public void onAuthenticationSuccess(final HttpServletRequest request,
+        final HttpServletResponse response,
+        final Authentication authentication) throws IOException {
         final UserDetailsImpl userDetails = ((UserDetailsImpl) authentication.getPrincipal());
         // Token 생성
         final String token = JwtTokenUtils.generateJwtToken(userDetails);
@@ -29,7 +31,8 @@ public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
         //Member nicakname 내려주기 - 동관 천재님꺼 참고
         response.setContentType("application/json; charset=utf-8");
         Member member = userDetails.getMember();
-        LoginResponseDto loginResponseDto = new LoginResponseDto(member.getId(), member.getNickname(), true, token, member.getProfileImg());
+        LoginResponseDto loginResponseDto = new LoginResponseDto(member.getId(),
+            member.getNickname(), true, token, member.getProfileImg());
         String result = mapper.writeValueAsString(loginResponseDto);
         response.getWriter().write(result);
     }

@@ -10,6 +10,7 @@ import lombok.Setter;
 @Data
 @Builder
 public class SignpResponseDto {
+
     private String email;
 
     private String nickname;

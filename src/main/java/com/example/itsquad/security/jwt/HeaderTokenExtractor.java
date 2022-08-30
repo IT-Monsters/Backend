@@ -30,8 +30,8 @@ public class HeaderTokenExtractor {
          * (bearer ) 부분만 제거 후 token 값 반환
          */
         return header.substring(
-                HEADER_PREFIX.length(),
-                header.length()
+            HEADER_PREFIX.length(),
+            header.length()
         );
     }
 }

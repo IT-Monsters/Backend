@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(value = { CustomException.class })
+
+    @ExceptionHandler(value = {CustomException.class})
     public ResponseEntity<ErrorResponse> handleApiRequestException(CustomException ex) {
         return ErrorResponse.toResponseEntity(ex.getErrorCode());
     }
