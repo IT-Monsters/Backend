@@ -40,11 +40,11 @@ public class Post extends Timestamped{
 
     private StatusEnum statusEnum;
 
-//
-//    @JoinColumn
-//    @OneToMany(mappedBy = "post")
-//    private List<Comment> comments;
-//
+
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
+
 
 
     public enum ClassEnum {

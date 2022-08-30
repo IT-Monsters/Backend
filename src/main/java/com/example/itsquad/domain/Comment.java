@@ -27,15 +27,15 @@ public class Comment extends Timestamped{
     @Column(nullable = false)
     private Long star;
 
-//    @JoinColumn
-//    @ManyToOne
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private Post post;
-//
-//
-//    @JoinColumn
-//    @ManyToOne
-//    private Member member;
+    @JoinColumn
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Post post;
+
+
+    @JoinColumn
+    @ManyToOne
+    private Member member;
 
 
 
