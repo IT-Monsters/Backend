@@ -38,7 +38,9 @@ public class Post extends Timestamped{
 
     private Long maxPrice;
 
-    private StatusEnum statusEnum;
+
+    //진행 유무만 확인
+    private Boolean status;
 
 
 
@@ -66,16 +68,7 @@ public class Post extends Timestamped{
         accept
     }
 
-    public enum StatusEnum{
 
-        PROCESSING,
-
-        COMPLETE,
-
-        CANCEL
-
-
-    }
 
 }
 
