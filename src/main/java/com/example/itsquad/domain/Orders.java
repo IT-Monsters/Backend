@@ -46,6 +46,7 @@ public class Orders {
 
     // 계약현황
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private StatusEnum statusEnum;
 
     public enum StatusEnum {
@@ -55,9 +56,5 @@ public class Orders {
         COMPLETE,
 
         CANCEL
-
-
     }
-
-
 }
