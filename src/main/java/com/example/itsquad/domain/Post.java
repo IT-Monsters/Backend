@@ -20,18 +20,18 @@ public class Post extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
-
 
     private String subject;
 
     private String content;
 
+    @Enumerated(value = EnumType.STRING)
     private TypeEnum typeEnum;
 
+    @Enumerated(value = EnumType.STRING)
     private ClassEnum classEnum;
 
     private Long minPrice;
@@ -66,7 +66,13 @@ public class Post extends Timestamped {
         accept
     }
 
-
+    public void updatePost(String subject, String content, TypeEnum typeEnum, ClassEnum classEnum,
+        Long minPrice, Long maxPrice){
+        this.subject = subject;
+        this.content = content;
+        this.typeEnum = typeEnum;
+        this.classEnum = classEnum;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
+    }
 }
-
-
