@@ -20,7 +20,6 @@ import java.io.IOException;
 public class MemberController {
 
   private final MemberService memberService;
-  private final AwsS3Service s3Service;
 
   //회원가입
   @PostMapping("api/members/signup")

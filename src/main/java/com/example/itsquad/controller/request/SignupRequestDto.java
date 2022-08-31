@@ -18,7 +18,6 @@ public class SignupRequestDto {
 
     private String password;
 
-    @Nullable
     private String profileImage;
 
 }

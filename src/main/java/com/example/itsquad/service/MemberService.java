@@ -36,20 +36,17 @@ public class MemberService {
 
     public ResponseEntity signupUser(SignupRequestDto requestDto) throws IOException {
 
-        String email = requestDto.getEmail();
-        String nickname = requestDto.getNickname();
-        String password = requestDto.getPassword();
         String profileUrl = s3Service.getSavedS3ImageUrl(requestDto.getProfileImage());
 
-        checkEmailPattern(email);//username 정규식 맞지 않는 경우 오류메시지 전달
-        checkNicknamePatter(nickname);//nickname 정규식 맞지 않는 경우 오류메시지 전달
-        checkPasswordPattern(password);//password 정규식 맞지 않는 경우 오류메시지 전달
+        checkEmailPattern(requestDto.getEmail());//username 정규식 맞지 않는 경우 오류메시지 전달
+        checkNicknamePatter(requestDto.getNickname());//nickname 정규식 맞지 않는 경우 오류메시지 전달
+        checkPasswordPattern(requestDto.getPassword());//password 정규식 맞지 않는 경우 오류메시지 전달
 
-        password = passwordEncoder.encode(requestDto.getPassword()); // 패스워드 암호화
+        String password = passwordEncoder.encode(requestDto.getPassword()); // 패스워드 암호화
 
         Member member = Member.builder()
-                .email(email)
-                .nickname(nickname)
+                .email(requestDto.getEmail())
+                .nickname(requestDto.getNickname())
                 .password(password)
                 .profileImg(profileUrl)
                 .phoneNum(null)
@@ -94,9 +91,9 @@ public class MemberService {
     public void checkEmailPattern(String email) {
 
         if (email.equals("")) {
-            throw new CustomException(ErrorCode.EMPTY_USERNAME);
+            throw new CustomException(ErrorCode.EMPTY_EMAIL);
         } else if (!Pattern.matches(emailPattern, email)) {
-            throw new CustomException(ErrorCode.USERNAME_WRONG);
+            throw new CustomException(ErrorCode.EMAIL_WRONG);
         } else if (memberRepository.findByEmail(email).isPresent()) {
             throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
         }
