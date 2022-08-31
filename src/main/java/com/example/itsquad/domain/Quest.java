@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Post extends Timestamped {
+public class Quest extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,30 +24,32 @@ public class Post extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    private String subject;
+    private String title;
 
     private String content;
 
     @Enumerated(value = EnumType.STRING)
-    private TypeEnum typeEnum;
+    private Type type;
 
     @Enumerated(value = EnumType.STRING)
-    private ClassEnum classEnum;
+    private Position position;
 
     private Long minPrice;
 
     private Long maxPrice;
+
+    private String expiredDate;
 
 
     //진행 유무만 확인
     private Boolean status;
 
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "quest")
     private List<Comment> comments;
 
 
-    public enum ClassEnum {
+    public enum Position {
 
         FRONTEND,
 
@@ -59,20 +61,21 @@ public class Post extends Timestamped {
     }
 
 
-    public enum TypeEnum {
+    public enum Type {
 
         request,
 
         accept
     }
 
-    public void updatePost(String subject, String content, TypeEnum typeEnum, ClassEnum classEnum,
-        Long minPrice, Long maxPrice){
-        this.subject = subject;
+    public void updateQuest(String title, String content, Type type, Position position,
+        Long minPrice, Long maxPrice, String expiredDate){
+        this.title = title;
         this.content = content;
-        this.typeEnum = typeEnum;
-        this.classEnum = classEnum;
+        this.type = type;
+        this.position = position;
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
+        this.expiredDate = expiredDate;
     }
 }
