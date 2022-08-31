@@ -5,6 +5,8 @@ import com.example.itsquad.controller.response.QuestResponseDto;
 import com.example.itsquad.domain.Folio;
 import com.example.itsquad.domain.Member;
 import com.example.itsquad.domain.Quest;
+import com.example.itsquad.exceptionHandler.CustomException;
+import com.example.itsquad.exceptionHandler.ErrorCode;
 import com.example.itsquad.repository.FolioRepository;
 import com.example.itsquad.repository.QuestRepository;
 import com.example.itsquad.security.UserDetailsImpl;
@@ -22,7 +24,7 @@ public class QuestService {
     private final FolioRepository folioRepository;
 
     @Transactional // 게시글 작성 // 기술스택 추가해야됨 !!
-    public void createQuest(QuestRequestDto questRequestDto, UserDetailsImpl userDetails) {
+    public boolean createQuest(QuestRequestDto questRequestDto, UserDetailsImpl userDetails) {
         Member member = userDetails.getMember();
         questRepository.save(Quest.builder()
             .member(member)
@@ -41,6 +43,8 @@ public class QuestService {
             .title(member.getNickname() + "님의 포트폴리오입니다.")
             .member(member)
             .build());
+
+        return true;
     }
 
     @Transactional(readOnly = true) // 모든 게시글 최신순 조회 // 기술스택 추가해야됨 !!
@@ -57,33 +61,43 @@ public class QuestService {
 
     @Transactional(readOnly = true) // 게시글 상세 조회 // 댓글조회, 기술스택 추가해야됨 !!
     public QuestResponseDto readQuest(Long questId) {
-        Quest quest = questRepository.findById(questId)
-            .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
+        Quest quest = validateQuest(questId);
         return new QuestResponseDto(quest);
     }
 
     @Transactional // 게시글 수정 // 기술스택 추가해야됨 !!
-    public void updateQuest(Long questId, QuestRequestDto questRequestDto,
+    public boolean updateQuest(Long questId, QuestRequestDto questRequestDto,
         UserDetailsImpl userDetails) {
         Member member = userDetails.getMember();
-        Quest quest = questRepository.findById(questId)
-            .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
-        if (!member.getId().equals(quest.getMember().getId())) {
-            throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
+        Quest quest = validateQuest(questId);
+        if (validateAuthor(member, quest)) {
+            quest.updateQuest(questRequestDto.getTitle(), questRequestDto.getContent(),
+                questRequestDto.getType(), questRequestDto.getPosition(),
+                questRequestDto.getMinPrice(), questRequestDto.getMaxPrice(),
+                questRequestDto.getExpiredDate());
         }
-        quest.updateQuest(questRequestDto.getTitle(), questRequestDto.getContent(),
-            questRequestDto.getType(), questRequestDto.getPosition(),
-            questRequestDto.getMinPrice(), questRequestDto.getMaxPrice(), questRequestDto.getExpiredDate());
+        return true;
     }
 
     @Transactional // 게시글 삭제
-    public void deleteQuest(Long questId, UserDetailsImpl userDetails) {
+    public boolean deleteQuest(Long questId, UserDetailsImpl userDetails) {
         Member member = userDetails.getMember();
-        Quest quest = questRepository.findById(questId)
-            .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
-        if (!member.getId().equals(quest.getMember().getId())) {
-            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
+        Quest quest = validateQuest(questId);
+        if (validateAuthor(member, quest)) {
+            questRepository.deleteById(questId);
         }
-        questRepository.deleteById(questId);
+        return true;
+    }
+
+    public Quest validateQuest(Long questId) {
+        return questRepository.findById(questId)
+            .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+    }
+
+    public boolean validateAuthor(Member member, Quest quest) { // 수정,삭제 권한 확인(글쓴이인지 확인)
+        if (!member.getId().equals(quest.getMember().getId())) {
+            throw new CustomException(ErrorCode.INVALID_AUTHORITY);
+        }
+        return true;
     }
 }

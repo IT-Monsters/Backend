@@ -6,6 +6,7 @@ import com.example.itsquad.security.UserDetailsImpl;
 import com.example.itsquad.service.QuestService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,34 +25,36 @@ public class QuestController {
     private final QuestService questService;
 
     @PostMapping("")
-    public void createQuest(@RequestBody QuestRequestDto questRequestDto,
+    public ResponseEntity<Boolean> createQuest(@RequestBody QuestRequestDto questRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        questService.createQuest(questRequestDto, userDetails);
+        return ResponseEntity.ok(questService.createQuest(questRequestDto, userDetails));
     }
 
     @GetMapping("")
-    public List<QuestResponseDto> readAllQuest(){
-        return questService.readAllQuest();
+    public ResponseEntity<List<QuestResponseDto>> readAllQuest(){
+        return ResponseEntity.ok(questService.readAllQuest());
     }
 
     @GetMapping("/main")
-    public List<QuestResponseDto> readTop3Quest(){
-        return questService.readTop3Quest();
+    public ResponseEntity<List<QuestResponseDto>> readTop3Quest(){
+        return ResponseEntity.ok(questService.readTop3Quest());
     }
 
     @GetMapping("/{questId}")
-    public QuestResponseDto readQuest(@PathVariable Long questId){
-        return questService.readQuest(questId);
+    public ResponseEntity<QuestResponseDto> readQuest(@PathVariable Long questId){
+        return ResponseEntity.ok(questService.readQuest(questId));
     }
 
     @PutMapping("/{questId}")
-    public void updateQuest(@PathVariable Long questId, @RequestBody QuestRequestDto questRequestDto,
+    public ResponseEntity<Boolean> updateQuest(@PathVariable Long questId,
+        @RequestBody QuestRequestDto questRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails){
-        questService.updateQuest(questId, questRequestDto, userDetails);
+        return ResponseEntity.ok(questService.updateQuest(questId, questRequestDto, userDetails));
     }
 
     @DeleteMapping("/{questId}")
-    public void deleteQuest(@PathVariable Long questId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        questService.deleteQuest(questId, userDetails);
+    public ResponseEntity<Boolean> deleteQuest(@PathVariable Long questId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseEntity.ok(questService.deleteQuest(questId, userDetails));
     }
 }
