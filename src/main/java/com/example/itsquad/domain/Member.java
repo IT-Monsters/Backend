@@ -35,7 +35,7 @@ public class Member extends Timestamped {
     @Column
     private String profileImg;
 
-    @Column(nullable = false)
+    @Column
     private String phoneNum;
 
     @Column(unique = true)
