@@ -27,33 +27,16 @@ public class AwsS3Service {
     private String defaultEndpointUrl;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-    /*public static File getImageFromBase64(String base64String, String fileName) {
-        String[] strings = base64String.split(",");
 
-        String extension = switch (strings[0]) {
-            case "data:image/jpeg;base64" -> ".jpeg";
-            case "data:image/png;base64" -> ".png";
-            default -> ".jpg";
-        };
+    String defaultImg = "https://buckitforimg.s3.ap-northeast-2.amazonaws.com/default_profile.png"; // 기본이미지
 
-        byte[] data = Base64.getDecoder().decode(strings[1]);
-        File file = new File(fileName + extension);
-
-        try(OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
-            outputStream.write(data);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return file;
-    }*/
 
     @Transactional
     public String getSavedS3ImageUrl(String stringImage) throws IOException {
 
         if (stringImage == null) {
 
-            return null; // 사진 미등록시 null 값으로 DB 저장 안되도록 분기 처리
+            return defaultImg; // 사진 미등록시 null 값으로 DB 저장 안되도록 분기 처리
         }
 
         String fileName = UUID.randomUUID().toString();

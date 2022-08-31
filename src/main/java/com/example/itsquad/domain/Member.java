@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -35,7 +36,7 @@ public class Member extends Timestamped {
     @Column
     private String profileImg;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String phoneNum;
 
     @Column(unique = true)

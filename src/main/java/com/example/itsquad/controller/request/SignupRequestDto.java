@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Setter
@@ -17,6 +18,7 @@ public class SignupRequestDto {
 
     private String password;
 
-    private String phoneNum;
+    @Nullable
+    private String profileImage;
 
 }
