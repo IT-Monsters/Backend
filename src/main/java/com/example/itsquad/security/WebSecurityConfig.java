@@ -136,17 +136,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/oauth/**");
         skipPathList.add("GET,/oauth/kakao/**");
 
-//        //카카오톡 skipPathList
-////        skipPathList.add("GET,/oauth/kakao/callback*");
-//        skipPathList.add("GET,/oauth/authorize*");
-//        skipPathList.add("GET,/oauth/kakao/callback/**");
-
         //회원가입하기, 로그인 관련 skipPathList
-//        skipPathList.add("POST,/member/signup");  //본래 프사 유무로 api 두개 만들려했던 흔적임
-        skipPathList.add("POST,/api/member/signup");  //회원가입
-
-        skipPathList.add("POST,/api/member/signup/checkID");  //username 중복 체크
-        skipPathList.add("POST,/api/member/signup/nickID");  //nickname 중복 체크
+        skipPathList.add("POST,/api/members/signup");  //회원가입
+        skipPathList.add("POST,/api/members/checkId");  //username 중복 체크
+        skipPathList.add("POST,/api/members/checkNickname");  //nickname 중복 체크
 
         //무중단 배포 확인용
         skipPathList.add("GET,/");
@@ -154,7 +147,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //----------아래는 그대로----------
         skipPathList.add("GET,/basic.js");
-
         skipPathList.add("GET,/favicon.ico");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
