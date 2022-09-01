@@ -1,6 +1,5 @@
-package com.example.itsquad.controller.response;
+package com.example.itsquad.controller.request;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,15 +7,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @Data
-@Builder
-public class SignpResponseDto {
+public class SignupImgRequestDto {
+
     private String email;
 
     private String nickname;
 
     private String password;
 
+    private String profileImage;
+
     private String phoneNum;
 
-    private boolean admin;
+    private boolean admin = false;
 }
