@@ -20,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member user = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new UsernameNotFoundException("Can't find " + email));
+                .orElseThrow(() -> new UsernameNotFoundException("Can't find " + email));
 
         return new UserDetailsImpl(user);
     }
