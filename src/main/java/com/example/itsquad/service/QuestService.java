@@ -4,17 +4,26 @@ import com.example.itsquad.controller.request.QuestRequestDto;
 import com.example.itsquad.controller.response.QuestResponseDto;
 import com.example.itsquad.domain.Folio;
 import com.example.itsquad.domain.Member;
+import com.example.itsquad.domain.QQuest;
 import com.example.itsquad.domain.Quest;
+import com.example.itsquad.domain.Quest.Position;
+import com.example.itsquad.domain.Quest.Type;
 import com.example.itsquad.exceptionHandler.CustomException;
 import com.example.itsquad.exceptionHandler.ErrorCode;
 import com.example.itsquad.repository.FolioRepository;
 import com.example.itsquad.repository.QuestRepository;
 import com.example.itsquad.security.UserDetailsImpl;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +31,9 @@ public class QuestService {
 
     private final QuestRepository questRepository;
     private final FolioRepository folioRepository;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Transactional // 게시글 작성 // 기술스택 추가해야됨 !!
     public boolean createQuest(QuestRequestDto questRequestDto, UserDetailsImpl userDetails) {
@@ -99,5 +111,37 @@ public class QuestService {
             throw new CustomException(ErrorCode.INVALID_AUTHORITY);
         }
         return true;
+    }
+
+    @Transactional( readOnly = true )
+    public List<QuestResponseDto> searchQuests( MultiValueMap<String, String> allParameters) {
+
+        BooleanBuilder searchBuilder = new BooleanBuilder();
+        QQuest quest = QQuest.quest;
+
+        JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(em);
+
+        // 필터 부분 ( 나중에 predicate 클래스로 리팩토링 예정 )
+        List<String> positions = allParameters.get("position");
+        if( positions != null ){
+            for( String position : positions ){
+                searchBuilder.or(quest.position.eq(Position.valueOf(position)));
+            }
+        }
+        if( allParameters.get( "type" ) != null ){
+            String type = allParameters.get( "type" ).get(0);
+            searchBuilder.and(quest.type.eq(Type.valueOf(type)));
+        }
+        List<Quest> results = jpaQueryFactory.selectFrom(QQuest.quest)
+            .where(searchBuilder)
+            .orderBy(QQuest.quest.createdAt.desc()).fetch();
+
+        List<QuestResponseDto> questResponseDtos = new ArrayList<>();
+
+        results.forEach( result -> questResponseDtos.add( new QuestResponseDto( result ) ) );
+        long totalCount = results.size();
+
+        return questResponseDtos;
+
     }
 }
