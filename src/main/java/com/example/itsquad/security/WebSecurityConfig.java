@@ -109,7 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public FormLoginFilter formLoginFilter() throws Exception {
         FormLoginFilter formLoginFilter = new FormLoginFilter(authenticationManager());
-        formLoginFilter.setFilterProcessesUrl("/api/member/login"); //로그인이 진행 됨
+        formLoginFilter.setFilterProcessesUrl("/api/members/login"); //로그인이 진행 됨
         formLoginFilter.setAuthenticationSuccessHandler(formLoginSuccessHandler());
         formLoginFilter.afterPropertiesSet();
         return formLoginFilter;

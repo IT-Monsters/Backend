@@ -36,6 +36,7 @@ public class MemberService {
 
     public ResponseEntity signupUser(SignupRequestDto requestDto) throws IOException {
 
+
         String profileUrl = s3Service.getSavedS3ImageUrl(requestDto.getProfileImage());
 
         checkEmailPattern(requestDto.getEmail());//username 정규식 맞지 않는 경우 오류메시지 전달
@@ -58,12 +59,12 @@ public class MemberService {
     }
 
     //username 중복체크
-    public ResponseEntity checkUsername(SignupRequestDto requestDto) {
+    public ResponseEntity checkUsername(SignupRequestDto requestDto){
         checkEmailPattern(requestDto.getEmail());
         return new ResponseEntity("사용 가능한 이메일입니다.", HttpStatus.OK);
     }
 
-    public ResponseEntity checkNickname(SignupRequestDto requestDto) {
+    public ResponseEntity checkNickname(SignupRequestDto requestDto){
         checkNicknamePatter(requestDto.getNickname());
         return new ResponseEntity("사용 가능한 닉네임입니다.", HttpStatus.OK);
     }
@@ -88,41 +89,33 @@ public class MemberService {
         return (Member) authentication.getPrincipal();
     }
 
-    public void checkEmailPattern(String email) {
 
-        if (email.equals("")) {
-            throw new CustomException(ErrorCode.EMPTY_EMAIL);
-        } else if (!Pattern.matches(emailPattern, email)) {
-            throw new CustomException(ErrorCode.EMAIL_WRONG);
-        } else if (memberRepository.findByEmail(email).isPresent()) {
-            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
-        }
+    public void checkEmailPattern(String email) {
+        if (email == null) throw new CustomException(ErrorCode.EMPTY_EMAIL);
+        if (email.equals("")) throw new CustomException(ErrorCode.EMPTY_EMAIL);
+        if (!Pattern.matches(emailPattern, email)) throw new CustomException(ErrorCode.EMAIL_WRONG);
+        if (memberRepository.findByEmail(email).isPresent()) throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
     }
+
 
     public void checkPasswordPattern(String password) {
-
-        if (password.equals("")) {
-            throw new CustomException(ErrorCode.EMPTY_PASSWORD);
-        } else if (8 > password.length() || 20 < password.length()) {
-            throw new CustomException(ErrorCode.PASSWORD_LEGNTH);
-        } else if (!Pattern.matches(passwordPattern, password)) {
-            throw new CustomException(ErrorCode.PASSWORD_WRONG);
-        }
+        if (password == null) throw new CustomException(ErrorCode.EMPTY_PASSWORD);
+        if (password.equals("")) throw new CustomException(ErrorCode.EMPTY_PASSWORD);
+        if (8 > password.length() || 20 < password.length()) throw new CustomException(ErrorCode.PASSWORD_LEGNTH);
+        if (!Pattern.matches(passwordPattern, password)) throw new CustomException(ErrorCode.PASSWORD_WRONG);
     }
+
 
     public void checkNicknamePatter(String nickname) {
-
-        if (nickname.equals("")) {
-            throw new CustomException(ErrorCode.EMPTY_NICKNAME);
-        } else if (2 > nickname.length() || 8 < nickname.length()) {
-            throw new CustomException(ErrorCode.NICKNAME_LEGNTH);
-        } else if (!Pattern.matches(nicknamePattern, nickname)) {
-            throw new CustomException(ErrorCode.NICKNAME_WRONG);
-        }
+        if (nickname == null) throw new CustomException(ErrorCode.EMPTY_NICKNAME);
+        if (nickname.equals("")) throw new CustomException(ErrorCode.EMPTY_NICKNAME);
+        if (2 > nickname.length() || 8 < nickname.length()) throw new CustomException(ErrorCode.NICKNAME_LEGNTH);
+        if (!Pattern.matches(nicknamePattern, nickname)) throw new CustomException(ErrorCode.NICKNAME_WRONG);
     }
+}
 
 
-    //로그인 후 관리자 권한 얻을 수 있는 API 관리자 접근 가능 페이지 없슴
+//로그인 후 관리자 권한 얻을 수 있는 API 관리자 접근 가능 페이지 없슴
 //    public ResponseEntity adminAuthorization(AdminRequestDto requestDto, UserDetailsImpl userDetails) {
 //        // 사용자 ROLE 확인
 //        UserRoleEnum role = UserRoleEnum.USER;
@@ -139,7 +132,7 @@ public class MemberService {
 //        userRepository.save(userDetails.getUser());
 //        return new ResponseEntity("관리자 권한으로 변경되었습니다", HttpStatus.OK);
 //    }
-}
+
 
 
 
