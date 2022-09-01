@@ -10,18 +10,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberSummaryDto {
+
     private Long id;
     private String email;
     private String nickname;
     private String profileImg;
 
-    private String phoneNum;
 
     public MemberSummaryDto(Member member) {
         this.id = member.getId();
         this.email = member.getEmail();
         this.nickname = member.getNickname();
-        this.phoneNum = member.getPhoneNum();
         this.profileImg = member.getProfileImg();
     }
 }

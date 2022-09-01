@@ -12,16 +12,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000","https://g10000.shop","https://facebook-clone-six-delta.vercel.app")  //클라이언트에서 허용
-                .allowedHeaders("*")
-                .allowCredentials(true)
-                .exposedHeaders(HttpHeaders.AUTHORIZATION)
-                .allowedMethods(
-                        HttpMethod.GET.name(),
-                        HttpMethod.HEAD.name(),
-                        HttpMethod.POST.name(),
-                        HttpMethod.PUT.name(),
-                        HttpMethod.DELETE.name());
+            .allowedOrigins("http://localhost:3000", "https://g10000.shop",
+                "https://facebook-clone-six-delta.vercel.app")  //클라이언트에서 허용
+            .allowedHeaders("*")
+            .allowCredentials(true)
+            .exposedHeaders(HttpHeaders.AUTHORIZATION)
+            .allowedMethods(
+                HttpMethod.GET.name(),
+                HttpMethod.HEAD.name(),
+                HttpMethod.POST.name(),
+                HttpMethod.PUT.name(),
+                HttpMethod.DELETE.name());
 
     }
 }

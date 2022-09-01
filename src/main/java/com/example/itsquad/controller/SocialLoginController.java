@@ -22,7 +22,8 @@ public class SocialLoginController {
 
     //카카오 로그인
     @GetMapping("/oauth/kakao/callback/{code}")
-    public ResponseEntity kakaoLogin(@PathVariable("code") String code, HttpServletResponse response) throws JsonProcessingException {
+    public ResponseEntity kakaoLogin(@PathVariable("code") String code,
+        HttpServletResponse response) throws JsonProcessingException {
 
         try { // 회원가입 진행 성공시
 

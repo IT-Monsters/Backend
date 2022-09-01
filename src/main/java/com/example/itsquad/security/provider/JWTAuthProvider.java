@@ -23,14 +23,15 @@ public class JWTAuthProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication)
-            throws AuthenticationException {
+        throws AuthenticationException {
         String token = (String) authentication.getPrincipal();
         String email = jwtDecoder.decodeUsername(token);
 
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         UserDetailsImpl userDetails = new UserDetailsImpl(member);
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, null,
+            userDetails.getAuthorities());
     }
 
     @Override
