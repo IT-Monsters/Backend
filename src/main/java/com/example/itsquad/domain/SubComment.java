@@ -1,6 +1,5 @@
 package com.example.itsquad.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,14 +8,13 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment extends Timestamped {
+public class SubComment extends Timestamped {
 
 
     @Id
@@ -29,14 +27,11 @@ public class Comment extends Timestamped {
     @JoinColumn
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Quest quest;
+    private Comment comment;
 
     @JoinColumn
     @ManyToOne
     private Member member;
-
-    @OneToMany(mappedBy = "comment")
-    private List<SubComment> subComments;
 
 
 }

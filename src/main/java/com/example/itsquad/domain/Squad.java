@@ -9,34 +9,30 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment extends Timestamped {
+@Builder
+public class Squad {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String content;
-
-    @JoinColumn
     @ManyToOne
+    @JoinColumn
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Quest quest;
 
-    @JoinColumn
     @ManyToOne
+    @JoinColumn
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    @OneToMany(mappedBy = "comment")
-    private List<SubComment> subComments;
+    //직책 추가 고려
 
 
 }

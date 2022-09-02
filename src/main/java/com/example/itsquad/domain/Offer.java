@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Orders {
+public class Offer extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,36 +24,15 @@ public class Orders {
 
     @JoinColumn
     @ManyToOne
-    private Member fromMember;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Quest quest;
 
-    @JoinColumn
-    @ManyToOne
-    private Member toMember;
 
     @JoinColumn
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Quest quest;
+    private Member offeredMember;
 
-    //fromMember 수락상태
-    @Column(nullable = false)
-    private Boolean orderStatusFromMember;
 
-    //fromMember 수락상태
-    @Column(nullable = false)
-    private Boolean orderStatusToMember;
 
-    // 계약현황
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private StatusEnum statusEnum;
-
-    public enum StatusEnum {
-
-        PROCESSING,
-
-        COMPLETE,
-
-        CANCEL
-    }
 }
