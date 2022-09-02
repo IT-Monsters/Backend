@@ -22,7 +22,6 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @JoinColumn
     @ManyToOne
     private Member fromMember;
@@ -34,7 +33,7 @@ public class Orders {
     @JoinColumn
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Post post;
+    private Quest quest;
 
     //fromMember 수락상태
     @Column(nullable = false)
@@ -46,6 +45,7 @@ public class Orders {
 
     // 계약현황
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private StatusEnum statusEnum;
 
     public enum StatusEnum {
@@ -55,9 +55,5 @@ public class Orders {
         COMPLETE,
 
         CANCEL
-
-
     }
-
-
 }

@@ -8,21 +8,25 @@ public enum ErrorCode {
     /*
     400 Bad Request
      */
-    EMPTY_USERNAME(HttpStatus.BAD_REQUEST, "이메일을 입력해주세요."),
+    EMPTY_EMAIL(HttpStatus.BAD_REQUEST, "이메일을 입력해주세요."),
     EMPTY_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호를 입력해주세요."),
     EMPTY_NICKNAME(HttpStatus.BAD_REQUEST, "닉네임을 입력해주세요."),
-    USERNAME_WRONG(HttpStatus.BAD_REQUEST, "아이디는 이메일 형식으로 입력해주세요"),
+
+    EMAIL_WRONG(HttpStatus.BAD_REQUEST, "아이디는 이메일 형식으로 입력해주세요"),
     NICKNAME_WRONG(HttpStatus.BAD_REQUEST, "닉네임은 영문, 한글, 특수문자 다 가능합니다"),
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "중복된 이메일이 존재합니다"),
+
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "중복된 닉네임이 존재합니다"),
     PASSWORD_LEGNTH(HttpStatus.BAD_REQUEST, "비밀번호는 8자 이상 20자 이하여야 합니다"),
     NICKNAME_LEGNTH(HttpStatus.BAD_REQUEST, "닉네임은 2자 이상 10자 이하여야 합니다"),
-    //    PASSWORD_WRONG(HttpStatus.BAD_REQUEST, "비밀번호는 영문, 숫자, 특수문자를 포함해야합니다"),
+
     PASSWORD_WRONG(HttpStatus.BAD_REQUEST, "비밀번호는 영문, 숫자를 포함해야합니다"),
 
     INVALID_CATEGORY_AND_BRAND(HttpStatus.BAD_REQUEST, "브랜드와 카테고리가 전부 비어있습니다."),
 
     INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "유효하지 않은 카테고리입니다."),
+
+    INVALID_ORDER_REQUEST( HttpStatus.BAD_REQUEST , "자신의 게시글에는 수주/외주 요청이 불가능합니다."),
     /*
     401 UNAUTHORIZED : 인증되지 않은 사용자
     */
@@ -43,7 +47,17 @@ public enum ErrorCode {
      */
 
     API_NOT_FOUND(HttpStatus.NOT_FOUND, "잘못된 주소입니다."),
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다");
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다"),
+    POST_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 게시글 입니다." ),
+    ORDER_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 ORDER(주문) 입니다."),
+
+     /*
+    409 conflict
+    */
+
+    ORDER_CONFLICT( HttpStatus.CONFLICT , "이미 외주/수주를 신청하셨습니다." );
+
+
 
 
     private final HttpStatus httpStatus;

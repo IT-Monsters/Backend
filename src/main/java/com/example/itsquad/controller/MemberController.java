@@ -1,7 +1,5 @@
 package com.example.itsquad.controller;
 
-
-import com.example.itsquad.controller.request.SignupImgRequestDto;
 import com.example.itsquad.controller.request.SignupRequestDto;
 import com.example.itsquad.security.UserDetailsImpl;
 import com.example.itsquad.service.AwsS3Service;
@@ -14,49 +12,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
 
   private final MemberService memberService;
-  private final AwsS3Service s3Service;
 
   //회원가입
-  @PostMapping("api/member/signup")
-  public ResponseEntity signupUser(@RequestBody SignupImgRequestDto requestDto) throws Exception{
-//          @RequestPart("signup") SignupRequestDto requestDto,@RequestPart("profileImage") MultipartFile profileImages) throws IOException {
-    String defaultImg = "https://buckitforimg.s3.ap-northeast-2.amazonaws.com/default_profile.png"; // 기본이미지
-    String image = "";
-    // 이미지를 안 넣으면 기본이미지 주기
-    if (requestDto.getProfileImage() == null) { // 이미지가 안들어오면 true
-      image = defaultImg;
-    } else {  // profileImages에 유저가 등록한 이미지가 들어올 때
-
-
-      String stringImage = requestDto.getProfileImage();// 이미지 등록용으로 따로 안만들고 코드 재사용 꿀
-      image = s3Service.getSavedS3ImageUrl(stringImage);
-
-    }
-
-    return memberService.signupUser(SignupRequestDto.builder()
-            .email(requestDto.getEmail())
-            .nickname(requestDto.getNickname())
-            .password(requestDto.getPassword())
-            .phoneNum(requestDto.getPhoneNum())
-            .build(), image);
+  @PostMapping("api/members/signup")
+  public ResponseEntity signupUser (@RequestBody SignupRequestDto requestDto) throws IOException {
+    return memberService.signupUser(requestDto);
   }
 
-//  //회원가입에 이미지가 null이 들어올 때
-//  @PostMapping("/api/member/signup")
-//  public ResponseEntity signupNullUser(@RequestBody SignupImgRequestDto requestDto) {
-//    return memberService.signupNullUser(requestDto);
-//  }
 
   //username 중복체크
-  @PostMapping("/api/member/signup/checkID")
-  public ResponseEntity checkUsername(@RequestBody SignupRequestDto requestDto) {
+  @PostMapping("/api/members/checkID")
+  public ResponseEntity checkUsername(@RequestBody SignupRequestDto requestDto){
     return memberService.checkUsername(requestDto);
+  }
+
+  @PostMapping("/api/members/checkNickname")
+  public ResponseEntity checkNickname(@RequestBody SignupRequestDto requestDto){
+    return memberService.checkNickname(requestDto);
   }
 
 
