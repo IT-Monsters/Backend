@@ -17,7 +17,6 @@ import javax.persistence.*;
 @Builder
 public class Squad {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
