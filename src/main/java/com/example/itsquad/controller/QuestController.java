@@ -60,6 +60,12 @@ public class QuestController {
         return ResponseEntity.ok(questService.deleteQuest(questId, userDetails));
     }
 
+    @PostMapping("/{questId}/bookmark")
+    public ResponseEntity<Boolean> bookmarkQuest(@PathVariable Long questId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseEntity.ok(questService.bookmarkQuest(questId, userDetails));
+    }
+
     @GetMapping("/search")
     public ResponseEntity<List<QuestResponseDto>> searchQuests( @RequestParam MultiValueMap<String, String> allParameters ){
 
