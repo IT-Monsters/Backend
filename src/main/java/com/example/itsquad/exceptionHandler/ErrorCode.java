@@ -26,7 +26,7 @@ public enum ErrorCode {
 
     INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "유효하지 않은 카테고리입니다."),
 
-    INVALID_ORDER_REQUEST( HttpStatus.BAD_REQUEST , "자신의 게시글에는 수주/외주 요청이 불가능합니다."),
+    INVALID_OFFER_REQUEST( HttpStatus.BAD_REQUEST , "자신의 게시글에는 합류요청이 불가능합니다."),
     /*
     401 UNAUTHORIZED : 인증되지 않은 사용자
     */
@@ -48,14 +48,15 @@ public enum ErrorCode {
 
     API_NOT_FOUND(HttpStatus.NOT_FOUND, "잘못된 주소입니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다"),
-    POST_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 게시글 입니다." ),
-    ORDER_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 ORDER(주문) 입니다."),
+    QUEST_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 퀘스트 입니다." ),
+    OFFER_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 합류요청(Offer) 입니다."),
+
 
      /*
     409 conflict
     */
 
-    ORDER_CONFLICT( HttpStatus.CONFLICT , "이미 외주/수주를 신청하셨습니다." );
+    OFFER_CONFLICT( HttpStatus.CONFLICT , "이미 합류요청을 신청하셨습니다." );
 
 
 
