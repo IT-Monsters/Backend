@@ -1,6 +1,6 @@
 package com.example.itsquad.controller.response;
 
-import com.example.itsquad.domain.Orders;
+import com.example.itsquad.domain.Offer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class OrderDetailsDto {
 
     private Long maxPrice;
 
-    public OrderDetailsDto( Orders order ){
+    public OrderDetailsDto( Offer order ){
 
         memberId = order.getToMember().getId();
         postId = order.getQuest().getId();

@@ -3,8 +3,8 @@ package com.example.itsquad.service;
 import com.example.itsquad.controller.response.OrderDetailsDto;
 import com.example.itsquad.controller.response.OrderResponseDto;
 import com.example.itsquad.domain.Member;
-import com.example.itsquad.domain.Orders;
-import com.example.itsquad.domain.Orders.StatusEnum;
+import com.example.itsquad.domain.Offer;
+import com.example.itsquad.domain.Offer.StatusEnum;
 import com.example.itsquad.domain.Quest;
 import com.example.itsquad.exceptionHandler.CustomException;
 import com.example.itsquad.exceptionHandler.ErrorCode;
@@ -40,12 +40,12 @@ public class OrdersService {
             throw new CustomException( ErrorCode.INVALID_ORDER_REQUEST );  // 에러 : 게시글 주인과 요청자가 같을 경우
         }
 
-        Optional<Orders> order = ordersRepository.findByFromMemberAndToMemberAndQuest( fromMember, toMember , quest );
+        Optional<Offer> order = ordersRepository.findByFromMemberAndToMemberAndQuest( fromMember, toMember , quest );
 
         if( order.isPresent() ) throw new CustomException( ErrorCode.ORDER_CONFLICT );  // 에러 : 오더가 이미 존재할 경우
 
         ordersRepository.save(
-            Orders.builder()
+            Offer.builder()
                 .fromMember( fromMember )
                 .toMember( toMember )
                 .quest( quest )
@@ -61,7 +61,7 @@ public class OrdersService {
     // 회원의 현재 외주/수주 오더 목록
     public List<OrderResponseDto> getOrderList( Member member ) {
 
-        List<Orders> orderPS = ordersRepository.findAllByToMemberOrFromMember( member , member );
+        List<Offer> orderPS = ordersRepository.findAllByToMemberOrFromMember( member , member );
         List<OrderResponseDto> orderResponseDtos = new ArrayList<>();
 
         orderPS.forEach(order -> orderResponseDtos.add( new OrderResponseDto( order , isMyQuest( order , member ) )));
@@ -72,7 +72,7 @@ public class OrdersService {
     // 오더( 요청 ) 상세보기
     public OrderDetailsDto getOrderDetails(Long orderId, UserDetailsImpl userDetails ) {
 
-        Orders order = ordersRepository.findById( orderId ). orElseThrow(
+        Offer order = ordersRepository.findById( orderId ). orElseThrow(
             () -> new CustomException( ErrorCode.ORDER_NOT_FOUND )  //에러 : 오더가 존재하지 않을 경우
         );
 
@@ -80,7 +80,7 @@ public class OrdersService {
     }
 
     // 현재 로그인한 회원이 게시글 작성자와 같은지 확인
-    public boolean isMyQuest( Orders order , Member member ){
+    public boolean isMyQuest(Offer order , Member member ){
         if(Objects.equals(order.getQuest().getMember().getId(), member.getId())) return true;
         return false;
     }

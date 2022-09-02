@@ -1,6 +1,6 @@
 package com.example.itsquad.controller.response;
 
-import com.example.itsquad.domain.Orders;
+import com.example.itsquad.domain.Offer;
 import com.example.itsquad.domain.Quest.Type;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +31,7 @@ public class OrderResponseDto {
 
     private boolean IsMyPost;
 
-    public OrderResponseDto( Orders order , boolean isMyPost ){
+    public OrderResponseDto(Offer order , boolean isMyPost ){
         orderId = order.getId();
         postId = order.getQuest().getId();
         postOwnerId = order.getToMember().getId();
