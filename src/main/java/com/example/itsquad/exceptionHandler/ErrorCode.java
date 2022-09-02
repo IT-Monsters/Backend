@@ -49,6 +49,7 @@ public enum ErrorCode {
     API_NOT_FOUND(HttpStatus.NOT_FOUND, "잘못된 주소입니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다"),
     QUEST_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 퀘스트 입니다." ),
+    SQUAD_MEMBER_NOT_FOUND( HttpStatus.NOT_FOUND , "스쿼드에 소속되지 않은 회원입니다." ),
     OFFER_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 합류요청(Offer) 입니다."),
 
 
@@ -56,7 +57,9 @@ public enum ErrorCode {
     409 conflict
     */
 
+    SQUAD_CONFLICT( HttpStatus.CONFLICT , "이미 스쿼드에 가입되어있습니다."),
     OFFER_CONFLICT( HttpStatus.CONFLICT , "이미 합류요청을 신청하셨습니다." );
+
 
 
 

@@ -37,7 +37,7 @@ public class OfferService {
         Member questOwner = quest.getMember();
 
         if(Objects.equals(offeredMember.getId() , questOwner.getId() )) {
-            throw new CustomException( ErrorCode.INVALID_OFFER_REQUEST );  // 에러 : 게시글 주인과 요청자가 같을 경우
+            throw new CustomException( ErrorCode.INVALID_OFFER_REQUEST );  // 에러 : 게시글 주인과 요청자가 다를 경우
         }
 
         Optional<Offer> offer = offerRepository.findByOfferedMemberAndQuest( offeredMember , quest );
@@ -72,6 +72,7 @@ public class OfferService {
     // '거절' 누를 시 합류요청 삭제
     @Transactional
     public Boolean deleteOffer(Long offerId, UserDetailsImpl userDetails) {
+
 
         Offer offer = offerRepository.findById( offerId ).orElseThrow(
             () -> new CustomException( ErrorCode.OFFER_NOT_FOUND )
