@@ -1,5 +1,6 @@
 package com.example.itsquad.domain;
 
+import com.amazonaws.services.dynamodbv2.xspec.S;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,54 +29,36 @@ public class Quest extends Timestamped {
 
     private String content;
 
-    @Enumerated(value = EnumType.STRING)
-    private Type type;
+    private Long frontend;
 
-    @Enumerated(value = EnumType.STRING)
-    private Position position;
+    private Long backend;
 
-    private Long minPrice;
+    private Long fullstack;
 
-    private Long maxPrice;
+    private Long designer;
 
-    private String expiredDate;
+    private Long duration; // 주단위로 기간 설정
 
 
     //진행 유무만 확인
-    private Boolean status;
+    private Boolean status; // 모집중 / 모집완료
 
 
     @OneToMany(mappedBy = "quest")
     private List<Comment> comments;
 
+    // 스택 추가하기
 
-    public enum Position {
-
-        FRONTEND,
-
-        BACKEND,
-
-        DESIGNER,
-
-        FULLSTACK
-    }
-
-
-    public enum Type {
-
-        request,
-
-        accept
-    }
-
-    public void updateQuest(String title, String content, Type type, Position position,
-        Long minPrice, Long maxPrice, String expiredDate){
+    public void updateQuest(String title, String content, Long frontend,
+                            Long backend, Long fullstack, Long designer, Long duration){
         this.title = title;
         this.content = content;
-        this.type = type;
-        this.position = position;
-        this.minPrice = minPrice;
-        this.maxPrice = maxPrice;
-        this.expiredDate = expiredDate;
+        this.frontend = frontend;
+        this.backend = backend;
+        this.fullstack = fullstack;
+        this.designer = designer;
+        this.duration = duration;
+
+
     }
 }

@@ -9,22 +9,19 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment extends Timestamped {
+public class Bookmark {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String content;
 
     @JoinColumn
     @ManyToOne
@@ -33,10 +30,8 @@ public class Comment extends Timestamped {
 
     @JoinColumn
     @ManyToOne
-    private Member member;
-
-    @OneToMany(mappedBy = "comment")
-    private List<SubComment> subComments;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Member markedMember;
 
 
 }

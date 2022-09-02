@@ -141,6 +141,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("POST,/api/members/checkId");  //username 중복 체크
         skipPathList.add("POST,/api/members/checkNickname");  //nickname 중복 체크
 
+        // null 401 - 토큰검증안된 것도 401
+        // 검증이 동작하는가 안하는가
+
         //무중단 배포 확인용
         skipPathList.add("GET,/");
         skipPathList.add("GET,/health");
