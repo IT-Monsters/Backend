@@ -1,5 +1,7 @@
 package com.example.itsquad.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,6 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Builder
@@ -27,13 +30,17 @@ public class SubComment extends Timestamped {
     @JoinColumn
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Comment comment;
+    private Quest quest; //전 post
+
+    @JoinColumn
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Comment comment; // 댓글
+
 
     @JoinColumn
     @ManyToOne
     private Member member;
+
+
 }
-
-
-
-

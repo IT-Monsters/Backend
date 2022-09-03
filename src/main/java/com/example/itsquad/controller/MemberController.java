@@ -1,10 +1,12 @@
 package com.example.itsquad.controller;
 
 import com.example.itsquad.controller.request.SignupRequestDto;
+import com.example.itsquad.controller.request.SmsRequestDto;
 import com.example.itsquad.security.UserDetailsImpl;
-import com.example.itsquad.service.AwsS3Service;
 import com.example.itsquad.service.MemberService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +29,6 @@ public class MemberController {
     return memberService.signupUser(requestDto);
   }
 
-
   //username 중복체크
   @PostMapping("/api/members/checkID")
   public ResponseEntity checkUsername(@RequestBody SignupRequestDto requestDto){
@@ -39,6 +40,14 @@ public class MemberController {
     return memberService.checkNickname(requestDto);
   }
 
+/*
+  @PostMapping("/api/members/sendMessage")
+  public ResponseEntity checkSms(@RequestBody SmsRequestDto requestDto,
+                                 @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+    return memberService.sendMessage(requestDto.getPhoneNum(),userDetails);
+  }
+ */
 
   //로그인 후 관리자 권한 얻을 수 있는 API
 //  @PutMapping("/api/signup/admin")

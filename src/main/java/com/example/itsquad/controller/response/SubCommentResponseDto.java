@@ -1,19 +1,25 @@
 package com.example.itsquad.controller.response;
 
-import com.example.itsquad.domain.SubComment;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-public class CommentResponseDto {
+public class SubCommentResponseDto {
 
-
+    @JsonIgnore
     private Long commentId;
+
+    @JsonIgnore
+    private Long subCommentId;
 
     private String nickname;
 
@@ -24,7 +30,4 @@ public class CommentResponseDto {
     private LocalDateTime modifiedAt;
 
     private String profileImage;
-
-    private List<SubCommentResponseDto> subCommentList;
-
 }

@@ -27,6 +27,7 @@ public class Quest extends Timestamped {
     private String title;
 
     private String content;
+
     private Long frontend;
     private Long backend;
     private Long fullstack;
@@ -35,7 +36,7 @@ public class Quest extends Timestamped {
 
 
     //진행 유무만 확인
-    private Boolean status;
+    private Boolean status; // 모집중 / 모집완료
 
 
     @OneToMany(mappedBy = "quest")
