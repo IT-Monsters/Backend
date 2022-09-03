@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Builder
@@ -32,6 +33,15 @@ public class SubComment extends Timestamped {
     @JoinColumn
     @ManyToOne
     private Member member;
+
+
+
+    private Boolean status;
+/*
+    @OneToMany(mappedBy = "quest")
+    private List<SubComment> subComments;
+
+ */
 }
 
 
