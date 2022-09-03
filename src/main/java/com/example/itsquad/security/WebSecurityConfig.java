@@ -148,6 +148,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/");
         skipPathList.add("GET,/health");
 
+        //검색, 필터링
+        skipPathList.add("GET,/api/quests/");
+
 //----------아래는 그대로----------
         skipPathList.add("GET,/basic.js");
         skipPathList.add("GET,/favicon.ico");

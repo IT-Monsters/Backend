@@ -32,7 +32,6 @@ public class SquadService {
         Offer offer = offerRepository.findById( offerId ).orElseThrow(
             () -> new CustomException( ErrorCode.OFFER_NOT_FOUND )  // 에러 : 오퍼가 존재하지 않음
         );
-
         Member questOwner = offer.getQuest().getMember();
         if( !Objects.equals(questOwner.getId(), member.getId())) {
             throw new CustomException( ErrorCode.INVALID_AUTHORITY );   // 에러 : 게시글 주인이 아닌 사람이 접근할 경우.
