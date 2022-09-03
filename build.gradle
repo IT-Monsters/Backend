@@ -49,6 +49,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    //sms인증관련 라이브러리
+    implementation 'net.nurigo:sdk:4.2.3'
 }
 
 // querydsl 설정

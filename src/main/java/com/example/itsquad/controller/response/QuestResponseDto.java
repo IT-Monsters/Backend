@@ -20,7 +20,7 @@ public class QuestResponseDto { // 댓글 조회, 기술스택 추가해야됨 !
     private Long fullstack;
     private Long designer;
     private Long bookmarkCnt;
-    //    private Long commentCnt; <댓글 기능 추가 후>
+    private Long commentCnt; //<댓글 기능 추가 후>
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

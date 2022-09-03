@@ -32,6 +32,7 @@ public class Comment extends Timestamped {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Quest quest;
 
+
     @JoinColumn
     @ManyToOne
     private Member member;

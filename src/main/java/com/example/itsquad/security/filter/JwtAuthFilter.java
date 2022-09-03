@@ -53,6 +53,7 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
             return super
                 .getAuthenticationManager()
                 .authenticate(jwtToken);
+
         } catch (CustomException e) {
             //response.sendError(e.getErrorCode().getHttpStatus().value(), e.getMessage());
             response.setContentType("application/json;charset=UTF-8");

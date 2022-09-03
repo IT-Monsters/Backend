@@ -66,4 +66,8 @@ public class Member extends Timestamped {
         return getClass().hashCode();
     }
 
+
+    public void updatePhoneNumber (String phoneNum){
+        this.phoneNum = phoneNum;
+    }
 }
