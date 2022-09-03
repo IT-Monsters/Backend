@@ -5,8 +5,10 @@ import com.example.itsquad.controller.response.CommentResponseDto;
 import com.example.itsquad.domain.Comment;
 import com.example.itsquad.domain.Member;
 import com.example.itsquad.domain.Quest;
+import com.example.itsquad.domain.SubComment;
 import com.example.itsquad.repository.CommentRepository;
 import com.example.itsquad.repository.QuestRepository;
+import com.example.itsquad.repository.SubCommentRepository;
 import com.example.itsquad.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,9 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     private final QuestRepository questRepository;
+
+    private final SubCommentRepository subCommentRepository;
+
 
     @Transactional
     public ResponseEntity<CommentResponseDto> createComment(CommentRequestDto commentRequestDto, Long questId, UserDetailsImpl userDetails) {
@@ -57,6 +62,7 @@ public class CommentService {
 
             Optional<Quest> quest = questRepository.findById(questId);
             if (quest.isEmpty()) {
+
                 return new ResponseEntity<>("존재하지 않는 게시글입니다.", HttpStatus.OK);
             }
 
@@ -71,6 +77,7 @@ public class CommentService {
                                 .createdAt(comment.getCreatedAt())
                                 .modifiedAt(comment.getModifiedAt())
                                 .profileImage(comment.getMember().getProfileImg())
+                                .subCommentList(subCommentRepository.findAllByCommentId(comment.getId()).get())
                         .build());
             }
             return new ResponseEntity<>(commentResponseDtos, HttpStatus.OK);
@@ -80,11 +87,14 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(()
         -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
         comment.updateComment(commentRequestDto);
+        commentRepository.save(comment);
+
         return new ResponseEntity("수정이 완료되었습니다.", HttpStatus.OK);
     }
 
         public ResponseEntity deleteComment(Long commentId) {
             commentRepository.deleteById(commentId);
+
             return new ResponseEntity("삭제가 완료되었습니다.", HttpStatus.OK);
         }
 

@@ -1,8 +1,10 @@
 package com.example.itsquad.controller.response;
 
+import com.example.itsquad.domain.SubComment;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,5 +24,7 @@ public class CommentResponseDto {
     private LocalDateTime modifiedAt;
 
     private String profileImage;
+
+    private List<SubComment> subCommentList;
 
 }
