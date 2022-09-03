@@ -27,17 +27,10 @@ public class Quest extends Timestamped {
     private String title;
 
     private String content;
-
-    @Enumerated(value = EnumType.STRING)
-    private Type type;
-
-    @Enumerated(value = EnumType.STRING)
-    private Position position;
-
+    private Long frontend;
+    private Long backend;
     private Long fullstack;
-
-    private Long maxPrice;
-
+    private Long designer;
     private Long duration; // 주단위로 기간 설정
 
 

@@ -76,6 +76,18 @@ public class CommentService {
             return new ResponseEntity<>(commentResponseDtos, HttpStatus.OK);
         }
 
+    public ResponseEntity updateComment(CommentRequestDto commentRequestDto, Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(()
+        -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+        comment.updateComment(commentRequestDto);
+        return new ResponseEntity("수정이 완료되었습니다.", HttpStatus.OK);
+    }
+
+        public ResponseEntity deleteComment(Long commentId) {
+            commentRepository.deleteById(commentId);
+            return new ResponseEntity("삭제가 완료되었습니다.", HttpStatus.OK);
+        }
+
 
 
 
