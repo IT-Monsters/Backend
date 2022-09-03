@@ -29,7 +29,7 @@ public class Comment extends Timestamped {
     @JoinColumn
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Quest quest;
+    private Quest quest; //전 post
 
     @JoinColumn
     @ManyToOne
