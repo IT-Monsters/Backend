@@ -32,6 +32,8 @@ public class SubComment extends Timestamped {
     @JoinColumn
     @ManyToOne
     private Member member;
-
-
 }
+
+
+
+

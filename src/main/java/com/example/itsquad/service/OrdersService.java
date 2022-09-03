@@ -4,7 +4,7 @@ import com.example.itsquad.controller.response.OrderDetailsDto;
 import com.example.itsquad.controller.response.OrderResponseDto;
 import com.example.itsquad.domain.Member;
 import com.example.itsquad.domain.Offer;
-import com.example.itsquad.domain.Offer.StatusEnum;
+//import com.example.itsquad.domain.Offer.StatusEnum;
 import com.example.itsquad.domain.Quest;
 import com.example.itsquad.exceptionHandler.CustomException;
 import com.example.itsquad.exceptionHandler.ErrorCode;
