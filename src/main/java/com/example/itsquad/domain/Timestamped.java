@@ -1,5 +1,6 @@
 package com.example.itsquad.domain;
 
+import com.example.itsquad.controller.request.SubCommentRequestDto;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

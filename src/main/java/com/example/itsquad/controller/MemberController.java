@@ -40,6 +40,14 @@ public class MemberController {
     return memberService.checkNickname(requestDto);
   }
 
+/*
+  @PostMapping("/api/members/sendMessage")
+  public ResponseEntity checkSms(@RequestBody SmsRequestDto requestDto,
+                                 @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+    return memberService.sendMessage(requestDto.getPhoneNum(),userDetails);
+  }
+ */
 
   //로그인 후 관리자 권한 얻을 수 있는 API
 //  @PutMapping("/api/signup/admin")

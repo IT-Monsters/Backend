@@ -58,6 +58,7 @@ public class CommentService {
 
         return new ResponseEntity<>(commentResponseDto, HttpStatus.OK);
     }
+
     private List<SubCommentResponseDto> subCommentResponseDtoList(Comment comment){
         List<SubComment> subCommentList = subCommentRepository.findByCommentId(comment.getId());
         List<SubCommentResponseDto> subCommentResponseDtoList = new ArrayList<>();
@@ -74,7 +75,6 @@ public class CommentService {
         return subCommentResponseDtoList;
     }
 
-
     public ResponseEntity<?> getComments(Long questId) {
 
         Optional<Quest> quest = questRepository.findById(questId);
@@ -85,8 +85,6 @@ public class CommentService {
 
         List<Comment> comments = quest.get().getComments();
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
-
-
 
         for (Comment comment : comments) {
             commentResponseDtos.add(CommentResponseDto.builder()

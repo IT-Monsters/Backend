@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 @Service
@@ -27,6 +28,8 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final AwsS3Service s3Service;
 
+    DefaultMessageService messageService;
+
 
     String emailPattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"; //이메일 정규식 패턴
     String nicknamePattern = "^[a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣~!@#$%^&*]{2,8}"; // 영어대소문자 , 한글 , 특수문자포함 2~8자까지
@@ -34,6 +37,19 @@ public class MemberService {
 
 
     String phoneNumPattern = "^(\\d{11})$";
+
+/*
+    @Value("${coolsms.api_key}")
+    String api_key;
+
+    @Value("${coolsms.api_secret}")
+    String api_secret;
+
+    @Value("${coolsms.send_number}")
+    String send_number;
+ */
+
+
 
 //    @Value("${spring.admin.token}") // 어드민 가입용
 //    String ADMIN_TOKEN;
@@ -61,6 +77,35 @@ public class MemberService {
 
         return new ResponseEntity("회원가입을 축하합니다", HttpStatus.OK);
     }
+/*
+
+    public ResponseEntity sendMessage (String phoneNum,UserDetailsImpl userDetails){
+        checkPhoneNumb(phoneNum); //번호유효성
+
+        this.messageService = NurigoApp.INSTANCE.initialize(api_key,api_secret,"http://localhost:8080");
+
+        Message message = new Message();
+        Random rand  = new Random();
+
+        String numStr = "";
+        for(int i=0; i<4; i++) {
+            String ran = Integer.toString(rand.nextInt(10));
+            numStr+=ran;
+        }
+
+        message.setFrom(send_number);    // 발신번호
+        message.setTo(phoneNum);    // 수신번호
+        message.setText("인증번호는 [" + numStr + "] 입니다.");
+
+        Member member = userDetails.getMember();
+        member.updatePhoneNumber(numStr);
+        memberRepository.save(member);
+
+
+        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        return new ResponseEntity(response,HttpStatus.OK);
+*/
+
 
 
 
