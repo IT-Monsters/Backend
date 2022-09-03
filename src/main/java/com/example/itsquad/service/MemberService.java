@@ -44,6 +44,7 @@ public class MemberService {
 
     String phoneNumPattern = "^(\\d{11})$";
 
+/*
     @Value("${coolsms.api_key}")
     String api_key;
 
@@ -52,6 +53,7 @@ public class MemberService {
 
     @Value("${coolsms.send_number}")
     String send_number;
+ */
 
 
 
@@ -80,7 +82,10 @@ public class MemberService {
         memberRepository.save(member);
 
         return new ResponseEntity("회원가입을 축하합니다", HttpStatus.OK);
+
+        /*
     }
+
 
     public ResponseEntity sendMessage (String phoneNum,UserDetailsImpl userDetails){
         checkPhoneNumb(phoneNum); //번호유효성
@@ -107,6 +112,8 @@ public class MemberService {
 
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
         return new ResponseEntity(response,HttpStatus.OK);
+
+     */
     }
 
 

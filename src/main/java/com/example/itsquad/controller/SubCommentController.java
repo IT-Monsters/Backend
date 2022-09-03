@@ -24,16 +24,20 @@ public class SubCommentController {
 /*
     @GetMapping("/api/quests/{questId}/comments/{commentId}/subComments")
     public ResponseEntity <?> getSubComments(@PathVariable Long commentId) {
-        return
+        return subCommentService.getSubComments(commentId);
     }
 
     @PutMapping("/api/quests/{questId}/comments/{commentId}/subComments/{subCommentId}")
-    public void updateSubComment(@PathVariable Long commentId, @RequestBody SubCommentRequestDto subCommentRequestDto) {
+    public ResponseEntity updateSubComment(@PathVariable Long commentId, @RequestBody SubCommentRequestDto subCommentRequestDto) {
+        return subCommentService.updateSubComment(subCommentRequestDto, commentId);
     }
 
     @DeleteMapping("/api/quests/{questId}/comments/{commentId}/subComments/{subCommentId}")
-    public void deleteSubComment(@PathVariable Long commentId) {
+    public ResponseEntity deleteSubComment(@PathVariable Long commentId) {
+        return subCommentService.deleteSubComment(commentId);
     }
 
+
  */
+
 }
