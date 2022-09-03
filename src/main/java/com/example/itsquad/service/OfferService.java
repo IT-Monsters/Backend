@@ -64,8 +64,6 @@ public class OfferService {
 
         offers.forEach( offer -> OfferResponseDtos.add (new OfferResponseDto( offer )) );
 
-
-
         return OfferResponseDtos;
     }
 
