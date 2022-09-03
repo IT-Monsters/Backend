@@ -2,6 +2,7 @@ package com.example.itsquad.controller;
 
 import com.example.itsquad.controller.request.QuestRequestDto;
 import com.example.itsquad.controller.response.QuestResponseDto;
+import com.example.itsquad.controller.response.SearchResponseDto;
 import com.example.itsquad.security.UserDetailsImpl;
 import com.example.itsquad.service.QuestService;
 import java.util.List;
@@ -66,9 +67,9 @@ public class QuestController {
         return ResponseEntity.ok(questService.bookmarkQuest(questId, userDetails));
     }
 
-//    @GetMapping("/search")
-//    public ResponseEntity<List<QuestResponseDto>> searchQuests( @RequestParam MultiValueMap<String, String> allParameters ){
-//
-//        return ResponseEntity.ok( questService.searchQuests( allParameters ) );
-//    }
+    @GetMapping("/search")
+    public ResponseEntity<List<SearchResponseDto>> searchQuests( @RequestParam MultiValueMap<String, String> allParameters ){
+
+        return ResponseEntity.ok( questService.searchQuests( allParameters ) );
+    }
 }
