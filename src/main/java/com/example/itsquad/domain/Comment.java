@@ -1,6 +1,7 @@
 package com.example.itsquad.domain;
 
 
+import com.example.itsquad.controller.request.CommentRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,5 +39,7 @@ public class Comment extends Timestamped {
     @OneToMany(mappedBy = "comment")
     private List<SubComment> subComments;
 
-
+    public void updateComment(CommentRequestDto commentRequestDto) {
+        this.content = commentRequestDto.getContent();
+    }
 }

@@ -1,6 +1,5 @@
 package com.example.itsquad.domain;
 
-import com.amazonaws.services.dynamodbv2.xspec.S;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,20 +27,15 @@ public class Quest extends Timestamped {
     private String title;
 
     private String content;
-
     private Long frontend;
-
     private Long backend;
-
     private Long fullstack;
-
     private Long designer;
-
     private Long duration; // 주단위로 기간 설정
 
 
     //진행 유무만 확인
-    private Boolean status; // 모집중 / 모집완료
+    private Boolean status;
 
 
     @OneToMany(mappedBy = "quest")

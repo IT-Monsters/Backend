@@ -11,4 +11,5 @@ public class ITsquadApplication {
     public static void main(String[] args) {
         SpringApplication.run(ITsquadApplication.class, args);
     }
+
 }
