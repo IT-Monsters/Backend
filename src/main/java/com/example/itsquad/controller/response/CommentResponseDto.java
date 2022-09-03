@@ -25,6 +25,6 @@ public class CommentResponseDto {
 
     private String profileImage;
 
-    private List<SubComment> subCommentList;
+    private List<SubCommentResponseDto> subCommentList;
 
 }

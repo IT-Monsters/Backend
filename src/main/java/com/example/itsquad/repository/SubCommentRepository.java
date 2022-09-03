@@ -11,8 +11,8 @@ public interface SubCommentRepository extends JpaRepository<SubComment, Long> {
 
     Optional<SubComment> findById(Long id);
 
-    Optional<SubComment> findByCommentId(Long CommentId);
+    List<SubComment> findByCommentId(Long CommentId);
 
-    Optional<List<SubComment>> findAllByCommentId(Long CommentId);
+//    Optional<List<SubComment>> findByCommentId(Long CommentId);
 
 }

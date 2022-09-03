@@ -1,5 +1,6 @@
 package com.example.itsquad.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +33,6 @@ public class SubComment extends Timestamped {
     private Quest quest; //전 post
 
     @JoinColumn
-    @JsonIgnoreProperties({"comment"})
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Comment comment; // 댓글

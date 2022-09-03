@@ -1,11 +1,11 @@
 package com.example.itsquad.controller.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 
@@ -15,8 +15,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SubCommentResponseDto {
 
+    @JsonIgnore
     private Long commentId;
 
+    @JsonIgnore
     private Long subCommentId;
 
     private String nickname;
