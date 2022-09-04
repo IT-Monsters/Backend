@@ -11,16 +11,16 @@ import java.util.stream.Collectors;
 public class FilterSkipMatcher implements RequestMatcher {
 
     private final OrRequestMatcher orRequestMatcher;
-    private final RequestMatcher processingMatcher;
+    private final RequestMatcher   processingMatcher;
 
     public FilterSkipMatcher(
-        List<String> pathToSkip,
-        String processingPath
+            List<String> pathToSkip,
+            String processingPath
     ) {
         this.orRequestMatcher = new OrRequestMatcher(pathToSkip
-            .stream()
-            .map(this::httpPath)
-            .collect(Collectors.toList()));
+                .stream()
+                .map(this :: httpPath)
+                .collect(Collectors.toList()));
         this.processingMatcher = new AntPathRequestMatcher(processingPath);
     }
 
@@ -32,8 +32,8 @@ public class FilterSkipMatcher implements RequestMatcher {
          * 배열 [0] 제외하는 url
          * */
         return new AntPathRequestMatcher(
-            splitStr[1],
-            splitStr[0]
+                splitStr[1],
+                splitStr[0]
         );
     }
 

@@ -19,4 +19,6 @@ public class SignupRequestDto {
 
     private String profileImage;
 
+
+
 }

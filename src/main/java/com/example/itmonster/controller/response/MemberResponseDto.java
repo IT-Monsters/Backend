@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberResponseDto {
-
-    private Long id;
-    private String nickname;
-    private String email;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+  private Long id;
+  private String nickname;
+  private String email;
+  private String phoneNum;
+  private LocalDateTime createdAt;
+  private LocalDateTime modifiedAt;
 }

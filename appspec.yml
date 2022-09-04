@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+files:
+  - source:  /
+    destination: /home/ubuntu/itmonster
+    overwrite: yes
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+    mode: 4755
+
+hooks:
+  AfterInstall:
+    - location: scripts/deploy.sh
+      runas: ubuntu

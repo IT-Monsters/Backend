@@ -33,8 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final HeaderTokenExtractor headerTokenExtractor;
 
     public WebSecurityConfig(
-        JWTAuthProvider jwtAuthProvider,
-        HeaderTokenExtractor headerTokenExtractor
+            JWTAuthProvider jwtAuthProvider,
+            HeaderTokenExtractor headerTokenExtractor
     ) {
         this.jwtAuthProvider = jwtAuthProvider;
         this.headerTokenExtractor = headerTokenExtractor;
@@ -53,36 +53,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) {
         auth
-            .authenticationProvider(formLoginAuthProvider())
-            .authenticationProvider(jwtAuthProvider);
+                .authenticationProvider(formLoginAuthProvider())
+                .authenticationProvider(jwtAuthProvider);
     }
 
     @Override
     public void configure(WebSecurity web) {
         // h2-console 사용에 대한 허용 (CSRF, FrameOptions 무시)
         web
-            .ignoring()
-            .antMatchers("/h2-console/**");
+                .ignoring()
+                .antMatchers("/h2-console/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
-            .csrf()
-            .disable()
-            .authorizeRequests()
+                .csrf()
+                .disable()
+                .authorizeRequests()
 
-            .antMatchers(HttpMethod.OPTIONS).permitAll() // preflight 대응
-            .antMatchers("/auth/**").permitAll(); // /auth/**에 대한 접근을 인증 절차 없이 허용(로그인 관련 url)
+                .antMatchers(HttpMethod.OPTIONS).permitAll() // preflight 대응
+                .antMatchers("/auth/**").permitAll(); // /auth/**에 대한 접근을 인증 절차 없이 허용(로그인 관련 url)
         // 특정 권한을 가진 사용자만 접근을 허용해야 할 경우, 하기 항목을 통해 가능
 
         http
-            .cors()
-            .and()
-            .csrf()
-            .disable()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .cors()
+                .and()
+                .csrf()
+                .disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.headers().frameOptions().sameOrigin();
         /*
          * 1.
@@ -91,12 +91,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * JwtFilter       : 서버에 접근시 JWT 확인 후 인증을 실시합니다.
          */
         http
-            .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeRequests()
-            .anyRequest()
-            .permitAll();
+                .anyRequest()
+                .permitAll();
 //                .and()
 //                // [로그아웃 기능]
 //                .logout()
@@ -157,13 +157,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/favicon.ico");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
-            skipPathList,
-            "/**"
+                skipPathList,
+                "/**"
         );
 
         JwtAuthFilter filter = new JwtAuthFilter(
-            matcher,
-            headerTokenExtractor
+                matcher,
+                headerTokenExtractor
         );
         filter.setAuthenticationManager(super.authenticationManagerBean());
 
