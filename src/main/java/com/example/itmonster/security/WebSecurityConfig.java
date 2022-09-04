@@ -109,7 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public FormLoginFilter formLoginFilter() throws Exception {
         FormLoginFilter formLoginFilter = new FormLoginFilter(authenticationManager());
-        formLoginFilter.setFilterProcessesUrl("/api/member/login"); //로그인이 진행 됨
+        formLoginFilter.setFilterProcessesUrl("/api/members/login"); //로그인이 진행 됨
         formLoginFilter.setAuthenticationSuccessHandler(formLoginSuccessHandler());
         formLoginFilter.afterPropertiesSet();
         return formLoginFilter;
@@ -132,26 +132,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/images/**");
         skipPathList.add("GET,/css/**");
 
-
         //카카오톡 skipPathList
         skipPathList.add("GET,/oauth/**");
         skipPathList.add("GET,/oauth/kakao/**");
 
-//        //카카오톡 skipPathList
-////        skipPathList.add("GET,/oauth/kakao/callback*");
-//        skipPathList.add("GET,/oauth/authorize*");
-//        skipPathList.add("GET,/oauth/kakao/callback/**");
-
-
-
         //회원가입하기, 로그인 관련 skipPathList
-//        skipPathList.add("POST,/member/signup");  //본래 프사 유무로 api 두개 만들려했던 흔적임
-        skipPathList.add("POST,/api/member/signup");  //회원가입
-
-
-        skipPathList.add("POST,/api/member/signup/checkID");  //username 중복 체크
-        skipPathList.add("POST,/api/member/signup/nickID");  //nickname 중복 체크
-
+        skipPathList.add("POST,/api/members/signup");  //회원가입
+        skipPathList.add("POST,/api/members/checkId");  //username 중복 체크
+        skipPathList.add("POST,/api/members/checkNickname");  //nickname 중복 체크
 
 
         // null 401 - 토큰검증안된 것도 401
@@ -166,7 +154,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //----------아래는 그대로----------
         skipPathList.add("GET,/basic.js");
-
         skipPathList.add("GET,/favicon.ico");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
