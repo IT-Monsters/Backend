@@ -28,8 +28,8 @@ fi
 
 echo "> DEPLOY_JAR 배포" >> $DEPLOY_LOG_PATH
 cd /home/ubuntu/itmonster/deploy/
-chmod +x clone-project-0.0.1-SNAPSHOT.jar
-nohup java -jar -Duser.timezone=Asia/Seoul /home/ubuntu/itmonster/deploy/clone-project-0.0.1-SNAPSHOT.jar --spring.config.location=./application.properties --server.port=8000 >> $APPLICATION_LOG_PATH 2> $DEPLOY_ERR_LOG_PATH &
+chmod +x ITsquad-0.0.1-SNAPSHOT.jar
+nohup java -jar -Duser.timezone=Asia/Seoul /home/ubuntu/itmonster/deploy/ITsquad-0.0.1-SNAPSHOT.jar --spring.config.location=./application.properties --server.port=8000 >> $APPLICATION_LOG_PATH 2> $DEPLOY_ERR_LOG_PATH &
 
 sleep 3
 
