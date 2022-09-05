@@ -73,8 +73,10 @@ public class MemberService {
         memberRepository.save(member);
 
         return new ResponseEntity("회원가입을 축하합니다", HttpStatus.OK);
+
+        /*
     }
-/*
+
 
     public ResponseEntity sendMessage (String phoneNum,UserDetailsImpl userDetails){
         checkPhoneNumb(phoneNum); //번호유효성
@@ -101,8 +103,9 @@ public class MemberService {
 
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
         return new ResponseEntity(response,HttpStatus.OK);
-*/
 
+     */
+    }
 
 
 
