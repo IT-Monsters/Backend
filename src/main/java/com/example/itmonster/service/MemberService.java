@@ -74,12 +74,38 @@ public class MemberService {
 
         return new ResponseEntity("회원가입을 축하합니다", HttpStatus.OK);
     }
-    public ResponseEntity showTop3Follows(){
-        return new ResponseEntity<>(HttpStatus.OK);
+/*
+
+    public ResponseEntity sendMessage (String phoneNum,UserDetailsImpl userDetails){
+        checkPhoneNumb(phoneNum); //번호유효성
+
+        this.messageService = NurigoApp.INSTANCE.initialize(api_key,api_secret,"http://localhost:8080");
+
+        Message message = new Message();
+        Random rand  = new Random();
+
+        String numStr = "";
+        for(int i=0; i<4; i++) {
+            String ran = Integer.toString(rand.nextInt(10));
+            numStr+=ran;
+        }
+
+        message.setFrom(send_number);    // 발신번호
+        message.setTo(phoneNum);    // 수신번호
+        message.setText("인증번호는 [" + numStr + "] 입니다.");
+
+        Member member = userDetails.getMember();
+        member.updatePhoneNumber(numStr);
+        memberRepository.save(member);
+
+
+        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        return new ResponseEntity(response,HttpStatus.OK);
+*/
 
 
 
-    }
+
     //username 중복체크
     public ResponseEntity checkUsername(SignupRequestDto requestDto){
         checkEmailPattern(requestDto.getEmail());

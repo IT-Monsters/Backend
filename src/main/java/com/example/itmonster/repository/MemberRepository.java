@@ -1,6 +1,5 @@
 package com.example.itmonster.repository;
 
-import com.amazonaws.services.dynamodbv2.xspec.M;
 import com.example.itmonster.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
