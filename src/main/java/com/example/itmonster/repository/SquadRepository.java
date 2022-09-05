@@ -3,9 +3,10 @@ package com.example.itmonster.repository;
 import com.example.itmonster.domain.Member;
 import com.example.itmonster.domain.Quest;
 import com.example.itmonster.domain.Squad;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SquadRepository extends JpaRepository<Squad, Long> {
 
