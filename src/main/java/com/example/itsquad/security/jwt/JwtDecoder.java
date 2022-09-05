@@ -1,11 +1,11 @@
-package com.example.itmonster.security.jwt;
+package com.example.itsquad.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
-import com.example.itmonster.exceptionHandler.CustomException;
-import com.example.itmonster.exceptionHandler.ErrorCode;
+import com.example.itsquad.exceptionHandler.CustomException;
+import com.example.itsquad.exceptionHandler.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.Optional;
 
-import static com.example.itmonster.security.jwt.JwtTokenUtils.*;
+import static com.example.itsquad.security.jwt.JwtTokenUtils.*;
 
 
 @Component

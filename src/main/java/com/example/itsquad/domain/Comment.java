@@ -1,4 +1,4 @@
-package com.example.itmonster.domain;
+package com.example.itsquad.domain;
 
 
 import lombok.AllArgsConstructor;
@@ -9,29 +9,34 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Squad {
+public class Comment extends Timestamped {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @Column(nullable = false)
+    private String content;
+
     @JoinColumn
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Quest quest;
 
-    @ManyToOne
     @JoinColumn
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne
     private Member member;
 
-    //직책 추가 고려
+    @OneToMany(mappedBy = "comment")
+    private List<SubComment> subComments;
 
 
 }

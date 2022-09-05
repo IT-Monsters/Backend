@@ -1,6 +1,6 @@
-package com.example.itmonster.controller;
+package com.example.itsquad.controller;
 
-import com.example.itmonster.controller.response.ResponseDto;
+import com.example.itsquad.controller.response.ResponseDto;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

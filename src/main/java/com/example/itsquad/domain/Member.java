@@ -1,4 +1,4 @@
-package com.example.itmonster.domain;
+package com.example.itsquad.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -65,8 +66,4 @@ public class Member extends Timestamped {
         return getClass().hashCode();
     }
 
-
-    public void updatePhoneNumber (String phoneNum){
-        this.phoneNum = phoneNum;
-    }
 }

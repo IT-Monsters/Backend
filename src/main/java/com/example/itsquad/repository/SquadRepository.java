@@ -1,8 +1,8 @@
-package com.example.itmonster.repository;
+package com.example.itsquad.repository;
 
-import com.example.itmonster.domain.Member;
-import com.example.itmonster.domain.Quest;
-import com.example.itmonster.domain.Squad;
+import com.example.itsquad.domain.Member;
+import com.example.itsquad.domain.Quest;
+import com.example.itsquad.domain.Squad;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

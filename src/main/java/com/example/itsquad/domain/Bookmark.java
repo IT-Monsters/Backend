@@ -1,4 +1,4 @@
-package com.example.itmonster.domain;
+package com.example.itsquad.domain;
 
 
 import lombok.AllArgsConstructor;
@@ -11,27 +11,27 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 
 @Entity
+@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Squad {
+public class Bookmark {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+
     @JoinColumn
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Quest quest;
 
-    @ManyToOne
     @JoinColumn
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Member member;
-
-    //직책 추가 고려
+    private Member markedMember;
 
 
 }

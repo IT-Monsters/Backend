@@ -1,4 +1,4 @@
-package com.example.itmonster.security;
+package com.example.itsquad.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;

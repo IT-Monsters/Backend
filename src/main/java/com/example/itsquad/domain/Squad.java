@@ -1,4 +1,4 @@
-package com.example.itmonster.domain;
+package com.example.itsquad.domain;
 
 
 import lombok.AllArgsConstructor;
