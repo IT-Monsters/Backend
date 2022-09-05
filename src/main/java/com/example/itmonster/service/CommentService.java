@@ -36,11 +36,11 @@ public class CommentService {
     @Transactional
     public ResponseEntity<CommentResponseDto> createComment(CommentRequestDto commentRequestDto, Long questId, UserDetailsImpl userDetails) {
         Quest quest = questRepository.findById(questId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다.")); // 댓글 달 게시글 조회
 
-        Member member = userDetails.getMember();
+        Member member = userDetails.getMember(); // 현재 로그인 된 회원정보
 
-        Comment comment = Comment.builder()
+        Comment comment = Comment.builder() // 댓글 저정할 형태로
                 .content(commentRequestDto.getContent())
                 .quest(quest)
                 .member(member)

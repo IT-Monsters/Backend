@@ -37,6 +37,10 @@ public class MemberController {
     return memberService.checkNickname(requestDto);
   }
 
+  @GetMapping("/api/members/main")
+  public ResponseEntity showTop3Follows(){
+    return memberService.showTop3Follows();
+  }
 /*
   @PostMapping("/api/members/sendMessage")
   public ResponseEntity checkSms(@RequestBody SmsRequestDto requestDto,
