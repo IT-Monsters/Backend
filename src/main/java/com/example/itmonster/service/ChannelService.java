@@ -52,7 +52,5 @@ public class ChannelService {
         List<MemberInChannel> memberInChannels = memberInChannelRepository.findAllByMember(member);
         return memberInChannels.stream().map(MemberInChannel::getChannel)
             .map(ChannelResponseDto::new).collect(Collectors.toList());
-
-
     }
 }

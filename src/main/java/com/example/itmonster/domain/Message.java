@@ -19,7 +19,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Message {
+public class Message extends Timestamped{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -30,7 +30,9 @@ public class Message {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Channel channel;
 
-    private String sender;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Member member;
 
     private String content;
 }

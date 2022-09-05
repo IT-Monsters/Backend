@@ -2,12 +2,14 @@ package com.example.itmonster.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.itmonster.domain.RoleEnum;
 import com.example.itmonster.security.UserDetailsImpl;
 
 import java.util.Date;
 
 public final class JwtTokenUtils {
 
+    private static final String AUTHORITIES_KEY = "auth";
     private static final int SEC = 1;
     private static final int MINUTE = 60 * SEC;
     private static final int HOUR = 60 * MINUTE;
@@ -26,11 +28,13 @@ public final class JwtTokenUtils {
         String token = null;
         try {
             token = JWT.create()
-                    .withIssuer("foocebak")
-                    .withClaim(CLAIM_USER_NAME, userDetails.getUsername())
-                     // 토큰 만료 일시 = 현재 시간 + 토큰 유효기간)
-                    .withClaim(CLAIM_EXPIRED_DATE, new Date(System.currentTimeMillis() + JWT_TOKEN_VALID_MILLI_SEC))
-                    .sign(generateAlgorithm());
+                .withIssuer("foocebak")
+                .withClaim(CLAIM_USER_NAME, userDetails.getUsername())
+                .withClaim(AUTHORITIES_KEY, RoleEnum.USER.toString())
+                // 토큰 만료 일시 = 현재 시간 + 토큰 유효기간)
+                .withClaim(CLAIM_EXPIRED_DATE,
+                    new Date(System.currentTimeMillis() + JWT_TOKEN_VALID_MILLI_SEC))
+                .sign(generateAlgorithm());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
