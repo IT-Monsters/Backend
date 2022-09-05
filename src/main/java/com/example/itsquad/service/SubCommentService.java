@@ -54,12 +54,40 @@ public class SubCommentService {
         return new ResponseEntity<>(subCommentResponseDto, HttpStatus.OK);
     }
 
+    @Transactional
+    public ResponseEntity <?> getSubComments(Long commentId) {
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        if (comment.isEmpty()) {
+        }
+        return new ResponseEntity<>("해당 댓글이 존재하지 않습니다.", HttpStatus.OK);
+    }
+    @Transactional
+    public void updateSubComment(Long commentId, SubCommentRequestDto subCommentRequestDto) {
+        SubComment subComment = subCommentRepository.findById(commentId).orElseThrow(()
+                -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다." + commentId));
+        subComment.updateSubComment(subCommentRequestDto);
+        // 저장넣기
+    }
+
+    @Transactional
+    public void deleteSubComment(Long commentId) {
+        SubComment subComment = subCommentRepository.findById(commentId).orElseThrow(()
+                -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다." + commentId));
+        subCommentRepository.deleteById(commentId);
+        // 저장넣기
+    }
 }
 
+
+
+
+
+
+
+
+
 /*
-
-
-    public ResponseEntity <?> getSubComments(Long commentId) {
+ public ResponseEntity <?> getSubComments(Long commentId) {
         Optional<Comment> comment = commentRepository.findById(commentId);
         if (comment.isEmpty()) {
             return new ResponseEntity<>("존재하지 않는 댓글입니다.", HttpStatus.OK);
@@ -70,23 +98,27 @@ public class SubCommentService {
 
         for (SubComment subComment : subCommentList) {
             subCommentResponseDtos.add(SubCommentResponseDto.builder()
-                            .commentId(subComment.getId())
-                            .subCommentId(subComment.getId())
-                            .nickname(subComment.getMember().getNickname())
-                            .content(subComment.getContent())
-                            .createdAt(subComment.getCreatedAt())
-                            .modifiedAt(subComment.getModifiedAt())
-                            .profileImage(subComment.getMember().getProfileImg())
+                    .commentId(subComment.getId())
+                    .subCommentId(subComment.getId())
+                    .nickname(subComment.getMember().getNickname())
+                    .content(subComment.getContent())
+                    .createdAt(subComment.getCreatedAt())
+                    .modifiedAt(subComment.getModifiedAt())
+                    .profileImage(subComment.getMember().getProfileImg())
                     .build());
         }
         return new ResponseEntity<>(subCommentResponseDtos, HttpStatus.OK);
     }
     public ResponseEntity updateSubComment(SubCommentRequestDto subCommentRequestDto, Long subCommentId) {
         SubComment subComment = subCommentRepository.findById(subCommentId).orElseThrow(()
-        -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+                -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
         subComment.updateSubComment(subCommentRequestDto);
         subCommentRepository.save(subComment);
 
         return new ResponseEntity<>("수정이 완료되었습니다.", HttpStatus.OK);
     }
- */
+
+*/
+
+
+

@@ -1,5 +1,6 @@
 package com.example.itsquad.domain;
 
+import com.example.itsquad.controller.request.SubCommentRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -42,5 +43,7 @@ public class SubComment extends Timestamped {
     @ManyToOne
     private Member member;
 
-
+    public void updateSubComment(SubCommentRequestDto subCommentRequestDto) {
+        this.content = subCommentRequestDto.getContent();
+    }
 }

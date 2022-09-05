@@ -2,6 +2,7 @@ package com.example.itsquad.domain;
 
 
 import com.example.itsquad.controller.request.CommentRequestDto;
+import com.example.itsquad.controller.request.SubCommentRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
