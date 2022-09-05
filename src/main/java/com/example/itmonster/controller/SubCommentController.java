@@ -21,34 +21,18 @@ public class SubCommentController {
         return subCommentService.createSubComment(subCommentRequestDto, commentId, userDetails);
     }
 
-
     @GetMapping("/api/quests/{questId}/comments/{commentId}/subComments")
-    public ResponseEntity <?> getSubComments(@PathVariable Long commentId) {
-        return ResponseEntity.ok(commentId);
+    public ResponseEntity <?> getSubComments(@PathVariable Long subCommentId) {
+        return subCommentService.getSubComments(subCommentId);
     }
+
     @PutMapping("/api/quests/{questId}/comments/{commentId}/subComments/{subCommentId}")
-    public ResponseEntity updateSubComment(@PathVariable Long commentId, @RequestBody SubCommentRequestDto subCommentRequestDto) {
-        subCommentService.updateSubComment(commentId, subCommentRequestDto);
-        return ResponseEntity.ok(commentId);
+    public ResponseEntity <?> updateSubComment(@PathVariable Long subCommentId, @RequestBody SubCommentRequestDto subCommentRequestDto) {
+        return subCommentService.updateSubComment(subCommentId, subCommentRequestDto);
     }
 
     @DeleteMapping("/api/quests/{questId}/comments/{commentId}/subComments/{subCommentId}")
-    public ResponseEntity deleteSubComment(@PathVariable Long commentId) {
-        subCommentService.deleteSubComment(commentId);
-        return ResponseEntity.ok(commentId);
+    public ResponseEntity <?> deleteSubComment(@PathVariable Long subCommentId) {
+        return subCommentService.deleteSubComment(subCommentId);
     }
 }
-
-
-
-/*
-    @PutMapping("/api/quests/{questId}/comments/{commentId}/subComments/{subCommentId}")
-    public ResponseEntity updateSubComment(@PathVariable Long commentId, @RequestBody SubCommentRequestDto subCommentRequestDto) {
-        return subCommentService.updateSubComment(subCommentRequestDto, commentId);
-    }
-
-    @DeleteMapping("/api/quests/{questId}/comments/{commentId}/subComments/{subCommentId}")
-    public ResponseEntity deleteSubComment(@PathVariable Long commentId) {
-        return subCommentService.deleteSubComment(commentId);
-    }
-*/

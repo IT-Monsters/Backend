@@ -7,6 +7,8 @@ import com.example.itmonster.domain.Comment;
 import com.example.itmonster.domain.Member;
 import com.example.itmonster.domain.Quest;
 import com.example.itmonster.domain.SubComment;
+import com.example.itmonster.exceptionHandler.CustomException;
+import com.example.itmonster.exceptionHandler.ErrorCode;
 import com.example.itmonster.repository.CommentRepository;
 import com.example.itmonster.repository.QuestRepository;
 import com.example.itmonster.repository.SubCommentRepository;
@@ -25,18 +27,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentService {
 
-
     private final CommentRepository commentRepository;
 
     private final QuestRepository questRepository;
 
     private final SubCommentRepository subCommentRepository;
 
-
     @Transactional
     public ResponseEntity<CommentResponseDto> createComment(CommentRequestDto commentRequestDto, Long questId, UserDetailsImpl userDetails) {
         Quest quest = questRepository.findById(questId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
         Member member = userDetails.getMember();
 
@@ -71,19 +71,15 @@ public class CommentService {
                     .modifiedAt(subComment.getModifiedAt())
                     .build());
         }
-
         return subCommentResponseDtoList;
     }
 
     public ResponseEntity<?> getComments(Long questId) {
 
-        Optional<Quest> quest = questRepository.findById(questId);
-        if (quest.isEmpty()) {
+        Quest quest = questRepository.findById(questId).orElseThrow(()
+                -> new CustomException(ErrorCode.QUEST_NOT_FOUND));
 
-            return new ResponseEntity<>("존재하지 않는 게시글입니다.", HttpStatus.OK);
-        }
-
-        List<Comment> comments = quest.get().getComments();
+        List<Comment> comments = quest.getComments();
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
 
         for (Comment comment : comments) {
@@ -102,7 +98,7 @@ public class CommentService {
 
     public ResponseEntity updateComment(CommentRequestDto commentRequestDto, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(()
-                -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+                -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         comment.updateComment(commentRequestDto);
         commentRepository.save(comment);
 
@@ -110,10 +106,10 @@ public class CommentService {
     }
 
     public ResponseEntity deleteComment(Long commentId) {
+        commentRepository.findById(commentId).orElseThrow(()
+        -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         commentRepository.deleteById(commentId);
 
         return new ResponseEntity("삭제가 완료되었습니다.", HttpStatus.OK);
     }
-
-
 }

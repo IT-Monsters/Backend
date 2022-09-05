@@ -1,4 +1,4 @@
-package com.example.itsquad.domain;
+package com.example.itmonster.domain;
 
 
 import com.example.itmonster.controller.request.CommentRequestDto;
@@ -31,7 +31,6 @@ public class Comment extends Timestamped {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Quest quest;
-
 
     @JoinColumn
     @ManyToOne
