@@ -1,6 +1,9 @@
 package com.example.itmonster.controller.response;
 
 import com.example.itmonster.domain.Quest;
+import com.example.itmonster.domain.StackOfQuest;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +27,9 @@ public class SearchResponseDto {
 
     private Long duration;
 
-    public SearchResponseDto( Quest quest ){
+    private List<StackDto> stacks;
+
+    public SearchResponseDto( Quest quest , List<StackOfQuest> stacks ){
         questId = quest.getId();
         title = quest.getTitle();
         content = quest.getContent();
@@ -38,6 +43,11 @@ public class SearchResponseDto {
         designer = quest.getDesigner();
 
         duration = quest.getDuration();
+
+        List<StackDto> stackDtoList = new ArrayList<>();
+        stacks.forEach( stack -> stackDtoList.add( new StackDto( stack )));
+
+        this.stacks = stackDtoList;
 
     }
 
