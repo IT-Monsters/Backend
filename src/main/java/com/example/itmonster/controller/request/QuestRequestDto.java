@@ -18,5 +18,6 @@ public class QuestRequestDto {
     private Long designer;
 
     private Long duration; // 주단위로 기간 설정
-    // 기술스택 추가 해야됨 !!
+
+    private String stacks;
 }
