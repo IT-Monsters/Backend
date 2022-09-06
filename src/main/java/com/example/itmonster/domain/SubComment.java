@@ -1,5 +1,6 @@
 package com.example.itmonster.domain;
 
+import com.example.itmonster.controller.request.SubCommentRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class SubComment extends Timestamped {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,17 +27,13 @@ public class SubComment extends Timestamped {
     @JoinColumn
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Quest quest; //전 post
-
-    @JoinColumn
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Comment comment; // 댓글
-
 
     @JoinColumn
     @ManyToOne
     private Member member;
 
-
+    public void updateSubComment(SubCommentRequestDto subCommentRequestDto) {
+        this.content = subCommentRequestDto.getContent();
+    }
 }

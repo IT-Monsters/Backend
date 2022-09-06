@@ -62,6 +62,8 @@ public enum ErrorCode {
     SQUAD_MEMBER_NOT_FOUND( HttpStatus.NOT_FOUND , "스쿼드에 소속되지 않은 회원입니다." ),
     OFFER_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 합류요청(Offer) 입니다."),
 
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
+
 
      /*
     409 conflict
