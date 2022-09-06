@@ -1,73 +1,85 @@
 package com.example.itmonster.utils;
 
+import com.amazonaws.services.dynamodbv2.xspec.B;
 import com.example.itmonster.domain.QQuest;
 import com.example.itmonster.domain.QStackOfQuest;
 import com.example.itmonster.domain.Quest;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 
 
 public class SearchPredicate {
 
-    public static BooleanBuilder filter( MultiValueMap<String, String> allParameters , JPAQueryFactory jpaQueryFactory){
+    private static QQuest quest = QQuest.quest;
+    private static QStackOfQuest stackOfQuest = QStackOfQuest.stackOfQuest;
 
-        BooleanBuilder searchBuilder = new BooleanBuilder();
-        QQuest quest = QQuest.quest;
-        QStackOfQuest stackOfQuest = QStackOfQuest.stackOfQuest;
+    public static List<Quest> filterSearch( MultiValueMap<String, String> allParameters , JPAQueryFactory jpaQueryFactory){
+        return jpaQueryFactory.selectFrom( QQuest.quest )
+            .where( containsTitle( allParameters.get("title") ),
+                containsContent( allParameters.get("content") ),
+                loeDuration( allParameters.get("duration") ),
+                loeBackend( allParameters.get("backend") ),
+                loeFrontend( allParameters.get("frontend") ),
+                loeFullstack( allParameters.get("fullstack") ),
+                loeDesigner( allParameters.get("designer") ),
+                inStacks( allParameters.get("stack")) )
+            .fetch();
+    }
 
-       // 시간나면 BooleanExpress 형태로 리팩토링할 예정
+    // 제목 필터
+    private static BooleanExpression containsTitle(List<String> title){
+        return title != null ?
+            quest.title.contains( title.get(0) ) : null;
+    }
 
-        //stack 필터
-        if( allParameters.get("stack") != null ){
-            List<String> stacks = allParameters.get("stack");
-            List<Quest> quests = jpaQueryFactory.select( stackOfQuest.quest )
+    // 내용 필터
+    private static BooleanExpression containsContent(List<String> content){
+        return content != null ?
+            quest.content.contains( content.get(0) ) : null;
+    }
+
+    // 기간 필터
+    private static BooleanExpression loeDuration(List<String> duration){
+        return duration != null ?
+            quest.duration.loe( Long.parseLong(duration.get(0)) ) : null;
+    }
+
+    // 프.백.풀.디 인원수 필터
+    private static BooleanExpression loeFrontend(List<String> frontend_num){
+        return frontend_num != null ?
+            quest.frontend.between( 1,  Long.parseLong(frontend_num.get(0)) ) : null;
+    }
+
+    private static BooleanExpression loeBackend(List<String> backend_num ){
+        return backend_num != null ?
+            quest.backend.between( 1, Long.parseLong(backend_num.get(0)) ) : null;
+    }
+
+    private static BooleanExpression loeFullstack(List<String> fullstack_num ){
+        return fullstack_num != null ?
+            quest.fullstack.between( 1, Long.parseLong(fullstack_num.get(0)) ) : null;
+    }
+
+    private static BooleanExpression loeDesigner(List<String> designer_num ){
+        return designer_num != null ?
+            quest.designer.between( 1, Long.parseLong(designer_num.get(0)) ) : null;
+    }
+
+    // 스택 필터
+    private static BooleanExpression inStacks( List<String> stacks ){
+        if( stacks == null ) return null;
+        return quest.in(
+            JPAExpressions.select( stackOfQuest.quest )
                 .from( stackOfQuest )
                 .where( stackOfQuest.stackName.in( stacks ) )
                 .groupBy( stackOfQuest.quest )
-                .having( stackOfQuest.count().eq((long) stacks.size()) ).fetch();
-
-            searchBuilder.and( quest.in( quests ) );
-        }
-
-        // duration 필터
-        if (allParameters.get("duration") != null) {
-            long duration = Long.parseLong(allParameters.get("duration").get(0));
-            searchBuilder.and(quest.duration.loe( duration ) );
-        }
-
-        // 프.백.풀.디 인원수
-        if (allParameters.get("frontend") != null) {
-            long frontend = Long.parseLong(allParameters.get("frontend").get(0));
-            searchBuilder.and(quest.frontend.loe( frontend ) );
-        }
-        if (allParameters.get("backend") != null) {
-            long backend = Long.parseLong(allParameters.get("backend").get(0));
-            searchBuilder.and(quest.backend.loe( backend ) );
-        }
-        if (allParameters.get("fullstack") != null) {
-            long fullstack = Long.parseLong(allParameters.get("fullstack").get(0));
-            searchBuilder.and(quest.fullstack.loe( fullstack ) );
-        }
-        if (allParameters.get("designer") != null) {
-            long designer = Long.parseLong(allParameters.get("designer").get(0));
-            searchBuilder.and(quest.designer.loe( designer ) );
-        }
-
-        // 제목 필터링
-        if (allParameters.get("title") != null) {
-            String title = allParameters.get("title").get(0);
-            searchBuilder.and(quest.title.contains( title ) );
-        }
-
-        // 내용 필터링
-        if (allParameters.get("content") != null) {
-            String content = allParameters.get("content").get(0);
-            searchBuilder.and(quest.content.contains( content ) );
-        }
-
-        return searchBuilder;
+                .having( stackOfQuest.count().eq((long) stacks.size())) ) ;
     }
+
 
 }

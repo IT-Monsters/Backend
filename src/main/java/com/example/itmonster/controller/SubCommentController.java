@@ -20,23 +20,19 @@ public class SubCommentController {
     public ResponseEntity<SubCommentResponseDto> createSubComment(@PathVariable Long commentId, @RequestBody SubCommentRequestDto subCommentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return subCommentService.createSubComment(subCommentRequestDto, commentId, userDetails);
     }
-/*
+
     @GetMapping("/api/quests/{questId}/comments/{commentId}/subComments")
-    public ResponseEntity <?> getSubComments(@PathVariable Long commentId) {
-        return subCommentService.getSubComments(commentId);
+    public ResponseEntity <?> getSubComments(@PathVariable Long subCommentId) {
+        return subCommentService.getSubComments(subCommentId);
     }
 
     @PutMapping("/api/quests/{questId}/comments/{commentId}/subComments/{subCommentId}")
-    public ResponseEntity updateSubComment(@PathVariable Long commentId, @RequestBody SubCommentRequestDto subCommentRequestDto) {
-        return subCommentService.updateSubComment(subCommentRequestDto, commentId);
+    public ResponseEntity <?> updateSubComment(@PathVariable Long subCommentId, @RequestBody SubCommentRequestDto subCommentRequestDto) {
+        return subCommentService.updateSubComment(subCommentId, subCommentRequestDto);
     }
 
     @DeleteMapping("/api/quests/{questId}/comments/{commentId}/subComments/{subCommentId}")
-    public ResponseEntity deleteSubComment(@PathVariable Long commentId) {
-        return subCommentService.deleteSubComment(commentId);
+    public ResponseEntity <?> deleteSubComment(@PathVariable Long subCommentId) {
+        return subCommentService.deleteSubComment(subCommentId);
     }
-
-
- */
-
 }

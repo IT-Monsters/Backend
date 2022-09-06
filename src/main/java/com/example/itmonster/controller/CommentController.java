@@ -38,6 +38,4 @@ public class CommentController {
     public ResponseEntity deleteComment(@PathVariable Long commentId) {
         return commentService.deleteComment(commentId);
     }
-
-    
 }
