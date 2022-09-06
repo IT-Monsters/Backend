@@ -19,6 +19,7 @@ public class SearchPredicate {
     private static QStackOfQuest stackOfQuest = QStackOfQuest.stackOfQuest;
 
     public static List<Quest> filterSearch( MultiValueMap<String, String> allParameters , JPAQueryFactory jpaQueryFactory){
+
         return jpaQueryFactory.selectFrom( QQuest.quest )
             .where( containsTitle( allParameters.get("title") ),
                 containsContent( allParameters.get("content") ),
@@ -29,27 +30,37 @@ public class SearchPredicate {
                 loeDesigner( allParameters.get("designer") ),
                 inStacks( allParameters.get("stack")) )
             .fetch();
-    }
 
-    // 제목 필터
+
+//        //stack 필터
+//        if( allParameters.get("stack") != null ){
+//            List<String> stacks = allParameters.get("stack");
+//            List<Quest> quests = jpaQueryFactory.select( stackOfQuest.quest )
+//                .from( stackOfQuest )
+//                .where( stackOfQuest.stackName.in( stacks ) )
+//                .groupBy( stackOfQuest.quest )
+//                .having( stackOfQuest.count().eq((long) stacks.size()) ).fetch();
+//            searchBuilder.and( quest.in( quests ) );
+//        }
+
+
+
+    }
     private static BooleanExpression containsTitle(List<String> title){
         return title != null ?
             quest.title.contains( title.get(0) ) : null;
     }
 
-    // 내용 필터
     private static BooleanExpression containsContent(List<String> content){
         return content != null ?
             quest.content.contains( content.get(0) ) : null;
     }
 
-    // 기간 필터
     private static BooleanExpression loeDuration(List<String> duration){
         return duration != null ?
             quest.duration.loe( Long.parseLong(duration.get(0)) ) : null;
     }
 
-    // 프.백.풀.디 인원수 필터
     private static BooleanExpression loeFrontend(List<String> frontend_num){
         return frontend_num != null ?
             quest.frontend.between( 1,  Long.parseLong(frontend_num.get(0)) ) : null;
@@ -70,7 +81,6 @@ public class SearchPredicate {
             quest.designer.between( 1, Long.parseLong(designer_num.get(0)) ) : null;
     }
 
-    // 스택 필터
     private static BooleanExpression inStacks( List<String> stacks ){
         if( stacks == null ) return null;
         return quest.in(
