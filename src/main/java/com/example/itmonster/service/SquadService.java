@@ -40,7 +40,7 @@ public class SquadService {
         Quest quest = offer.getQuest();
         Member offeredMember = offer.getOfferedMember();
 
-        Squad squad = squadRepository.findAllByMemberAndQuest( member , quest ).orElse( null );
+        Squad squad = squadRepository.findAllByMemberAndQuest( offeredMember , quest ).orElse( null );
         if( squad != null ) throw new CustomException( ErrorCode.SQUAD_CONFLICT );
 
         // Squad DB에 추가
