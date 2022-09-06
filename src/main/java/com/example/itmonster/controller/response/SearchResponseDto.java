@@ -20,11 +20,7 @@ public class SearchResponseDto {
     private Long memberId;
     private String nickname;
 
-    private Long frontend;
-    private Long backend;
-    private Long fullstack;
-    private Long designer;
-
+    private ClassDto classes;
     private Long duration;
 
     private List<StackDto> stacks;
@@ -37,10 +33,7 @@ public class SearchResponseDto {
         memberId = quest.getMember().getId();
         nickname = quest.getMember().getNickname();
 
-        frontend = quest.getFrontend();
-        backend = quest.getBackend();
-        fullstack = quest.getFullstack();
-        designer = quest.getDesigner();
+        classes = new ClassDto( quest );
 
         duration = quest.getDuration();
 
