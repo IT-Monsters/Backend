@@ -12,4 +12,6 @@ public interface QuestRepository extends JpaRepository<Quest, Long>,
     List<Quest> findTop3ByOrderByModifiedAtDesc();
 
     List<Quest> findAllByMember(Member questOwner);
+
+    List<Quest> findTop3ByOrderByBookmarkCntDesc();
 }

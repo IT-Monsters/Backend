@@ -38,9 +38,14 @@ public class QuestController {
         return ResponseEntity.ok(questService.readAllQuest());
     }
 
+    @GetMapping("/main")
+    public ResponseEntity<List<QuestResponseDto>> readFavorite3Quest(){
+        return ResponseEntity.ok(questService.readFavorite3Quest());
+    }
+
     @GetMapping("/recent")
-    public ResponseEntity<List<QuestResponseDto>> readTop3Quest(){
-        return ResponseEntity.ok(questService.readTop3Quest());
+    public ResponseEntity<List<QuestResponseDto>> readRecent3Quest(){
+        return ResponseEntity.ok(questService.readRecent3Quest());
     }
 
     @GetMapping("/{questId}")
