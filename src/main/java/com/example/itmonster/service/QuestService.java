@@ -1,6 +1,7 @@
 package com.example.itmonster.service;
 
 import com.example.itmonster.controller.request.QuestRequestDto;
+import com.example.itmonster.controller.response.ClassDto;
 import com.example.itmonster.controller.response.QuestResponseDto;
 import com.example.itmonster.controller.response.SearchResponseDto;
 import com.example.itmonster.domain.*;
@@ -89,10 +90,7 @@ public class QuestService {
                     .content(quest.getContent())
                     .duration(quest.getDuration())
                     .status(quest.getStatus())
-                    .frontend(quest.getFrontend())
-                    .backend(quest.getBackend())
-                    .fullstack(quest.getFullstack())
-                    .designer(quest.getDesigner())
+                    .classes( new ClassDto( quest ))
                     .bookmarkCnt(bookmarkRepository.countAllByQuest(quest))
                     .commentCnt(commentRepository.countAllByQuest(quest)) // 댓글 추가후
                     .createdAt(quest.getCreatedAt())
@@ -114,10 +112,7 @@ public class QuestService {
                     .content(quest.getContent())
                     .duration(quest.getDuration())
                     .status(quest.getStatus())
-                    .frontend(quest.getFrontend())
-                    .backend(quest.getBackend())
-                    .fullstack(quest.getFullstack())
-                    .designer(quest.getDesigner())
+                    .classes( new ClassDto( quest ))
                     .bookmarkCnt(bookmarkRepository.countAllByQuest(quest))
                     .commentCnt(commentRepository.countAllByQuest(quest)) // 댓글 추가후
                     .createdAt(quest.getCreatedAt())
@@ -137,10 +132,7 @@ public class QuestService {
                 .content(quest.getContent())
                 .duration(quest.getDuration())
                 .status(quest.getStatus())
-                .frontend(quest.getFrontend())
-                .backend(quest.getBackend())
-                .fullstack(quest.getFullstack())
-                .designer(quest.getDesigner())
+                .classes( new ClassDto( quest))
                 .bookmarkCnt(bookmarkRepository.countAllByQuest(quest))
                 .commentCnt(commentRepository.countAllByQuest(quest))
                 .createdAt(quest.getCreatedAt())
