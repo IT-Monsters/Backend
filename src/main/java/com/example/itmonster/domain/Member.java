@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -44,6 +45,13 @@ public class Member extends Timestamped {
     @Enumerated(value = EnumType.STRING) //DB갈 때 올 때 값을 String으로 변환해줘야함
     private RoleEnum role;
 
+    @Column(nullable = false)
+    private Long followCounter;
+
+
+    @OneToMany(mappedBy = "member")
+    private List<StackOfMember> stackOfMemberList;
+
 
     // 스택 추가
 
@@ -68,4 +76,13 @@ public class Member extends Timestamped {
     public void updatePhoneNumber (String phoneNum){
         this.phoneNum = phoneNum;
     }
+
+    public void updateStack (List<StackOfMember> stackOfMemberList){
+        this.stackOfMemberList = stackOfMemberList;
+    }
+
+    public void addFollowCounter () {this.followCounter += 1L;}
+
+    public void subFollowCounter () {this.followCounter -= 1L;}
+
 }
