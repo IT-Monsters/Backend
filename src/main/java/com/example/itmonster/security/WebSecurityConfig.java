@@ -141,6 +141,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("POST,/api/members/checkId");  //username 중복 체크
         skipPathList.add("POST,/api/members/checkNickname");  //nickname 중복 체크
 
+        //main 화면
+        skipPathList.add("GET,/api/monster/month"); // main 화면
+
+        //검색 , 필터링
+        skipPathList.add("GET,/api/quests");
+        skipPathList.add("GET,/api/quests/**");
+
+
 
         // null 401 - 토큰검증안된 것도 401
         // 검증이 동작하는가 안하는가
@@ -149,8 +157,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/");
         skipPathList.add("GET,/health");
 
-        //검색, 필터링
-        skipPathList.add("GET,/api/quests/");
+
 
 //----------아래는 그대로----------
         skipPathList.add("GET,/basic.js");

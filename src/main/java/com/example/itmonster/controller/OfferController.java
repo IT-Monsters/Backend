@@ -31,7 +31,7 @@ public class OfferController {
     // 회원(게시글 주인)의 현재 들어온 합류요청 목록
     @GetMapping("/offers")
     public ResponseEntity<List<OfferResponseDto>> getOfferList( @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return ResponseEntity.ok( offerService.getOfferList( userDetails.getMember() ) );
+        return ResponseEntity.ok( offerService.getOfferList( userDetails.getMember() ));
     }
 
     // '거절' 누를 시 합류요청 삭제
