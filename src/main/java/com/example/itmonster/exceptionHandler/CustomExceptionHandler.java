@@ -1,4 +1,4 @@
-package com.example.itmonster.controller;
+package com.example.itmonster.exceptionHandler;
 
 import com.example.itmonster.controller.response.ResponseDto;
 import org.springframework.web.bind.MethodArgumentNotValidException;

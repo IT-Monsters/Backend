@@ -1,15 +1,13 @@
 package com.example.itmonster.controller;
 
 import com.example.itmonster.controller.request.SignupRequestDto;
+import com.example.itmonster.controller.response.StackDto;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -37,14 +35,30 @@ public class MemberController {
     return memberService.checkNickname(requestDto);
   }
 
-/*
-  @PostMapping("/api/members/sendMessage")
-  public ResponseEntity checkSms(@RequestBody SmsRequestDto requestDto,
-                                 @AuthenticationPrincipal UserDetailsImpl userDetails){
-
-    return memberService.sendMessage(requestDto.getPhoneNum(),userDetails);
+  @PostMapping("/api/members/{memberId}/follow")
+  public ResponseEntity followMember(@PathVariable Long memberId,
+                                     @AuthenticationPrincipal UserDetailsImpl userDetails){
+    return memberService.followMember(memberId, userDetails.getMember());
   }
- */
+
+
+  @PostMapping("/api/members/addStack")
+  public ResponseEntity addStack(@RequestBody StackDto requestDto,
+                                 @AuthenticationPrincipal UserDetailsImpl userDetails){
+    return memberService.addStack(requestDto, userDetails.getMember());
+  }
+
+  @GetMapping("/api/monster/month")
+  public ResponseEntity showTop3Following(){
+    return memberService.showTop3Following();
+  }
+
+
+  @GetMapping("/api/members/status")
+  public ResponseEntity memberInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    return ResponseEntity.ok(memberService.memberInfo(userDetails.getMember()));
+  }
+
 
   //로그인 후 관리자 권한 얻을 수 있는 API
 //  @PutMapping("/api/signup/admin")
