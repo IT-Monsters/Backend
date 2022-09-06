@@ -38,7 +38,7 @@ public class QuestController {
         return ResponseEntity.ok(questService.readAllQuest());
     }
 
-    @GetMapping("/main")
+    @GetMapping("/recent")
     public ResponseEntity<List<QuestResponseDto>> readTop3Quest(){
         return ResponseEntity.ok(questService.readTop3Quest());
     }
