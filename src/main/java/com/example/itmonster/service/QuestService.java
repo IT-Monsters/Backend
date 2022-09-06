@@ -198,11 +198,7 @@ public class QuestService {
         JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(em);
 
         List<Quest> results = SearchPredicate.filterSearch(allParameters , jpaQueryFactory );
-
-//        List<Quest> results = jpaQueryFactory.selectFrom(QQuest.quest)
-//                .where(searchBuilder)
-//                .orderBy(QQuest.quest.createdAt.desc()).fetch();
-
+        
         List<SearchResponseDto> questResponseDtos = new ArrayList<>();
 
         results.forEach(result -> questResponseDtos.add( new SearchResponseDto(result ,
