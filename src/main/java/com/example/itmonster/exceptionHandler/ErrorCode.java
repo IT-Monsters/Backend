@@ -11,8 +11,9 @@ public enum ErrorCode {
     EMPTY_EMAIL(HttpStatus.BAD_REQUEST, "이메일을 입력해주세요."),
     EMPTY_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호를 입력해주세요."),
     EMPTY_NICKNAME(HttpStatus.BAD_REQUEST, "닉네임을 입력해주세요."),
-
     EMPTY_PHONENUMBER(HttpStatus.BAD_REQUEST,"휴대폰 번호를 입력해주세요"),
+
+    EMPTY_MEMBER(HttpStatus.BAD_REQUEST,"존재하지 않는 회원입니다."),
 
     EMAIL_WRONG(HttpStatus.BAD_REQUEST, "아이디는 이메일 형식으로 입력해주세요"),
     NICKNAME_WRONG(HttpStatus.BAD_REQUEST, "닉네임은 영문, 한글, 특수문자 다 가능합니다"),
@@ -24,7 +25,6 @@ public enum ErrorCode {
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "중복된 닉네임이 존재합니다"),
     PASSWORD_LEGNTH(HttpStatus.BAD_REQUEST, "비밀번호는 8자 이상 20자 이하여야 합니다"),
     NICKNAME_LEGNTH(HttpStatus.BAD_REQUEST, "닉네임은 2자 이상 10자 이하여야 합니다"),
-
     PHONENUMBER_LENGTH(HttpStatus.BAD_REQUEST, "휴대폰번호는 11자여야 합니다"),
 
     PASSWORD_WRONG(HttpStatus.BAD_REQUEST, "비밀번호는 영문, 숫자를 포함해야합니다"),

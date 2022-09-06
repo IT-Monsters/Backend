@@ -25,7 +25,6 @@ public class CommentController {
 
     @GetMapping("/api/quests/{questId}/comments")
     public ResponseEntity <?> getComments(@PathVariable Long questId) {
-
         return commentService.getComments(questId);
     }
 

@@ -1,6 +1,7 @@
 package com.example.itmonster.service;
 
 import com.example.itmonster.controller.request.QuestRequestDto;
+import com.example.itmonster.controller.response.ClassDto;
 import com.example.itmonster.controller.response.QuestResponseDto;
 import com.example.itmonster.controller.response.SearchResponseDto;
 import com.example.itmonster.domain.*;
@@ -30,6 +31,7 @@ public class QuestService {
     private final SquadRepository squadRepository;
     private final BookmarkRepository bookmarkRepository;
     private final CommentRepository commentRepository;
+    private final StackOfQuestRepository stackOfQuestRepository;
 
     @PersistenceContext
     private EntityManager em;
@@ -49,6 +51,18 @@ public class QuestService {
                 .duration(questRequestDto.getDuration())
                 .build();
         questRepository.save(quest);
+
+        // 퀘스트의 스택 저장
+        String stacks = questRequestDto.getStacks().trim() ;
+        String[] stackList = questRequestDto.getStacks().split(" ");
+        for( String stack : stackList ){
+            stackOfQuestRepository.save(
+                StackOfQuest.builder()
+                    .stackName( stack )
+                    .quest( quest )
+                    .build()
+            );
+        }
 
         squadRepository.save(Squad.builder()  // 본인을 포함하여 Squad 생성
                 .quest(quest)
@@ -76,10 +90,7 @@ public class QuestService {
                     .content(quest.getContent())
                     .duration(quest.getDuration())
                     .status(quest.getStatus())
-                    .frontend(quest.getFrontend())
-                    .backend(quest.getBackend())
-                    .fullstack(quest.getFullstack())
-                    .designer(quest.getDesigner())
+                    .classes( new ClassDto( quest ))
                     .bookmarkCnt(bookmarkRepository.countAllByQuest(quest))
                     .commentCnt(commentRepository.countAllByQuest(quest)) // 댓글 추가후
                     .createdAt(quest.getCreatedAt())
@@ -101,10 +112,7 @@ public class QuestService {
                     .content(quest.getContent())
                     .duration(quest.getDuration())
                     .status(quest.getStatus())
-                    .frontend(quest.getFrontend())
-                    .backend(quest.getBackend())
-                    .fullstack(quest.getFullstack())
-                    .designer(quest.getDesigner())
+                    .classes( new ClassDto( quest ))
                     .bookmarkCnt(bookmarkRepository.countAllByQuest(quest))
                     .commentCnt(commentRepository.countAllByQuest(quest)) // 댓글 추가후
                     .createdAt(quest.getCreatedAt())
@@ -124,10 +132,7 @@ public class QuestService {
                 .content(quest.getContent())
                 .duration(quest.getDuration())
                 .status(quest.getStatus())
-                .frontend(quest.getFrontend())
-                .backend(quest.getBackend())
-                .fullstack(quest.getFullstack())
-                .designer(quest.getDesigner())
+                .classes( new ClassDto( quest))
                 .bookmarkCnt(bookmarkRepository.countAllByQuest(quest))
                 .commentCnt(commentRepository.countAllByQuest(quest))
                 .createdAt(quest.getCreatedAt())
@@ -192,7 +197,7 @@ public class QuestService {
 
         JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(em);
 
-        BooleanBuilder searchBuilder = SearchPredicate.filter(allParameters);
+        BooleanBuilder searchBuilder = SearchPredicate.filter(allParameters , jpaQueryFactory );
 
         List<Quest> results = jpaQueryFactory.selectFrom(QQuest.quest)
                 .where(searchBuilder)
@@ -200,7 +205,8 @@ public class QuestService {
 
         List<SearchResponseDto> questResponseDtos = new ArrayList<>();
 
-        results.forEach(result -> questResponseDtos.add(new SearchResponseDto(result)));
+        results.forEach(result -> questResponseDtos.add( new SearchResponseDto(result ,
+            stackOfQuestRepository.findAllByQuest( result ) ) ) );
         long totalCount = results.size();
 
         return questResponseDtos;

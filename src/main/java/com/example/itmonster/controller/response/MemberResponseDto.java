@@ -5,17 +5,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberResponseDto {
-  private Long id;
   private String nickname;
-  private String email;
-  private String phoneNum;
-  private LocalDateTime createdAt;
-  private LocalDateTime modifiedAt;
+  private String profileImage;
+  private List<StackDto> stacks;
+  private Long followCnt;
+  private String folioTitle;
+  //추후 포트폴리오 이름
 }

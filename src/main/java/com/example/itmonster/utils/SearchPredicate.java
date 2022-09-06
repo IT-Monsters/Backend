@@ -1,18 +1,35 @@
 package com.example.itmonster.utils;
 
 import com.example.itmonster.domain.QQuest;
+import com.example.itmonster.domain.QStackOfQuest;
+import com.example.itmonster.domain.Quest;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import org.springframework.util.MultiValueMap;
 
 
 public class SearchPredicate {
 
-    public static BooleanBuilder filter( MultiValueMap<String, String> allParameters ){
+    public static BooleanBuilder filter( MultiValueMap<String, String> allParameters , JPAQueryFactory jpaQueryFactory){
 
         BooleanBuilder searchBuilder = new BooleanBuilder();
         QQuest quest = QQuest.quest;
+        QStackOfQuest stackOfQuest = QStackOfQuest.stackOfQuest;
 
        // 시간나면 BooleanExpress 형태로 리팩토링할 예정
+
+        //stack 필터
+        if( allParameters.get("stack") != null ){
+            List<String> stacks = allParameters.get("stack");
+            List<Quest> quests = jpaQueryFactory.select( stackOfQuest.quest )
+                .from( stackOfQuest )
+                .where( stackOfQuest.stackName.in( stacks ) )
+                .groupBy( stackOfQuest.quest )
+                .having( stackOfQuest.count().eq((long) stacks.size()) ).fetch();
+
+            searchBuilder.and( quest.in( quests ) );
+        }
 
         // duration 필터
         if (allParameters.get("duration") != null) {
