@@ -202,8 +202,8 @@ public class QuestService {
     }
 
     public void saveStack(Quest quest, QuestRequestDto questRequestDto){
-        String[] stackList = questRequestDto.getStacks().split(" ");
-        for (String stack : stackList) {
+        List<String> stacks = questRequestDto.getStacks();
+        for (String stack : stacks) {
             stackOfQuestRepository.save(
                 StackOfQuest.builder()
                     .stackName(stack)
