@@ -1,5 +1,7 @@
 package com.example.itmonster.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,16 +37,17 @@ public class Quest extends Timestamped {
     private Long designer;
     private Long duration; // 주단위로 기간 설정
 
-
     //진행 유무만 확인
     private Boolean status; // 모집중 / 모집완료
-
 
     @OneToMany(mappedBy = "quest")
     private List<Comment> comments;
 
     @Formula("(select count(*) from bookmark where bookmark.quest_id=id)")
     private int bookmarkCnt;
+
+    @OneToMany(mappedBy = "quest")
+    private List<StackOfQuest> stacks = new ArrayList<>();
 
     public void updateQuest(String title, String content, Long frontend,
                             Long backend, Long fullstack, Long designer, Long duration){
