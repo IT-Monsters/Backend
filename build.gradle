@@ -57,6 +57,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.webjars:sockjs-client:1.1.2'
     implementation 'org.webjars:stomp-websocket:2.3.3-1'
+
+    //Junit 단위테스트
+    implementation 'junit:junit:4.13.2'
+    testImplementation 'junit:junit:4.13.1'
 }
 
 // querydsl 설정

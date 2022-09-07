@@ -155,7 +155,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 검증이 동작하는가 안하는가
 
         //무중단 배포 확인용
-        skipPathList.add("GET,/");
         skipPathList.add("GET,/health");
 
 
