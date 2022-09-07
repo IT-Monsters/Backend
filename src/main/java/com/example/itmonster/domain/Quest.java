@@ -41,9 +41,6 @@ public class Quest extends Timestamped {
 
     @OneToMany(mappedBy = "quest")
     private List<Comment> comments;
-
-    @OneToMany(mappedBy = "comment")
-    private List<SubComment> subComments;
     // 스택 추가하기
 
     public void updateQuest(String title, String content, Long frontend,
