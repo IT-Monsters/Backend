@@ -148,7 +148,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/api/quests");
         skipPathList.add("GET,/api/quests/**");
 
-
+        // 웹소켓 접속
+        skipPathList.add("GET,/socket/**");
 
         // null 401 - 토큰검증안된 것도 401
         // 검증이 동작하는가 안하는가

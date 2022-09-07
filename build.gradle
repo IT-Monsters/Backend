@@ -52,6 +52,11 @@ dependencies {
 
     //sms인증관련 라이브러리
     implementation 'net.nurigo:sdk:4.2.3'
+
+    //WebSocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.webjars:sockjs-client:1.1.2'
+    implementation 'org.webjars:stomp-websocket:2.3.3-1'
 }
 
 // querydsl 설정

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import org.hibernate.annotations.Formula;
 
 
 @Entity
@@ -41,7 +42,9 @@ public class Quest extends Timestamped {
 
     @OneToMany(mappedBy = "quest")
     private List<Comment> comments;
-    // 스택 추가하기
+
+    @Formula("(select count(*) from bookmark where bookmark.quest_id=id)")
+    private int bookmarkCnt;
 
     public void updateQuest(String title, String content, Long frontend,
                             Long backend, Long fullstack, Long designer, Long duration){

@@ -100,8 +100,30 @@ public class QuestService {
         return result;
     }
 
+    @Transactional(readOnly = true) // 메인페이지용 북마크 높은 3개 조회 // 기술스택 추가해야됨 !!
+    public List<QuestResponseDto> readFavorite3Quest() {
+        List<Quest> quests = questRepository.findTop3ByOrderByBookmarkCntDesc();
+        List<QuestResponseDto> result = new ArrayList<>();
+        for (Quest quest : quests) {
+            result.add(QuestResponseDto.builder()
+                .questId(quest.getId())
+                .title(quest.getTitle())
+                .nickname(quest.getMember().getNickname())
+                .content(quest.getContent())
+                .duration(quest.getDuration())
+                .status(quest.getStatus())
+                .classes( new ClassDto( quest ))
+                .bookmarkCnt(bookmarkRepository.countAllByQuest(quest))
+                .commentCnt(commentRepository.countAllByQuest(quest)) // 댓글 추가후
+                .createdAt(quest.getCreatedAt())
+                .modifiedAt(quest.getModifiedAt())
+                .build());
+        }
+        return result;
+    }
+
     @Transactional(readOnly = true) // 메인페이지용 게시글 최신순 3개 조회 // 기술스택 추가해야됨 !!
-    public List<QuestResponseDto> readTop3Quest() {
+    public List<QuestResponseDto> readRecent3Quest() {
         List<Quest> quests = questRepository.findTop3ByOrderByModifiedAtDesc();
         List<QuestResponseDto> result = new ArrayList<>();
         for (Quest quest : quests) {
@@ -197,12 +219,8 @@ public class QuestService {
 
         JPAQueryFactory jpaQueryFactory = new JPAQueryFactory(em);
 
-        BooleanBuilder searchBuilder = SearchPredicate.filter(allParameters , jpaQueryFactory );
-
-        List<Quest> results = jpaQueryFactory.selectFrom(QQuest.quest)
-                .where(searchBuilder)
-                .orderBy(QQuest.quest.createdAt.desc()).fetch();
-
+        List<Quest> results = SearchPredicate.filterSearch(allParameters , jpaQueryFactory );
+        
         List<SearchResponseDto> questResponseDtos = new ArrayList<>();
 
         results.forEach(result -> questResponseDtos.add( new SearchResponseDto(result ,
