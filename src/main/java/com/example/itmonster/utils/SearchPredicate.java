@@ -1,22 +1,19 @@
 package com.example.itmonster.utils;
 
-import com.amazonaws.services.dynamodbv2.xspec.B;
 import com.example.itmonster.domain.QQuest;
 import com.example.itmonster.domain.QStackOfQuest;
 import com.example.itmonster.domain.Quest;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 
 
 public class SearchPredicate {
 
-    private static QQuest quest = QQuest.quest;
-    private static QStackOfQuest stackOfQuest = QStackOfQuest.stackOfQuest;
+    private static final QQuest quest = QQuest.quest;
+    private static final QStackOfQuest stackOfQuest = QStackOfQuest.stackOfQuest;
 
     public static List<Quest> filterSearch( MultiValueMap<String, String> allParameters , JPAQueryFactory jpaQueryFactory){
         return jpaQueryFactory.selectFrom( QQuest.quest )
@@ -80,6 +77,4 @@ public class SearchPredicate {
                 .groupBy( stackOfQuest.quest )
                 .having( stackOfQuest.count().eq((long) stacks.size())) ) ;
     }
-
-
 }

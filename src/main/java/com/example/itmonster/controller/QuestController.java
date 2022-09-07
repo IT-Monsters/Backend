@@ -73,7 +73,7 @@ public class QuestController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<SearchResponseDto>> searchQuests( @RequestParam MultiValueMap<String, String> allParameters ){
+    public ResponseEntity<List<QuestResponseDto>> searchQuests( @RequestParam MultiValueMap<String, String> allParameters ){
 
         return ResponseEntity.ok( questService.searchQuests( allParameters ) );
     }

@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface StackOfQuestRepository extends JpaRepository<StackOfQuest,Long> {
 
     List<StackOfQuest> findAllByQuest(Quest result);
+    void deleteByQuest(Quest quest);
 }
