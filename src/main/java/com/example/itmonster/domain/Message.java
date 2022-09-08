@@ -19,7 +19,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Message extends Timestamped{
+public class Message{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -35,4 +35,6 @@ public class Message extends Timestamped{
     private Member member;
 
     private String content;
+
+    private String createdAt;
 }
