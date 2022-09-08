@@ -32,7 +32,6 @@ public class MessageController {
         String token = messageRequestDto.getToken().substring(7);
         System.out.println(token);
 //        token = token.substring(7);   // 백엔드 테스트용
-        MessageResponseDto messageResponseDto = messageService.sendMessage(messageRequestDto, channelId, token);
-        simpleMessageSendingOperations.convertAndSend("/sub/channels/" + channelId, messageResponseDto);
+        messageService.sendMessage(messageRequestDto, channelId, token);
     }
 }

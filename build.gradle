@@ -6,7 +6,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.7.3'
+    id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     id 'java'
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" // querydsl
@@ -57,9 +57,16 @@ dependencies {
     implementation 'org.webjars:sockjs-client:1.1.2'
     implementation 'org.webjars:stomp-websocket:2.3.3-1'
 
+
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    //embedded-redis
+    implementation 'it.ozimov:embedded-redis:0.7.2'
+
     //Junit 단위테스트
     implementation 'junit:junit:4.13.2'
     testImplementation 'junit:junit:4.13.1'
+
 }
 
 // querydsl 설정

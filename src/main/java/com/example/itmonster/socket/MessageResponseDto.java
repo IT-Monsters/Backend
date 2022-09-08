@@ -1,7 +1,6 @@
 package com.example.itmonster.socket;
 
 import com.example.itmonster.domain.Message;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +14,7 @@ public class MessageResponseDto {
 
     private Long channelId;
     private String content;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private Long memberId;
     private String nickname;
     private String profileImg;
