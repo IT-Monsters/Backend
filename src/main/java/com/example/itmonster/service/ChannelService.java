@@ -27,8 +27,10 @@ public class ChannelService {
     private final MemberInChannelRepository memberInChannelRepository;
 
     @Transactional
-    public void createChannel(Long questId) {
-        Quest quest = questRepository.findById(questId)
+    public void createChannel(Long squadId) {
+        Squad squad = squadRepository.findById(squadId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 스쿼드입니다."));
+        Quest quest = questRepository.findById(squad.getQuest().getId())
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 퀘스트입니다."));
 
         Channel channel = Channel.builder()
@@ -38,9 +40,9 @@ public class ChannelService {
         channelRepository.save(channel);
 
         List<Squad> squads = squadRepository.findAllByQuest(quest);
-        for (Squad squad : squads) {
+        for (Squad squad1 : squads) {
             memberInChannelRepository.save(MemberInChannel.builder()
-                .member(squad.getMember())
+                .member(squad1.getMember())
                 .channel(channel)
                 .build());
         }
