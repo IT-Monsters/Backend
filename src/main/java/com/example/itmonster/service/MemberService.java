@@ -171,7 +171,7 @@ public class MemberService {
     }
 
     //SMS 인증 가입절차
-    public String sendMessagetoMember(String phoneNum,Member member){
+    public String sendMessagetoMember(String phoneNum, Member member){
         //반은 번호로 sms인증 문자 날리기
         int authNo = (int)(Math.random() * (99999 - 10000 + 1)) + 10000; //다섯자리 난수
 

@@ -60,8 +60,8 @@ public class MemberController {
         return ResponseEntity.ok(memberService.memberInfo(userDetails.getMember()));
     }
 
-    @PostMapping("/api/members/sendMessage")
-    public ResponseEntity sendMessage(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    @PostMapping("/api/members/sendMessageAuth")
+    public ResponseEntity sendMessageAuth(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                          @RequestBody SmsRequestDto requestDto) {
         return ResponseEntity.ok(memberService.sendMessagetoMember(requestDto.getPhoneNum(), userDetails.getMember()));
     }
