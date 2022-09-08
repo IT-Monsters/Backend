@@ -21,6 +21,4 @@ public class ClassDto {
         fullstack = quest.getFullstack();
         designer = quest.getDesigner();
     }
-
-
 }
