@@ -1,5 +1,6 @@
 package com.example.itmonster.controller.request;
 
+import java.util.List;
 import lombok.Getter;
 
 @Getter
@@ -19,5 +20,5 @@ public class QuestRequestDto {
 
     private Long duration; // 주단위로 기간 설정
 
-    private String stacks;
+    private List<String> stacks;
 }
