@@ -7,8 +7,6 @@ import com.example.itmonster.domain.Comment;
 import com.example.itmonster.domain.Member;
 import com.example.itmonster.domain.Quest;
 import com.example.itmonster.domain.SubComment;
-import com.example.itmonster.exceptionHandler.CustomException;
-import com.example.itmonster.exceptionHandler.ErrorCode;
 import com.example.itmonster.repository.CommentRepository;
 import com.example.itmonster.repository.QuestRepository;
 import com.example.itmonster.repository.SubCommentRepository;
@@ -38,7 +36,7 @@ public class CommentService {
     @Transactional
     public ResponseEntity<CommentResponseDto> createComment(CommentRequestDto commentRequestDto, Long questId, UserDetailsImpl userDetails) {
         Quest quest = questRepository.findById(questId)
-                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND)); // 댓글 달 게시글 조회
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다.")); // 댓글 달 게시글 조회
 
         Member member = userDetails.getMember(); // 현재 로그인 된 회원정보
 
@@ -79,11 +77,13 @@ public class CommentService {
 
     public ResponseEntity<?> getComments(Long questId) {
 
-        Quest quest = questRepository.findById(questId)
-                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+        Optional<Quest> quest = questRepository.findById(questId);
+        if (quest.isEmpty()) {
 
+            return new ResponseEntity<>("존재하지 않는 게시글입니다.", HttpStatus.OK);
+        }
 
-        List<Comment> comments = quest.getComments();
+        List<Comment> comments = quest.get().getComments();
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
 
         for (Comment comment : comments) {
@@ -102,7 +102,7 @@ public class CommentService {
 
     public ResponseEntity updateComment(CommentRequestDto commentRequestDto, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(()
-                ->  new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+                -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
         comment.updateComment(commentRequestDto);
         commentRepository.save(comment);
 
