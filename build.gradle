@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.286'
     implementation 'com.auth0:auth0:1.42.0'
     implementation 'com.auth0:java-jwt:4.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.7.3'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
@@ -50,13 +51,15 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
-    //sms인증관련 라이브러리
-    implementation 'net.nurigo:sdk:4.2.3'
 
     //WebSocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.webjars:sockjs-client:1.1.2'
     implementation 'org.webjars:stomp-websocket:2.3.3-1'
+
+    //Junit 단위테스트
+    implementation 'junit:junit:4.13.2'
+    testImplementation 'junit:junit:4.13.1'
 }
 
 // querydsl 설정
