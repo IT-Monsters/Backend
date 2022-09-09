@@ -176,7 +176,7 @@ public class MemberService {
         int authNo = (int)(Math.random() * (99999 - 10000 + 1)) + 10000; //다섯자리 난수
 
         //memberId를 키값으로 (로그인 인증이 되었기 때문에) value값으로는 난수입력
-        redisUtil.setDataExpire(member.getSocialId(),String.valueOf(authNo),60L);
+        redisUtil.setDataExpire(String.valueOf(member.getId()),String.valueOf(authNo),60L);
 
         // 문자로 보내는 로직 필요
         //naver sens
