@@ -5,12 +5,17 @@ import com.example.itmonster.controller.request.SmsRequestDto;
 import com.example.itmonster.controller.response.StackDto;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.service.MemberService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 
 @RestController
@@ -62,8 +67,8 @@ public class MemberController {
 
     @PostMapping("/api/members/sendMessage")
     public ResponseEntity sendMessage(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                         @RequestBody SmsRequestDto requestDto) {
-        return ResponseEntity.ok(memberService.sendMessagetoMember(requestDto.getPhoneNum(), userDetails.getMember()));
+                                         @RequestBody SmsRequestDto requestDto) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        return ResponseEntity.ok(memberService.sendMessagetoMember(requestDto.getPhoneNumber(), userDetails.getMember()));
     }
 
     //로그인 후 관리자 권한 얻을 수 있는 API
