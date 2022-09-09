@@ -171,13 +171,12 @@ public class MemberService {
     }
 
     //SMS 인증 가입절차
-    public String sendMessagetoMember(String phoneNum, Member member){
-        Long memberId = member.getId();
+    public String sendMessagetoMember(String phoneNum,Member member){
         //반은 번호로 sms인증 문자 날리기
         int authNo = (int)(Math.random() * (99999 - 10000 + 1)) + 10000; //다섯자리 난수
 
         //memberId를 키값으로 (로그인 인증이 되었기 때문에) value값으로는 난수입력
-        redisUtil.setDataExpire(String.valueOf(memberId),String.valueOf(authNo),60L);
+        redisUtil.setDataExpire(member.getSocialId(),String.valueOf(authNo),60L);
 
         // 문자로 보내는 로직 필요
         //naver sens

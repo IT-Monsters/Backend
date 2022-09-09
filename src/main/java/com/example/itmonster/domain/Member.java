@@ -50,7 +50,6 @@ public class Member extends Timestamped {
 
 
     @OneToMany(mappedBy = "member")
-
     private List<StackOfMember> stackOfMemberList;
 
 

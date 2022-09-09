@@ -33,6 +33,8 @@ public enum ErrorCode {
 
     INVALID_CATEGORY(HttpStatus.BAD_REQUEST, "유효하지 않은 카테고리입니다."),
 
+    NO_RECRUITMENT(HttpStatus.BAD_REQUEST, "해당 클래스는 이미 모집이 끝났습니다."),
+
 
 
 

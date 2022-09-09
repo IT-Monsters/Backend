@@ -1,5 +1,6 @@
 package com.example.itmonster.controller.response;
 
+import com.example.itmonster.domain.Offer.ClassType;
 import com.example.itmonster.domain.Squad;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,11 +19,14 @@ public class SquadResponseDto {
 
     private Long memberId;
 
+    private ClassType classType;
+
     public SquadResponseDto( Squad squad ){
         squadId = squad.getId();
         questId = squad.getQuest().getId();
         questTitle = squad.getQuest().getTitle();
         memberId = squad.getMember().getId();
+        classType = squad.getClassType();
     }
 
 
