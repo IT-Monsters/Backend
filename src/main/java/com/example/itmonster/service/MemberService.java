@@ -15,6 +15,7 @@ import com.example.itmonster.repository.FollowRepository;
 import com.example.itmonster.repository.MemberRepository;
 import com.example.itmonster.repository.StackOfMemberRepository;
 import com.example.itmonster.security.UserDetailsImpl;
+import com.example.itmonster.utils.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,25 +38,13 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final AwsS3Service s3Service;
 
+    private final RedisUtil redisUtil;
+
 
     String emailPattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"; //이메일 정규식 패턴
     String nicknamePattern = "^[a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣~!@#$%^&*]{2,8}$"; // 영어대소문자 , 한글 , 특수문자포함 2~8자까지
-    String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$";
-
-
-    String phoneNumPattern = "^(\\d{11})$";
-
-/*
-    @Value("${coolsms.api_key}")
-    String api_key;
-
-    @Value("${coolsms.api_secret}")
-    String api_secret;
-
-    @Value("${coolsms.send_number}")
-    String send_number;
- */
-
+    String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$"; //  영어대소문자,숫자 포함 8자에서 20자;
+    String phoneNumPattern = "^(\\d{11})$"; // 11자리 숫자
 
 //    @Value("${spring.admin.token}") // 어드민 가입용
 //    String ADMIN_TOKEN;
@@ -179,6 +168,22 @@ public class MemberService {
                 .followCnt(member.getFollowCounter())
                 .folioTitle(member.getNickname() + "님의 포트폴리오 제목")
                 .build();
+    }
+
+    //SMS 인증 가입절차
+    public String sendMessagetoMember(String phoneNum,Member member){
+        //반은 번호로 sms인증 문자 날리기
+        int authNo = (int)(Math.random() * (99999 - 10000 + 1)) + 10000; //다섯자리 난수
+
+        //memberId를 키값으로 (로그인 인증이 되었기 때문에) value값으로는 난수입력
+        redisUtil.setDataExpire(String.valueOf(member.getId()),String.valueOf(authNo),60L);
+
+        // 문자로 보내는 로직 필요
+        //naver sens
+
+
+
+        return String.valueOf(authNo);
     }
 
     //소셜로그인 사용자 정보 조회

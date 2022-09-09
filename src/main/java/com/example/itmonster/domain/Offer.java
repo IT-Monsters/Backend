@@ -32,6 +32,12 @@ public class Offer extends Timestamped {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member offeredMember;
 
+    @Column( nullable = false )
+    private ClassType classType;
 
+
+    public enum ClassType{
+        FRONTEND, BACKEND, FULLSTACK, DESIGNER
+    }
 
 }

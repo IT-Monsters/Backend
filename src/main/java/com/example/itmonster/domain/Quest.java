@@ -1,15 +1,14 @@
 package com.example.itmonster.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.annotations.Formula;
 
 
 @Entity
@@ -58,7 +57,13 @@ public class Quest extends Timestamped {
         this.fullstack = fullstack;
         this.designer = designer;
         this.duration = duration;
-
-
     }
+
+    public void updateBackendCount( Long count ){ this.backend = count; }
+    public void updateFrontendCount( Long count ){ this.frontend = count; }
+    public void updateFullstackCount( Long count ){ this.fullstack = count; }
+    public void updateDesignerCount( Long count ){ this.designer = count; }
+
+
+
 }

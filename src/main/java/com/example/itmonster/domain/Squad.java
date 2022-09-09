@@ -1,5 +1,6 @@
 package com.example.itmonster.domain;
 
+import com.example.itmonster.domain.Offer.ClassType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,8 +30,5 @@ public class Squad {
     @JoinColumn
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
-
-    //직책 추가 고려
-
 
 }
