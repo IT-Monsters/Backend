@@ -42,7 +42,7 @@ public class SubCommentService {
         subCommentRepository.save(subComment);
 
         SubCommentResponseDto subCommentResponseDto = SubCommentResponseDto.builder()
-                .commentId(subComment.getId())
+                .commentId(commentId)
                 .subCommentId(subComment.getId())
                 .nickname(member.getNickname())
                 .content(subComment.getContent())
