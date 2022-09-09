@@ -22,9 +22,9 @@ public class RedisSubscriber {
     public void sendMessage(String publishMessage) {
         log.info("데이터 확인 publishMessage={}", publishMessage);
         try {
-            // ChatMessage 객채로 맵핑
+            // MessageResponseDto 객채로 맵핑
             MessageResponseDto message = objectMapper.readValue(publishMessage, MessageResponseDto.class);
-            // 채팅방을 구독한 클라이언트에게 메시지 발송x`
+            // 채팅방을 구독한 클라이언트에게 메시지 발송
             messagingTemplate.convertAndSend("/sub/channels/" + message.getChannelId(), message);
         } catch (Exception e) {
             throw new CustomException(ErrorCode.FAILED_MESSAGE);

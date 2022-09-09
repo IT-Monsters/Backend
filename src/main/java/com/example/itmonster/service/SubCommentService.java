@@ -63,6 +63,7 @@ public class SubCommentService {
         List<SubCommentResponseDto> subCommentResponseDtoList = new ArrayList<>();
         for (SubComment subComment : subCommentList) {
             subCommentResponseDtoList.add(SubCommentResponseDto.builder()
+                    .subCommentId(subComment.getId())
                     .nickname(subComment.getMember().getNickname())
                     .content(subComment.getContent())
                     .createdAt(subComment.getCreatedAt())
