@@ -35,6 +35,7 @@ public enum ErrorCode {
 
     NO_RECRUITMENT(HttpStatus.BAD_REQUEST, "해당 클래스는 이미 모집이 끝났습니다."),
 
+    FAILED_MESSAGE(HttpStatus.BAD_REQUEST, "메시지 전송에 실패했습니다."),
 
 
 
@@ -63,8 +64,8 @@ public enum ErrorCode {
     QUEST_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 퀘스트 입니다." ),
     SQUAD_MEMBER_NOT_FOUND( HttpStatus.NOT_FOUND , "스쿼드에 소속되지 않은 회원입니다." ),
     OFFER_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 합류요청(Offer) 입니다."),
-
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
+    CHANNEL_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 대화방입니다."),
 
 
      /*

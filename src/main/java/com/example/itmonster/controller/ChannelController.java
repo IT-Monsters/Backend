@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/quests/{questId}/channels")
+@RequestMapping("/api/channels/quests/{questId}")
 public class ChannelController {
 
     private final ChannelService channelService;
