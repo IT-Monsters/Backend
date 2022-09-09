@@ -17,13 +17,10 @@ public class SearchPredicate {
 
     public static List<Quest> filterSearch( MultiValueMap<String, String> allParameters , JPAQueryFactory jpaQueryFactory){
         return jpaQueryFactory.selectFrom( QQuest.quest )
-            .where( containsTitle( allParameters.get("title") ),
+            .where( containsTitle( allParameters.get("title" ) ),
                 containsContent( allParameters.get("content") ),
                 loeDuration( allParameters.get("duration") ),
-                containsBackend( allParameters.get("classType") ),
-                containsFrontend( allParameters.get("classType") ),
-                containsFullstack( allParameters.get("classType") ),
-                containsDesigner( allParameters.get("classType") ),
+                containsClass( allParameters.get("classType") ),
                 inStacks( allParameters.get("stack")) )
             .orderBy( quest.modifiedAt.desc() )
             .fetch();
@@ -47,32 +44,25 @@ public class SearchPredicate {
             quest.duration.loe( Long.parseLong(duration.get(0)) ) : null;
     }
 
-    // 프.백.풀.디 인원수 필터
-    private static BooleanExpression containsFrontend(List<String> classType ){
-        return classType != null && classType.contains( "frontend" )?
-            quest.frontend.goe( 1 ) : null;
+    // 프.백.풀.디 클래스 타입 필터
+    private static BooleanExpression containsClass(List<String> classTypes ){
+        BooleanExpression expression = null;
+        if( classTypes != null ){
+            for( String classType : classTypes ){
+                expression = expression == null ?
+                    chkClassType( classType ) : expression.or( chkClassType( classType) );
+            }
+        }
+        return expression;
     }
 
-    private static BooleanExpression containsBackend(List<String> classType ){
-        return classType != null && classType.contains( "backend" )?
-            quest.backend.goe( 1 ) : null;
+    private static BooleanExpression chkClassType( String classTypeName ){
+        if( classTypeName.equals("frontend") ) return quest.frontend.goe( 1 );
+        else if( classTypeName.equals("backend") ) return quest.backend.goe( 1 );
+        else if( classTypeName.equals("fullstack") ) return quest.fullstack.goe( 1 );
+        else return quest.designer.goe( 1 );
     }
 
-    private static BooleanExpression containsFullstack(List<String> classType ){
-        return classType != null && classType.contains( "fullstack" )?
-            quest.fullstack.goe( 1 ) : null;
-    }
-
-    private static BooleanExpression containsDesigner(List<String> classType ){
-        return classType != null && classType.contains( "designer" )?
-            quest.designer.goe( 1 ) : null;
-    }
-//
-//    private static BooleanExpression containsClass(List<String> classType ){
-//        return classType != null ?
-//            containsFrontend( classType ).and( containsBackend(classType) )
-//                .and( containsDesigner( classType ) ).and( containsFullstack( classType)) : null;
-//    }
     // 스택 필터
     private static BooleanExpression inStacks( List<String> stacks ){
         if( stacks == null ) return null;
@@ -81,7 +71,8 @@ public class SearchPredicate {
                 .from( stackOfQuest )
                 .where( stackOfQuest.stackName.in( stacks ) )
                 .groupBy( stackOfQuest.quest )
-                .having( stackOfQuest.count().eq((long) stacks.size())) ) ;
+                .orderBy( stackOfQuest.count().desc() )
+        );
     }
 
 }
