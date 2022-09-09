@@ -3,6 +3,8 @@ package com.example.itmonster.socket;
 import com.example.itmonster.domain.Channel;
 import com.example.itmonster.domain.Member;
 import com.example.itmonster.domain.Message;
+import com.example.itmonster.exceptionHandler.CustomException;
+import com.example.itmonster.exceptionHandler.ErrorCode;
 import com.example.itmonster.redis.RedisPublisher;
 import com.example.itmonster.repository.ChannelRepository;
 import com.example.itmonster.repository.MemberRepository;
@@ -37,7 +39,7 @@ public class MessageService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Transactional(readOnly = true)
-    public List<MessageResponseDto> readMessages(Long channelId) {
+    public List<MessageResponseDto> readMessages(Long channelId) {   // 메시지 불러오기
 
         HashOperations<String, String, List<MessageResponseDto>> opsHashChatMessage = redisTemplate.opsForHash();
 
@@ -46,9 +48,9 @@ public class MessageService {
         List<MessageResponseDto> temp2 =  messageRepository.findTop100ByChannelIdOrderByCreatedAtDesc(channelId).stream()
             .map(MessageResponseDto::new).collect(Collectors.toList());
         if(temp1 != null){
-            messageResponseDtos.addAll(temp1);
+            messageResponseDtos.addAll(temp1);   // redis에 저장된 메시지
         }
-        messageResponseDtos.addAll(temp2);
+        messageResponseDtos.addAll(temp2);       // RDS db에 저장된 메시지 최신순 100개
         return messageResponseDtos;
     }
 
@@ -56,23 +58,15 @@ public class MessageService {
     public void sendMessage(MessageRequestDto messageRequestDto, Long channelId, String token) {
         String email = jwtDecoder.decodeUsername(token);
         Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        Channel channel = channelRepository.findById(channelId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CHANNEL_NOT_FOUND));
 
-//        Channel channel = channelRepository.findById(channelId)
-//            .orElseThrow(() -> new IllegalArgumentException("채널이 존재하지 않습니다."));
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");  // LocalDateTime 직렬화 오류
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
         String dateResult = sdf.format(date);
-
-//        Message message = Message.builder()
-//            .content(messageRequestDto.getContent())
-//            .member(member)
-//            .channel(channel)
-//            .createdAt(dateResult)
-//            .build();
 
         MessageResponseDto messageResponseDto = MessageResponseDto.builder()
             .channelId(channelId)
@@ -83,24 +77,26 @@ public class MessageService {
             .profileImg(member.getProfileImg())
             .build();
 
-        redisPublisher.publishSave(messageResponseDto);
-        redisToRds(String.valueOf(channelId));
         redisTemplate.convertAndSend(channelTopic.getTopic(), messageResponseDto);
 
-//        messageRepository.save(message);
+        redisPublisher.publishSave(messageResponseDto);  // redis에 메시지를 저장
+        redisToRds(String.valueOf(channelId), channel, member);           // redis에 메시지가 100개 이상 저장되면 RDS DB에 저장하고 Redis 데이터 삭제
     }
 
-    public void redisToRds(String channelId) {
+    public void redisToRds(String channelId, Channel channel, Member member) {
         HashOperations<String, String, List<MessageResponseDto>> opsHashChatMessage = redisTemplate.opsForHash();
 
         List<MessageResponseDto> messageResponseDtos = opsHashChatMessage.get(MESSAGE, channelId);
-//        log.info("데이터수={}", messageResponseDtos.size());
-        if(messageResponseDtos != null && messageResponseDtos.size() > 100){
+        if(messageResponseDtos != null) {
+            log.info("데이터수={}", messageResponseDtos.size());
+        }
+
+        if(messageResponseDtos != null && messageResponseDtos.size() > 10){
             for(MessageResponseDto messageResponseDto : messageResponseDtos){
                 messageRepository.save(Message.builder()
                     .content(messageResponseDto.getContent())
-                    .member(memberRepository.getById(messageResponseDto.getMemberId()))
-                    .channel(channelRepository.getById(messageResponseDto.getChannelId()))
+                    .member(member)
+                    .channel(channel)
                     .createdAt(messageResponseDto.getCreatedAt())
                     .build());
             }

@@ -1,10 +1,8 @@
 package com.example.itmonster.redis;
 
-import com.example.itmonster.domain.Message;
 import com.example.itmonster.socket.MessageResponseDto;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
