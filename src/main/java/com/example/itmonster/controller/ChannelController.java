@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/squads/{squadId}/channels")
+@RequestMapping("/api/channels/quests/{questId}")
 public class ChannelController {
 
     private final ChannelService channelService;
 
     @PostMapping("")
-    public void createChannel(@PathVariable Long squadId){
-        channelService.createChannel(squadId);
+    public void createChannel(@PathVariable Long questId){
+        channelService.createChannel(questId);
     }
 
     @GetMapping("")
