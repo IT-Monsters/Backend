@@ -3,6 +3,7 @@ package com.example.itmonster.service;
 import com.example.itmonster.controller.response.OfferResponseDto;
 import com.example.itmonster.domain.Member;
 import com.example.itmonster.domain.Offer;
+import com.example.itmonster.domain.Offer.ClassType;
 import com.example.itmonster.domain.Quest;
 import com.example.itmonster.exceptionHandler.CustomException;
 import com.example.itmonster.exceptionHandler.ErrorCode;
@@ -26,7 +27,7 @@ public class OfferService {
 
     // 합류 요청 생성
     @Transactional
-    public boolean createOffer(Long questId, UserDetailsImpl userDetails) {
+    public boolean createOffer(Long questId, ClassType classType, UserDetailsImpl userDetails) {
 
         Quest quest = questRepository.findById( questId ).orElseThrow(
             () -> new CustomException( ErrorCode.QUEST_NOT_FOUND )   // 에러 : 존재하지 않는 퀘스트
@@ -43,9 +44,12 @@ public class OfferService {
 
         if( offer.isPresent() ) throw new CustomException( ErrorCode.OFFER_CONFLICT );  // 에러 : 오더가 이미 존재할 경우
 
+        chkClassRecruitment( classType , quest );
+
         offerRepository.save(
             Offer.builder()
                 .offeredMember( offeredMember )
+                .classType( classType )
                 .quest( quest )
                 .build()
         );
@@ -80,6 +84,18 @@ public class OfferService {
         return true;
     }
 
+    public void chkClassRecruitment( ClassType classType , Quest quest ) {
+        if ((classType == ClassType.FRONTEND && quest.getFrontend() < 1)
+            || (classType == ClassType.BACKEND && quest.getBackend() < 1)
+            || (classType == ClassType.FULLSTACK && quest.getFullstack() < 1)
+            || (classType == ClassType.DESIGNER && quest.getDesigner() < 1 ) )
+            throw new CustomException(ErrorCode.NO_RECRUITMENT);
+    }
+
+
+
+}
+
 //    // 오더( 요청 ) 상세보기
 //    public OrderDetailsDto getOrderDetails(Long orderId, UserDetailsImpl userDetails ) {
 //
@@ -96,5 +112,3 @@ public class OfferService {
 //        return false;
 //    }
 
-
-}

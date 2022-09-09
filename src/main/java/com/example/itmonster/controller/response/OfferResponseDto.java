@@ -1,6 +1,7 @@
 package com.example.itmonster.controller.response;
 
 import com.example.itmonster.domain.Offer;
+import com.example.itmonster.domain.Offer.ClassType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,8 @@ public class OfferResponseDto {
 
     private String profileImg;
 
+    private ClassType classType;
+
 
     public OfferResponseDto ( Offer offer ){
         offerId = offer.getId();
@@ -27,6 +30,7 @@ public class OfferResponseDto {
         questId = offer.getQuest().getId();
         profileImg = offer.getOfferedMember().getProfileImg();
         quest_title = offer.getQuest().getTitle();
+        classType = offer.getClassType();
     }
 
 }

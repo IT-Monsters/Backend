@@ -57,7 +57,13 @@ public class Quest extends Timestamped {
         this.fullstack = fullstack;
         this.designer = designer;
         this.duration = duration;
-
-
     }
+
+    public void updateBackendCount( Long count ){ this.backend = count; }
+    public void updateFrontendCount( Long count ){ this.frontend = count; }
+    public void updateFullstackCount( Long count ){ this.fullstack = count; }
+    public void updateDesignerCount( Long count ){ this.designer = count; }
+
+
+
 }

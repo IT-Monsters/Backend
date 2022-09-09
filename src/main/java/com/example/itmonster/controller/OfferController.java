@@ -1,5 +1,6 @@
 package com.example.itmonster.controller;
 
+import com.example.itmonster.controller.request.OfferRequestDto;
 import com.example.itmonster.controller.response.OfferResponseDto;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.service.OfferService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,8 +26,9 @@ public class OfferController {
     // 퀘스트 합류 요청
     @PostMapping("/quests/{questId}/offers")
     public ResponseEntity<Boolean> createOffer( @PathVariable Long questId,
+                                                @RequestBody OfferRequestDto requestDto,
                                                 @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return ResponseEntity.ok( offerService.createOffer( questId, userDetails ));
+        return ResponseEntity.ok( offerService.createOffer( questId, requestDto.getClassType() , userDetails ));
     }
 
     // 회원(게시글 주인)의 현재 들어온 합류요청 목록

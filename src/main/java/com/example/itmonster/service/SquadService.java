@@ -3,6 +3,7 @@ package com.example.itmonster.service;
 import com.example.itmonster.controller.response.SquadResponseDto;
 import com.example.itmonster.domain.Member;
 import com.example.itmonster.domain.Offer;
+import com.example.itmonster.domain.Offer.ClassType;
 import com.example.itmonster.domain.Quest;
 import com.example.itmonster.domain.Squad;
 import com.example.itmonster.exceptionHandler.CustomException;
@@ -39,6 +40,7 @@ public class SquadService {
 
         Quest quest = offer.getQuest();
         Member offeredMember = offer.getOfferedMember();
+        ClassType classType = offer.getClassType();
 
         Squad squad = squadRepository.findAllByMemberAndQuest( offeredMember , quest ).orElse( null );
         if( squad != null ) throw new CustomException( ErrorCode.SQUAD_CONFLICT );
@@ -48,11 +50,20 @@ public class SquadService {
             Squad.builder()
                 .quest( quest )
                 .member( offeredMember )
+                .classType( classType )
                 .build()
         );
 
         // Offer DB 에서 삭제
         offerRepository.delete( offer );
+
+        if( classType == ClassType.BACKEND ) quest.updateBackendCount( quest.getBackend() - 1 );
+        else if( classType == ClassType.FRONTEND ) quest.updateFrontendCount( quest.getFrontend() - 1 );
+        else if( classType == ClassType.FULLSTACK ) quest.updateFullstackCount( quest.getFullstack() - 1 );
+        else quest.updateDesignerCount( quest.getDesigner() - 1 );
+
+        questRepository.save( quest );
+
 
         return true;
     }
