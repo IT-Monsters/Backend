@@ -50,7 +50,6 @@ public class SquadService {
             Squad.builder()
                 .quest( quest )
                 .member( offeredMember )
-                .classType( classType )
                 .build()
         );
 
