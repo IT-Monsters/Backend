@@ -47,7 +47,7 @@ public class ChannelService {
     }
 
     @Transactional(readOnly = true)
-    public List<ChannelResponseDto> readChannel(UserDetailsImpl userDetails){
+    public List<ChannelResponseDto> readChannel(UserDetailsImpl userDetails) {
         Member member = userDetails.getMember();
         List<MemberInChannel> memberInChannels = memberInChannelRepository.findAllByMember(member);
         return memberInChannels.stream().map(MemberInChannel::getChannel)

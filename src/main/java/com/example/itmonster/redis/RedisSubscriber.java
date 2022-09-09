@@ -1,5 +1,7 @@
 package com.example.itmonster.redis;
 
+import com.example.itmonster.exceptionHandler.CustomException;
+import com.example.itmonster.exceptionHandler.ErrorCode;
 import com.example.itmonster.socket.MessageResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +24,10 @@ public class RedisSubscriber {
         try {
             // ChatMessage 객채로 맵핑
             MessageResponseDto message = objectMapper.readValue(publishMessage, MessageResponseDto.class);
-            // 채팅방을 구독한 클라이언트에게 메시지 발송
+            // 채팅방을 구독한 클라이언트에게 메시지 발송x`
             messagingTemplate.convertAndSend("/sub/channels/" + message.getChannelId(), message);
         } catch (Exception e) {
-            log.error("Exception {}", e);
+            throw new CustomException(ErrorCode.FAILED_MESSAGE);
         }
     }
 }

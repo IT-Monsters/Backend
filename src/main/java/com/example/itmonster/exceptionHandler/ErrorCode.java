@@ -35,6 +35,7 @@ public enum ErrorCode {
 
     NO_RECRUITMENT(HttpStatus.BAD_REQUEST, "해당 클래스는 이미 모집이 끝났습니다."),
 
+    FAILED_MESSAGE(HttpStatus.BAD_REQUEST, "메시지 전송에 실패했습니다."),
 
 
 
