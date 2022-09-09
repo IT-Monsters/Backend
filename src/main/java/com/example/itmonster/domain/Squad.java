@@ -33,5 +33,4 @@ public class Squad {
 
     @Column( nullable = false )
     private ClassType classType;
-
 }
