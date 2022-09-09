@@ -19,14 +19,11 @@ public class SquadResponseDto {
 
     private Long memberId;
 
-    private ClassType classType;
-
     public SquadResponseDto( Squad squad ){
         squadId = squad.getId();
         questId = squad.getQuest().getId();
         questTitle = squad.getQuest().getTitle();
         memberId = squad.getMember().getId();
-        classType = squad.getClassType();
     }
 
 
