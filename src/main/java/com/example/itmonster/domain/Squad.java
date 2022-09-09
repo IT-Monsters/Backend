@@ -31,7 +31,4 @@ public class Squad {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    @Column( nullable = false )
-    private ClassType classType;
-
 }

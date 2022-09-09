@@ -20,11 +20,12 @@ public class SearchPredicate {
             .where( containsTitle( allParameters.get("title") ),
                 containsContent( allParameters.get("content") ),
                 loeDuration( allParameters.get("duration") ),
-                loeBackend( allParameters.get("backend") ),
-                loeFrontend( allParameters.get("frontend") ),
-                loeFullstack( allParameters.get("fullstack") ),
-                loeDesigner( allParameters.get("designer") ),
+                containsBackend( allParameters.get("classType") ),
+                containsFrontend( allParameters.get("classType") ),
+                containsFullstack( allParameters.get("classType") ),
+                containsDesigner( allParameters.get("classType") ),
                 inStacks( allParameters.get("stack")) )
+            .orderBy( quest.modifiedAt.desc() )
             .fetch();
     }
 
@@ -47,26 +48,31 @@ public class SearchPredicate {
     }
 
     // 프.백.풀.디 인원수 필터
-    private static BooleanExpression loeFrontend(List<String> frontend_num){
-        return frontend_num != null ?
-            quest.frontend.between( 1,  Long.parseLong(frontend_num.get(0)) ) : null;
+    private static BooleanExpression containsFrontend(List<String> classType ){
+        return classType != null && classType.contains( "frontend" )?
+            quest.frontend.goe( 1 ) : null;
     }
 
-    private static BooleanExpression loeBackend(List<String> backend_num ){
-        return backend_num != null ?
-            quest.backend.between( 1, Long.parseLong(backend_num.get(0)) ) : null;
+    private static BooleanExpression containsBackend(List<String> classType ){
+        return classType != null && classType.contains( "backend" )?
+            quest.backend.goe( 1 ) : null;
     }
 
-    private static BooleanExpression loeFullstack(List<String> fullstack_num ){
-        return fullstack_num != null ?
-            quest.fullstack.between( 1, Long.parseLong(fullstack_num.get(0)) ) : null;
+    private static BooleanExpression containsFullstack(List<String> classType ){
+        return classType != null && classType.contains( "fullstack" )?
+            quest.fullstack.goe( 1 ) : null;
     }
 
-    private static BooleanExpression loeDesigner(List<String> designer_num ){
-        return designer_num != null ?
-            quest.designer.between( 1, Long.parseLong(designer_num.get(0)) ) : null;
+    private static BooleanExpression containsDesigner(List<String> classType ){
+        return classType != null && classType.contains( "designer" )?
+            quest.designer.goe( 1 ) : null;
     }
-
+//
+//    private static BooleanExpression containsClass(List<String> classType ){
+//        return classType != null ?
+//            containsFrontend( classType ).and( containsBackend(classType) )
+//                .and( containsDesigner( classType ) ).and( containsFullstack( classType)) : null;
+//    }
     // 스택 필터
     private static BooleanExpression inStacks( List<String> stacks ){
         if( stacks == null ) return null;
@@ -77,4 +83,5 @@ public class SearchPredicate {
                 .groupBy( stackOfQuest.quest )
                 .having( stackOfQuest.count().eq((long) stacks.size())) ) ;
     }
+
 }
