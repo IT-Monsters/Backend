@@ -64,6 +64,7 @@ public class CommentService {
         List<SubCommentResponseDto> subCommentResponseDtoList = new ArrayList<>();
         for (SubComment subComment:subCommentList){
             subCommentResponseDtoList.add(SubCommentResponseDto.builder()
+                    .subCommentId(subComment.getId())
                     .content(subComment.getContent())
                     .nickname(subComment.getMember().getNickname())
                     .profileImage(subComment.getMember().getProfileImg())
