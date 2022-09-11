@@ -1,8 +1,10 @@
 package com.example.itmonster.service;
 
 import com.example.itmonster.controller.request.SignupRequestDto;
-import com.example.itmonster.controller.request.SmsRequestDto;
-import com.example.itmonster.controller.response.*;
+import com.example.itmonster.controller.response.FollowResponseDto;
+import com.example.itmonster.controller.response.MemberResponseDto;
+import com.example.itmonster.controller.response.SocialLoginResponseDto;
+import com.example.itmonster.controller.response.StackDto;
 import com.example.itmonster.domain.Follow;
 import com.example.itmonster.domain.Member;
 import com.example.itmonster.domain.RoleEnum;
@@ -14,29 +16,16 @@ import com.example.itmonster.repository.MemberRepository;
 import com.example.itmonster.repository.StackOfMemberRepository;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.utils.RedisUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -51,15 +40,6 @@ public class MemberService {
     private final FollowRepository followRepository;
     private final PasswordEncoder passwordEncoder;
     private final AwsS3Service s3Service;
-    private final RedisUtil redisUtil;
-
-    @Value("${spring.naver.serviceId}")
-    String serviceId;
-    @Value("${spring.naver.accessKey}")
-    String accessKey;
-    @Value("${spring.naver.secretKey}")
-    String secretKey;
-
 
     String emailPattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"; //이메일 정규식 패턴
     String nicknamePattern = "^[a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣~!@#$%^&*]{2,8}$"; // 영어대소문자 , 한글 , 특수문자포함 2~8자까지
@@ -189,75 +169,6 @@ public class MemberService {
                 .folioTitle(member.getNickname() + "님의 포트폴리오 제목")
                 .build();
     }
-
-    //SMS 인증 가입절차
-    public ResponseEntity sendMessagetoMember(String phoneNum,Member member) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
-        //반은 번호로 sms인증 문자 날리기
-        int authNo = (int)(Math.random() * (99999 - 10000 + 1)) + 10000; //다섯자리 난수
-
-        //memberId를 키값으로 (로그인 인증이 되었기 때문에) value값으로는 난수입력
-        redisUtil.setDataExpire(String.valueOf(member.getId()),String.valueOf(authNo),60L);
-
-        // 문자로 보내는 로직 필요
-        //naver sens
-        return sendSmsForSmsCert(phoneNum,String.valueOf(authNo));
-    }
-
-    private String getSignature(String time) throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
-        String space = " ";
-        String newLine = "\n";
-        String method = "POST";
-        String url = "https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages";
-
-        String message = new StringBuilder()
-                .append(method)
-                .append(space)
-                .append(url)
-                .append(newLine)
-                .append(time)
-                .append(newLine)
-                .append(accessKey)
-                .toString();
-
-        SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes("UTF-8"), "HmacSHA256");
-        Mac mac = Mac.getInstance("HmacSHA256");
-        mac.init(signingKey);
-
-        byte[] rawHmac = mac.doFinal(message.getBytes("UTF-8"));
-        String encodeBase64String = Base64.getEncoder().encodeToString(rawHmac);
-
-        return encodeBase64String;
-    }
-
-    public ResponseEntity sendSmsForSmsCert(String phoneNumber, String content) throws JsonProcessingException, InvalidKeyException, NoSuchAlgorithmException, URISyntaxException, UnsupportedEncodingException {
-        String time = Long.toString(System.currentTimeMillis());
-        // 메세지 생성
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("type", "SMS");
-        body.add("contentType", "COMM:"); //본인의 REST API키
-        body.add("countryCode", "82");
-        body.add("content", kakaoRedirect); //성공 후 리다이렉트 되는 곳 프론트 배포서버
-//        body.add("redirect_uri", "http://localhost:3000/oauth/kakao/callback");
-        body.add("code", code);
-
-
-        // 헤더 설정값 세팅
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("x-ncp-apigw-timestamp", time);
-        headers.set("x-ncp-iam-access-key", accessKey);
-        // signature 서명
-        headers.set("x-ncp-apigw-signature-v2", getSignature(time));
-
-
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + serviceId + "/messages"),
-                body, SmsRequestDto.class );
-
-        return ResponseEntity.ok(restTemplate);
-    }
-
-
 
 
     //소셜로그인 사용자 정보 조회
