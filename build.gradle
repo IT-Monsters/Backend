@@ -67,6 +67,9 @@ dependencies {
     implementation 'junit:junit:4.13.2'
     testImplementation 'junit:junit:4.13.1'
 
+    //Json
+    implementation 'org.json:json:20220320'
+
 }
 
 // querydsl 설정
