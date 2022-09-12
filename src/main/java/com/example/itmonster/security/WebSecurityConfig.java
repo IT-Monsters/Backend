@@ -5,6 +5,7 @@ import com.example.itmonster.security.filter.JwtAuthFilter;
 import com.example.itmonster.security.jwt.HeaderTokenExtractor;
 import com.example.itmonster.security.provider.FormLoginAuthProvider;
 import com.example.itmonster.security.provider.JWTAuthProvider;
+import com.example.itmonster.security.provider.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -31,13 +32,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JWTAuthProvider jwtAuthProvider;
     private final HeaderTokenExtractor headerTokenExtractor;
+    private final CustomUserDetailService customUserDetailService;
 
     public WebSecurityConfig(
             JWTAuthProvider jwtAuthProvider,
-            HeaderTokenExtractor headerTokenExtractor
+            HeaderTokenExtractor headerTokenExtractor,
+        CustomUserDetailService customUserDetailService
     ) {
         this.jwtAuthProvider = jwtAuthProvider;
         this.headerTokenExtractor = headerTokenExtractor;
+        this.customUserDetailService = customUserDetailService;
     }
 
     @PostConstruct
@@ -82,7 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.NEVER);    //구글 OAuth2Use정보를 가져오려면 STATELESS가 아닌 NEVER 사용해야함
         http.headers().frameOptions().sameOrigin();
         /*
          * 1.
@@ -104,6 +108,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logoutUrl("/api/logout")
 //                .logoutSuccessUrl("/")
 //                .permitAll();
+
+        // google 로그인 화면 처리
+        http.oauth2Login()
+            .userInfoEndpoint()
+            .userService(customUserDetailService)   // 유저 정보를 받아온다.
+            .and()
+            .defaultSuccessUrl("/auth/login")       // 받아온 유저정보로 jwt생성
+            .failureUrl("/fail");
     }
 
     @Bean
@@ -156,6 +168,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         //무중단 배포 확인용
         skipPathList.add("GET,/health");
+
+        skipPathList.add("GET,/auth/login");
 
 
 

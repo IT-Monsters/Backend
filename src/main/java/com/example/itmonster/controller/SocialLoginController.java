@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +33,7 @@ public class SocialLoginController {
             throw new CustomException(ErrorCode.INVALID_KAKAO_LOGIN_ATTEMPT);
         }
     }
-
+//
 //    //네이버 로그인
 //    @GetMapping("/oauth/naver/callback")
 //    public ResponseEntity naverLogin(@RequestParam String code, @RequestParam String state, HttpServletResponse response) throws JsonProcessingException {

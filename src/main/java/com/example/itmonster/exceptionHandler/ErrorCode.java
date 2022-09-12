@@ -66,6 +66,7 @@ public enum ErrorCode {
     OFFER_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 합류요청(Offer) 입니다."),
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
     CHANNEL_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 대화방입니다."),
+    OAUTH2USER_NULL( HttpStatus.NOT_FOUND ,"OAuth2 정보 존재하지않습니다" ),
 
 
      /*
