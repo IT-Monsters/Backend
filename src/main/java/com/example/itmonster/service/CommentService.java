@@ -7,8 +7,6 @@ import com.example.itmonster.domain.Comment;
 import com.example.itmonster.domain.Member;
 import com.example.itmonster.domain.Quest;
 import com.example.itmonster.domain.SubComment;
-import com.example.itmonster.exceptionHandler.CustomException;
-import com.example.itmonster.exceptionHandler.ErrorCode;
 import com.example.itmonster.repository.CommentRepository;
 import com.example.itmonster.repository.QuestRepository;
 import com.example.itmonster.repository.SubCommentRepository;
@@ -105,7 +103,7 @@ public class CommentService {
 
     public ResponseEntity<String> updateComment(CommentRequestDto commentRequestDto, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(()
-                -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+                -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
         comment.updateComment(commentRequestDto);
         commentRepository.save(comment);
 

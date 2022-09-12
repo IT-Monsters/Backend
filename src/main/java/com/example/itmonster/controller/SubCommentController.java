@@ -22,7 +22,7 @@ public class SubCommentController {
     }
 
     @GetMapping("/api/quests/{questId}/comments/{commentId}/subComments")
-    public ResponseEntity <?> getSubComments(@PathVariable("commentId") Long subCommentId) {
+    public ResponseEntity <?> getSubComments(@PathVariable Long subCommentId) {
         return subCommentService.getSubComments(subCommentId);
     }
 
