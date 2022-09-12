@@ -20,11 +20,6 @@ public class ChannelController {
 
     private final ChannelService channelService;
 
-    @PostMapping("")
-    public void createChannel(@PathVariable Long questId){
-        channelService.createChannel(questId);
-    }
-
     @GetMapping("")
     public List<ChannelResponseDto> readChannel(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return channelService.readChannel(userDetails);

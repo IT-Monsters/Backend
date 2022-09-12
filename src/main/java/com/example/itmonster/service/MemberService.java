@@ -17,6 +17,7 @@ import com.example.itmonster.repository.StackOfMemberRepository;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.utils.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -37,9 +40,6 @@ public class MemberService {
     private final FollowRepository followRepository;
     private final PasswordEncoder passwordEncoder;
     private final AwsS3Service s3Service;
-
-    private final RedisUtil redisUtil;
-
 
     String emailPattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"; //이메일 정규식 패턴
     String nicknamePattern = "^[a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣~!@#$%^&*]{2,8}$"; // 영어대소문자 , 한글 , 특수문자포함 2~8자까지
@@ -170,21 +170,6 @@ public class MemberService {
                 .build();
     }
 
-    //SMS 인증 가입절차
-    public String sendMessagetoMember(String phoneNum,Member member){
-        //반은 번호로 sms인증 문자 날리기
-        int authNo = (int)(Math.random() * (99999 - 10000 + 1)) + 10000; //다섯자리 난수
-
-        //memberId를 키값으로 (로그인 인증이 되었기 때문에) value값으로는 난수입력
-        redisUtil.setDataExpire(String.valueOf(member.getId()),String.valueOf(authNo),60L);
-
-        // 문자로 보내는 로직 필요
-        //naver sens
-
-
-
-        return String.valueOf(authNo);
-    }
 
     //소셜로그인 사용자 정보 조회
     public ResponseEntity socialUserInfo(UserDetailsImpl userDetails) {

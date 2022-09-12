@@ -18,7 +18,6 @@ public class SubCommentResponseDto {
     @JsonIgnore
     private Long commentId;
 
-    @JsonIgnore
     private Long subCommentId;
 
     private String nickname;

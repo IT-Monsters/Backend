@@ -1,11 +1,13 @@
 package com.example.itmonster.controller.request;
 
-import lombok.*;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class SmsRequestDto {
+    private String phoneNo;
+    private String authNo;
 
-    private String phoneNum;
 }

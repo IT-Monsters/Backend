@@ -21,29 +21,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ChannelService {
 
-    private final QuestRepository questRepository;
     private final ChannelRepository channelRepository;
-    private final SquadRepository squadRepository;
     private final MemberInChannelRepository memberInChannelRepository;
 
     @Transactional
-    public void createChannel(Long questId) {
-        Quest quest = questRepository.findById(questId)
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 퀘스트입니다."));
-
+    public Channel createChannel(Quest quest) {
         Channel channel = Channel.builder()
             .channelName(quest.getTitle())
             .quest(quest)
             .build();
         channelRepository.save(channel);
-
-        List<Squad> squads = squadRepository.findAllByQuest(quest);
-        for (Squad squad : squads) {
-            memberInChannelRepository.save(MemberInChannel.builder()
-                .member(squad.getMember())
-                .channel(channel)
-                .build());
-        }
+        return channel;
     }
 
     @Transactional(readOnly = true)

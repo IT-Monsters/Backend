@@ -67,6 +67,14 @@ dependencies {
     implementation 'junit:junit:4.13.2'
     testImplementation 'junit:junit:4.13.1'
 
+    //Json
+    implementation 'org.json:json:20220320'
+
+    //캐시
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    // Eh캐시 사용
+    implementation group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.9.2'
+
 }
 
 // querydsl 설정

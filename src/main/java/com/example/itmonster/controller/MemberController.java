@@ -1,7 +1,6 @@
 package com.example.itmonster.controller;
 
 import com.example.itmonster.controller.request.SignupRequestDto;
-import com.example.itmonster.controller.request.SmsRequestDto;
 import com.example.itmonster.controller.response.StackDto;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.service.MemberService;
@@ -58,12 +57,6 @@ public class MemberController {
     @GetMapping("/api/members/status")
     public ResponseEntity memberInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(memberService.memberInfo(userDetails.getMember()));
-    }
-
-    @PostMapping("/api/members/sendMessage")
-    public ResponseEntity sendMessage(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                         @RequestBody SmsRequestDto requestDto) {
-        return ResponseEntity.ok(memberService.sendMessagetoMember(requestDto.getPhoneNum(), userDetails.getMember()));
     }
 
     //로그인 후 관리자 권한 얻을 수 있는 API
