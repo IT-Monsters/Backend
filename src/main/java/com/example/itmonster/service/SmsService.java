@@ -57,13 +57,12 @@ public class SmsService {
         redisUtil.setDataExpire(memberId.toString(),String.valueOf(authNo),60L);
 
         // HTTP Header 생성
-        requestUrl += serviceId + requestUrlType;
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/json;charset=utf-8");
         headers.add("x-ncp-apigw-timestamp",timestamp);
         headers.add("x-ncp-iam-access-key", accessKey);
-        headers.add("x-ncp-apigw-signature-v2", makeSignature(requestUrl, timestamp, method, accessKey, secretKey));
+        headers.add("x-ncp-apigw-signature-v2", makeSignature(requestUrl+serviceId+requestUrlType, timestamp, method, accessKey, secretKey));
 
 
         // Json Body 생성

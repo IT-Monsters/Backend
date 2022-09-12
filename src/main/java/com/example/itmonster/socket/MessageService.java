@@ -93,7 +93,7 @@ public class MessageService {
             log.info("데이터수={}", messageResponseDtos.size());
         }
 
-        if(messageResponseDtos != null && messageResponseDtos.size() >= 10){
+        if(messageResponseDtos != null && messageResponseDtos.size() >= 100){
             for(MessageResponseDto messageResponseDto : messageResponseDtos){
                 messageRepository.save(Message.builder()
                     .content(messageResponseDto.getContent())
