@@ -13,6 +13,7 @@ import com.example.itmonster.utils.SearchPredicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,6 +28,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class QuestService {
 
     private final QuestRepository questRepository;
@@ -35,7 +37,6 @@ public class QuestService {
     private final BookmarkRepository bookmarkRepository;
     private final CommentRepository commentRepository;
     private final StackOfQuestRepository stackOfQuestRepository;
-    private final ChannelRepository channelRepository;
     private final MemberInChannelRepository memberInChannelRepository;
     private final ChannelService channelService;
 
