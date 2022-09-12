@@ -12,6 +12,7 @@ import com.example.itmonster.security.jwt.JwtDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -51,6 +52,7 @@ public class MessageService {
             messageResponseDtos.addAll(temp1);   // redis에 저장된 메시지
         }
         messageResponseDtos.addAll(temp2);       // RDS db에 저장된 메시지 최신순 100개
+        messageResponseDtos.sort((c1, c2) -> c2.getCreatedAt().compareTo(c1.getCreatedAt()));
         return messageResponseDtos;
     }
 
@@ -62,7 +64,7 @@ public class MessageService {
         Channel channel = channelRepository.findById(channelId)
             .orElseThrow(() -> new CustomException(ErrorCode.CHANNEL_NOT_FOUND));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");  // LocalDateTime 직렬화 오류
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");  // LocalDateTime 직렬화 오류
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
@@ -80,7 +82,7 @@ public class MessageService {
         redisTemplate.convertAndSend(channelTopic.getTopic(), messageResponseDto);
 
         redisPublisher.publishSave(messageResponseDto);  // redis에 메시지를 저장
-        redisToRds(String.valueOf(channelId), channel, member);           // redis에 메시지가 100개 이상 저장되면 RDS DB에 저장하고 Redis 데이터 삭제
+        redisToRds(String.valueOf(channelId), channel, member);  // redis에 메시지가 100개 이상 저장되면 RDS DB에 저장하고 Redis 데이터 삭제
     }
 
     public void redisToRds(String channelId, Channel channel, Member member) {
@@ -91,7 +93,7 @@ public class MessageService {
             log.info("데이터수={}", messageResponseDtos.size());
         }
 
-        if(messageResponseDtos != null && messageResponseDtos.size() > 10){
+        if(messageResponseDtos != null && messageResponseDtos.size() >= 10){
             for(MessageResponseDto messageResponseDto : messageResponseDtos){
                 messageRepository.save(Message.builder()
                     .content(messageResponseDto.getContent())
