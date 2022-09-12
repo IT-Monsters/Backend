@@ -3,7 +3,6 @@ package com.example.itmonster.service;
 import com.example.itmonster.controller.request.QuestRequestDto;
 import com.example.itmonster.controller.response.ClassDto;
 import com.example.itmonster.controller.response.QuestResponseDto;
-import com.example.itmonster.controller.response.SearchResponseDto;
 import com.example.itmonster.controller.response.StackDto;
 import com.example.itmonster.domain.*;
 import com.example.itmonster.exceptionHandler.CustomException;
@@ -11,10 +10,12 @@ import com.example.itmonster.exceptionHandler.ErrorCode;
 import com.example.itmonster.repository.*;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.utils.SearchPredicate;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
@@ -34,6 +35,9 @@ public class QuestService {
     private final BookmarkRepository bookmarkRepository;
     private final CommentRepository commentRepository;
     private final StackOfQuestRepository stackOfQuestRepository;
+    private final ChannelRepository channelRepository;
+    private final MemberInChannelRepository memberInChannelRepository;
+    private final ChannelService channelService;
 
     @PersistenceContext
     private EntityManager em;
@@ -62,6 +66,13 @@ public class QuestService {
             .member(member)
             .build());
 
+        Channel channel = channelService.createChannel(quest); // 대화방 생성
+
+        memberInChannelRepository.save(MemberInChannel.builder()  // 대화방에 본인을 매칭
+            .member(member)
+            .channel(channel)
+            .build());
+
         // 빈 포트폴리오 생성
         folioRepository.save(Folio.builder()
             .title(member.getNickname() + "님의 포트폴리오입니다.")
@@ -81,6 +92,7 @@ public class QuestService {
         return result;
     }
 
+    @Cacheable(value = "favoriteQuestCaching")
     @Transactional(readOnly = true) // 메인페이지용 북마크 높은 3개 조회 // 기술스택 추가해야됨 !!
     public List<QuestResponseDto> readFavorite3Quest() {
         List<Quest> quests = questRepository.findTop3ByOrderByBookmarkCntDesc();
@@ -210,5 +222,10 @@ public class QuestService {
                     .quest(quest)
                     .build());
         }
+    }
+
+    @CacheEvict(value = "favoriteQuestCaching", allEntries = true)
+    @Scheduled(cron = "0 0 0 * * *")
+    public void deleteCache(){
     }
 }
