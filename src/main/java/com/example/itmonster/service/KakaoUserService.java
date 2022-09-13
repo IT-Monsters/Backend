@@ -47,7 +47,7 @@ public class KakaoUserService {
 
     // 카카오 로그인
     @Transactional
-    public void kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
+    public String kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         System.out.println("카카오 로그인 1번 접근");
         String accessToken = getAccessToken(code);
@@ -62,7 +62,7 @@ public class KakaoUserService {
 
         // 4. 강제 로그인 처리 & jwt 토큰 발급
         System.out.println("카카오 로그인 4번 접근");
-        jwtTokenCreate(kakaoUser, response);
+        return jwtTokenCreate(kakaoUser, response);
     }
 
     // 1. "인가 코드"로 "액세스 토큰" 요청
@@ -168,6 +168,8 @@ public class KakaoUserService {
                     .password(encodedPassword)
                     .profileImg(profileImage)
                     .role(role)
+                    .phoneNum(null)
+                    .followCounter(0L)
                     .socialId(socialId).build();
 
             memberRepository.save(kakaoUser);
@@ -177,7 +179,7 @@ public class KakaoUserService {
     }
 
     // 4. 강제 로그인 처리 & jwt 토큰 발급
-    private void jwtTokenCreate(Member kakaoUser, HttpServletResponse response) {
+    private String jwtTokenCreate(Member kakaoUser, HttpServletResponse response) {
         UserDetails userDetails = new UserDetailsImpl(kakaoUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -189,7 +191,7 @@ public class KakaoUserService {
         response.setContentType("application/json; charset=utf-8");
         response.addHeader("Authorization", "BEARER" + " " + token);
 
-
+        return token;
     }
 }
 

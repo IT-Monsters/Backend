@@ -4,9 +4,7 @@ import com.example.itmonster.exceptionHandler.CustomException;
 import com.example.itmonster.exceptionHandler.ErrorCode;
 import com.example.itmonster.service.GoogleOAuthService;
 import com.example.itmonster.service.KakaoUserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -26,12 +24,11 @@ public class SocialLoginController {
 
     //카카오 로그인
     @GetMapping("/oauth/kakao/callback/{code}")
-    public ResponseEntity kakaoLogin(@PathVariable("code") String code, HttpServletResponse response) throws JsonProcessingException {
+    public ResponseEntity<String> kakaoLogin(@PathVariable("code") String code, HttpServletResponse response) {
 
         try { // 회원가입 진행 성공시
+            return ResponseEntity.ok("카카오 로그인 성공\n"+kakaoUserService.kakaoLogin(code, response));
 
-            kakaoUserService.kakaoLogin(code, response);
-            return new ResponseEntity("카카오 로그인 성공", HttpStatus.OK);
         } catch (Exception e) { // 에러나면 false
             throw new CustomException(ErrorCode.INVALID_KAKAO_LOGIN_ATTEMPT);
         }
@@ -54,14 +51,5 @@ public class SocialLoginController {
 //        }
 //    }
 //
-//    //구글 로그인
-//    @GetMapping("/oauth/google/callback")
-//    public ResponseEntity googleLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
-//        try { // 회원가입 진행 성공시
-//            googleUserService.googleLogin(code, response);
-//            return new ResponseEntity("구글 로그인 성공", HttpStatus.OK);
-//        } catch (Exception e) { // 에러나면 false
-//            throw new CustomException(ErrorCode.INVALID_GOOGLE_LOGIN_ATTEMPT);
-//        }
-//    }
+
 }
