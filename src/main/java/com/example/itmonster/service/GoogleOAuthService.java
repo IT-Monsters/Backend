@@ -1,6 +1,5 @@
 package com.example.itmonster.service;
 
-import com.amazonaws.services.codebuild.model.AuthType;
 import com.example.itmonster.domain.Member;
 import com.example.itmonster.domain.RoleEnum;
 import com.example.itmonster.exceptionHandler.CustomException;
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class GoogleOAuthService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;

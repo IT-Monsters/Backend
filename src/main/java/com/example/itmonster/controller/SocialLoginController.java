@@ -2,14 +2,16 @@ package com.example.itmonster.controller;
 
 import com.example.itmonster.exceptionHandler.CustomException;
 import com.example.itmonster.exceptionHandler.ErrorCode;
+import com.example.itmonster.service.GoogleOAuthService;
 import com.example.itmonster.service.KakaoUserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SocialLoginController {
 
     private final KakaoUserService kakaoUserService;
+    private final GoogleOAuthService googleOAuthService;
 
     //카카오 로그인
     @GetMapping("/oauth/kakao/callback/{code}")
@@ -32,6 +35,12 @@ public class SocialLoginController {
         } catch (Exception e) { // 에러나면 false
             throw new CustomException(ErrorCode.INVALID_KAKAO_LOGIN_ATTEMPT);
         }
+    }
+
+    // 구글로그인
+    @GetMapping("/oauth/google")
+    public ResponseEntity<String> login ( @AuthenticationPrincipal OAuth2User oAuth2User , HttpServletResponse response) {
+        return ResponseEntity.ok( googleOAuthService.login( oAuth2User,response ) );
     }
 //
 //    //네이버 로그인
