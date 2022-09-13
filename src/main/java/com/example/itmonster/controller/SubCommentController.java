@@ -21,8 +21,8 @@ public class SubCommentController {
         return subCommentService.createSubComment(subCommentRequestDto, commentId, userDetails);
     }
 
-    @GetMapping("/api/quests/{questId}/comments/{commentId}/subComments")
-    public ResponseEntity <?> getSubComments(@PathVariable("commentId") Long subCommentId) {
+    @GetMapping("/api/quests/{questId}/comments/{commentId}/subComments/{subCommentId}")
+    public ResponseEntity <?> getSubComments(@PathVariable Long subCommentId) {
         return subCommentService.getSubComments(subCommentId);
     }
 

@@ -73,6 +73,7 @@ dependencies {
 
     //캐시
     implementation 'org.springframework.boot:spring-boot-starter-cache'
+
     // Eh캐시 사용
     implementation group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.9.2'
 
