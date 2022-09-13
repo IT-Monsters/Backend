@@ -24,12 +24,12 @@ public class MessageController {
     }
 
     @MessageMapping(value = {"/channels/{channelId}"})
-//    public void addMessage(@RequestBody MessageRequestDto messageRequestDto, @DestinationVariable Long roomId,
-//        @Header("Authorization") String token)  // 백엔드 테스트용
-    public void sendMessage(@RequestBody MessageRequestDto messageRequestDto, @DestinationVariable Long channelId){
-        String token = messageRequestDto.getToken().substring(7);
+    public void addMessage(@RequestBody MessageRequestDto messageRequestDto, @DestinationVariable Long channelId,
+        @Header("Authorization") String token){
+//    public void sendMessage(@RequestBody MessageRequestDto messageRequestDto, @DestinationVariable Long channelId){
+//        String token = messageRequestDto.getToken().substring(7); // 백엔드 테스트용
         System.out.println(token);
-//        token = token.substring(7);   // 백엔드 테스트용
+        token = token.substring(7);
         messageService.sendMessage(messageRequestDto, channelId, token);
     }
 }
