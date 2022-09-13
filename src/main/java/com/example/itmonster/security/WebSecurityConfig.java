@@ -114,7 +114,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .userInfoEndpoint()
             .userService(customUserDetailService)   // 유저 정보를 받아온다.
             .and()
-            .defaultSuccessUrl("/auth/login")       // 받아온 유저정보로 jwt생성
+            .defaultSuccessUrl("/oauth/google")       // 받아온 유저정보로 jwt생성
             .failureUrl("/fail");
     }
 
