@@ -55,42 +55,37 @@ public class SubCommentService {
     }
 
     @Transactional
-    public ResponseEntity getSubComments(Long subCommentId) {
-        Comment comment = commentRepository.findById(subCommentId).orElseThrow(()
-                -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+    public ResponseEntity<SubCommentResponseDto> getSubComments(Long subCommentId) {
+        SubComment subComment = subCommentRepository.findById(subCommentId)
+                .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+        SubCommentResponseDto subCommentResponseDto = SubCommentResponseDto.builder()
+                .subCommentId(subComment.getId())
+                .content(subComment.getContent())
+                .nickname(subComment.getMember().getNickname())
+                .profileImage(subComment.getMember().getProfileImg())
+                .createdAt(subComment.getCreatedAt())
+                .modifiedAt(subComment.getModifiedAt())
+                .build();
 
-        List<SubComment> subCommentList = subCommentRepository.findByCommentId(comment.getId());
-        List<SubCommentResponseDto> subCommentResponseDtoList = new ArrayList<>();
-        for (SubComment subComment : subCommentList) {
-            subCommentResponseDtoList.add(SubCommentResponseDto.builder()
-                    .subCommentId(subComment.getId())
-                    .nickname(subComment.getMember().getNickname())
-                    .content(subComment.getContent())
-                    .createdAt(subComment.getCreatedAt())
-                    .modifiedAt(subComment.getModifiedAt())
-                    .profileImage(subComment.getMember().getProfileImg())
-                    .build());
-        }
-
-        return new ResponseEntity<>(subCommentResponseDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(subCommentResponseDto, HttpStatus.OK);
     }
 
     @Transactional
-    public ResponseEntity updateSubComment(Long subCommentId, SubCommentRequestDto subCommentRequestDto) {
+    public ResponseEntity<String> updateSubComment(Long subCommentId, SubCommentRequestDto subCommentRequestDto) {
         SubComment subComment = subCommentRepository.findById(subCommentId).orElseThrow(()
                 -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         subComment.updateSubComment(subCommentRequestDto);
         // 저장넣기
         subCommentRepository.save(subComment);
-        return new ResponseEntity("수정이 완료되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>("수정이 완료되었습니다.", HttpStatus.OK);
     }
 
     @Transactional
-    public ResponseEntity deleteSubComment(Long subCommentId) {
+    public ResponseEntity<String> deleteSubComment(Long subCommentId) {
         SubComment subComment = subCommentRepository.findById(subCommentId).orElseThrow(()
                 -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         subCommentRepository.deleteById(subCommentId);
-        return new ResponseEntity("삭제 완료되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>("삭제 완료되었습니다.", HttpStatus.OK);
     }
 }
 
