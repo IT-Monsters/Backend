@@ -11,9 +11,9 @@ public enum ErrorCode {
     EMPTY_EMAIL(HttpStatus.BAD_REQUEST, "이메일을 입력해주세요."),
     EMPTY_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호를 입력해주세요."),
     EMPTY_NICKNAME(HttpStatus.BAD_REQUEST, "닉네임을 입력해주세요."),
-    EMPTY_PHONENUMBER(HttpStatus.BAD_REQUEST,"휴대폰 번호를 입력해주세요"),
+    EMPTY_PHONENUMBER(HttpStatus.BAD_REQUEST, "휴대폰 번호를 입력해주세요"),
 
-    EMPTY_MEMBER(HttpStatus.BAD_REQUEST,"존재하지 않는 회원입니다."),
+    EMPTY_MEMBER(HttpStatus.BAD_REQUEST, "존재하지 않는 회원입니다."),
 
     EMAIL_WRONG(HttpStatus.BAD_REQUEST, "아이디는 이메일 형식으로 입력해주세요"),
     NICKNAME_WRONG(HttpStatus.BAD_REQUEST, "닉네임은 영문, 한글, 특수문자 다 가능합니다"),
@@ -38,8 +38,7 @@ public enum ErrorCode {
     FAILED_MESSAGE(HttpStatus.BAD_REQUEST, "메시지 전송에 실패했습니다."),
 
 
-
-    INVALID_OFFER_REQUEST( HttpStatus.BAD_REQUEST , "자신의 게시글에는 합류요청이 불가능합니다."),
+    INVALID_OFFER_REQUEST(HttpStatus.BAD_REQUEST, "자신의 게시글에는 합류요청이 불가능합니다."),
     /*
     401 UNAUTHORIZED : 인증되지 않은 사용자
     */
@@ -47,8 +46,8 @@ public enum ErrorCode {
     INVALID_AUTH_TOKEN(HttpStatus.UNAUTHORIZED, "만료되었거나 유효하지 않은 토큰입니다"),
     INVALID_LOGIN_ATTEMPT(HttpStatus.UNAUTHORIZED, "로그인에 실패하였습니다"),
     INVALID_KAKAO_LOGIN_ATTEMPT(HttpStatus.UNAUTHORIZED, "카카오 로그인에 실패하였습니다"),
-    //    INVALID_NAVER_LOGIN_ATTEMPT(HttpStatus.UNAUTHORIZED, "네이버 로그인에 실패하였습니다"),
-//    INVALID_GOOGLE_LOGIN_ATTEMPT(HttpStatus.UNAUTHORIZED, "구글 로그인에 실패하였습니다"),
+    INVALID_NAVER_LOGIN_ATTEMPT(HttpStatus.UNAUTHORIZED, "네이버 로그인에 실패하였습니다"),
+    //    INVALID_GOOGLE_LOGIN_ATTEMPT(HttpStatus.UNAUTHORIZED, "구글 로그인에 실패하였습니다"),
     /*
     403 FORBIDDEN : 권한이 없는 사용자
     */
@@ -61,23 +60,20 @@ public enum ErrorCode {
 
     API_NOT_FOUND(HttpStatus.NOT_FOUND, "잘못된 주소입니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다"),
-    QUEST_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 퀘스트 입니다." ),
-    SQUAD_MEMBER_NOT_FOUND( HttpStatus.NOT_FOUND , "스쿼드에 소속되지 않은 회원입니다." ),
-    OFFER_NOT_FOUND( HttpStatus.NOT_FOUND , "존재하지 않는 합류요청(Offer) 입니다."),
+    QUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 퀘스트 입니다."),
+    SQUAD_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "스쿼드에 소속되지 않은 회원입니다."),
+    OFFER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 합류요청(Offer) 입니다."),
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 댓글입니다."),
     CHANNEL_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 대화방입니다."),
-    OAUTH2USER_NULL( HttpStatus.NOT_FOUND ,"OAuth2 정보 존재하지않습니다" ),
+    OAUTH2USER_NULL(HttpStatus.NOT_FOUND, "OAuth2 정보 존재하지않습니다"),
 
 
      /*
     409 conflict
     */
 
-    SQUAD_CONFLICT( HttpStatus.CONFLICT , "이미 스쿼드에 가입되어있습니다."),
-    OFFER_CONFLICT( HttpStatus.CONFLICT , "이미 합류요청을 신청하셨습니다." );
-
-
-
+    SQUAD_CONFLICT(HttpStatus.CONFLICT, "이미 스쿼드에 가입되어있습니다."),
+    OFFER_CONFLICT(HttpStatus.CONFLICT, "이미 합류요청을 신청하셨습니다.");
 
 
     private final HttpStatus httpStatus;
