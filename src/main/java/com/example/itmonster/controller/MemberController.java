@@ -55,8 +55,8 @@ public class MemberController {
 	}
 
 	@GetMapping("/api/monster/month")
-	public ResponseEntity<List<MemberResponseDto>> showTop3Following() {
-		return memberService.showTop3Following();
+	public ResponseEntity showTop3Following() {
+		return ResponseEntity.ok(memberService.showTop3Following());
 	}
 
 

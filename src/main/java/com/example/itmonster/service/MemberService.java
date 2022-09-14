@@ -19,14 +19,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -41,7 +42,7 @@ public class MemberService {
 
     String emailPattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"; //이메일 정규식 패턴
     String nicknamePattern = "^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣~!@#$%^&*]{2,8}$"; // 영어대소문자 , 한글 , 특수문자포함 2~8자까지
-    String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$"; //  영어대소문자,숫자 포함 8자에서 20자;
+    String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z~!@#$%^&*\\d]{8,20}$"; //  영어대소문자,숫자 포함 8자에서 20자;
     String phoneNumPattern = "^(\\d{11})$"; // 11자리 숫자
 
 //    @Value("${spring.admin.token}") // 어드민 가입용
@@ -49,7 +50,6 @@ public class MemberService {
 
     @Transactional
     public ResponseEntity<String> signupUser(SignupRequestDto requestDto) throws IOException {
-
 
         String profileUrl = s3Service.getSavedS3ImageUrl(requestDto.getProfileImage());
 
@@ -128,7 +128,8 @@ public class MemberService {
     }
 
     @Cacheable(value = "monsterOfMonthCaching")
-    public ResponseEntity<List<MemberResponseDto>> showTop3Following() {
+    @Transactional(readOnly = true)
+    public List<MemberResponseDto> showTop3Following() {
         List<Member> members = memberRepository.findTop3ByOrderByFollowCounter();
         List<MemberResponseDto> responseDtoList = new ArrayList<>();
 
@@ -142,7 +143,7 @@ public class MemberService {
                     .build());
 
         }
-        return ResponseEntity.ok(responseDtoList);
+        return responseDtoList;
     }
 
 
@@ -212,6 +213,11 @@ public class MemberService {
         if (phoneNum.length() != 11) throw new CustomException(ErrorCode.PHONENUMBER_LENGTH);
         if (!Pattern.matches(phoneNumPattern, phoneNum)) throw new CustomException(ErrorCode.PHONENUMBER_WRONG);
 
+    }
+
+    @CacheEvict(value = "monsterOfMonthCaching", allEntries = true)
+    @Scheduled(cron = "0 0 0 * * *")
+    public void deleteCache(){
     }
 
 
