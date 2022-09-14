@@ -25,7 +25,7 @@ public class Member extends Timestamped {
     @Column(nullable = false, unique = true)
     private String nickname;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
