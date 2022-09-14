@@ -15,19 +15,17 @@ import com.example.itmonster.repository.FollowRepository;
 import com.example.itmonster.repository.MemberRepository;
 import com.example.itmonster.repository.StackOfMemberRepository;
 import com.example.itmonster.security.UserDetailsImpl;
-import com.example.itmonster.utils.RedisUtil;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 
 
@@ -42,7 +40,7 @@ public class MemberService {
     private final AwsS3Service s3Service;
 
     String emailPattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"; //이메일 정규식 패턴
-    String nicknamePattern = "^[a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣~!@#$%^&*]{2,8}$"; // 영어대소문자 , 한글 , 특수문자포함 2~8자까지
+    String nicknamePattern = "^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣~!@#$%^&*]{2,8}$"; // 영어대소문자 , 한글 , 특수문자포함 2~8자까지
     String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$"; //  영어대소문자,숫자 포함 8자에서 20자;
     String phoneNumPattern = "^(\\d{11})$"; // 11자리 숫자
 
@@ -50,7 +48,7 @@ public class MemberService {
 //    String ADMIN_TOKEN;
 
     @Transactional
-    public ResponseEntity signupUser(SignupRequestDto requestDto) throws IOException {
+    public ResponseEntity<String> signupUser(SignupRequestDto requestDto) throws IOException {
 
 
         String profileUrl = s3Service.getSavedS3ImageUrl(requestDto.getProfileImage());
@@ -72,7 +70,7 @@ public class MemberService {
                 .build();
         memberRepository.save(member);
 
-        return new ResponseEntity("회원가입을 축하합니다", HttpStatus.OK);
+        return new ResponseEntity<>("회원가입을 축하합니다", HttpStatus.OK);
     }
 
 
@@ -129,7 +127,8 @@ public class MemberService {
         return stacks;
     }
 
-    public ResponseEntity showTop3Following() {
+    @Cacheable(value = "monsterOfMonthCaching")
+    public ResponseEntity<List<MemberResponseDto>> showTop3Following() {
         List<Member> members = memberRepository.findTop3ByOrderByFollowCounter();
         List<MemberResponseDto> responseDtoList = new ArrayList<>();
 
@@ -139,7 +138,7 @@ public class MemberService {
                     .profileImage(member.getProfileImg())
                     .stacks(getStackList(member))
                     .followCnt(member.getFollowCounter())
-                    .folioTitle(member.getNickname() + "님의 포트폴리오 제목") //임시
+                    .folioTitle(member.getNickname() + "님의 포트폴리오 제목")
                     .build());
 
         }
