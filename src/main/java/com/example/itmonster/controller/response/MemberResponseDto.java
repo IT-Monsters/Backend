@@ -1,5 +1,6 @@
 package com.example.itmonster.controller.response;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberResponseDto {
+public class MemberResponseDto implements Serializable {
   private String nickname;
   private String profileImage;
   private List<StackDto> stacks;

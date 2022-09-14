@@ -23,4 +23,6 @@ public interface MemberRepository extends JpaRepository<Member, Long>, QuerydslP
     List<Member> findTop3ByOrderByFollowCounter();
 
     boolean existsByEmail(String email);
+
+    boolean existsByNickname(String nickname);
 }

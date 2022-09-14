@@ -22,9 +22,12 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        if(StompCommand.CONNECT.equals(accessor.getCommand())) {
-            String token = Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization")).substring(7);
-            if(jwtDecoder.decodeUsername(token)==null){
+        if (StompCommand.CONNECT.equals(accessor.getCommand()) ||
+//            StompCommand.SUBSCRIBE.equals(accessor.getCommand()))
+            StompCommand.SEND.equals(accessor.getCommand())) {
+            String token = Objects.requireNonNull(accessor.getFirstNativeHeader("Authorization"))
+                .substring(7);
+            if (jwtDecoder.decodeUsername(token) == null) {
                 throw new CustomException(ErrorCode.USER_NOT_FOUND);
             }
             System.out.println(jwtDecoder.decodeUsername(token));
