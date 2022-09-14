@@ -6,6 +6,7 @@ import com.example.itmonster.exceptionHandler.CustomException;
 import com.example.itmonster.exceptionHandler.ErrorCode;
 import com.example.itmonster.repository.MemberRepository;
 import com.example.itmonster.security.jwt.JwtTokenUtils;
+import java.util.Random;
 import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,18 @@ public class GoogleOAuthService {
         String password = passwordEncoder.encode( UUID.randomUUID().toString() );
 
         if( !memberRepository.existsByEmail( email ) ){
+            StringBuilder nickname = new StringBuilder( name );
+            if (memberRepository.existsByNickname(nickname.toString())) {
+                Random rnd = new Random();
+                StringBuilder rdNick = new StringBuilder();
+                for (int i = 0; i < 8; i++) {
+                    rdNick.append(rnd.nextInt(10));
+                    nickname.append(rdNick);
+                }
+            }
             Member member = Member.builder()
                 .email( email )
-                .nickname( name )
+                .nickname( nickname.toString() )
                 .password( password )
                 .role( RoleEnum.USER )
                 .followCounter(0L)
