@@ -1,5 +1,6 @@
 package com.example.itmonster.controller;
 
+import com.amazonaws.services.xray.model.Http;
 import com.example.itmonster.exceptionHandler.CustomException;
 import com.example.itmonster.exceptionHandler.ErrorCode;
 import com.example.itmonster.service.GoogleOAuthService;
@@ -7,9 +8,11 @@ import com.example.itmonster.service.KakaoUserService;
 import com.example.itmonster.service.NaverUserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.math.BigInteger;
+import java.net.URI;
 import java.security.SecureRandom;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,11 +47,13 @@ public class SocialLoginController {
     }
 
     @GetMapping("/oauth/naver")
-    public String naverConnect(HttpSession session){
-        return naverUserService.naverConnect(session);
+    public ResponseEntity<?> naverConnect(HttpSession session){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create(naverUserService.naverConnect(session)));
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
     //네이버 로그인
-    @GetMapping("/oauth/naver/callback")
+    @GetMapping("/oauth/main")
     public ResponseEntity<String> naverLogin(@RequestParam String code, @RequestParam String state, HttpServletResponse response) {
         try { // 회원가입 진행 성공시
             return ResponseEntity.ok("네이버 로그인 성공\n"+naverUserService.naverLogin(code, state, response));

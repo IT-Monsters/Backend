@@ -58,13 +58,11 @@ public class NaverUserService {
         session.setAttribute("state", state); // state를 세션에 저장
 
         // redirect
-        String url = "https://nid.naver.com/oauth2.0/authorize?"
+        return "https://nid.naver.com/oauth2.0/authorize?"
             + "client_id=" + naverClientId
             + "&response_type=code"
             + "&redirect_uri=" + naverRedirectUri
             + "&state=" + state;
-
-        return "redirect:" + url;
     }
 
     // 네이버 로그인
