@@ -12,7 +12,6 @@ import com.example.itmonster.security.jwt.JwtDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -45,10 +44,12 @@ public class MessageService {
         HashOperations<String, String, List<MessageResponseDto>> opsHashChatMessage = redisTemplate.opsForHash();
 
         List<MessageResponseDto> messageResponseDtos = new ArrayList<>();
-        List<MessageResponseDto> temp1 = (opsHashChatMessage.get(MESSAGE, String.valueOf(channelId)));
-        List<MessageResponseDto> temp2 =  messageRepository.findTop100ByChannelIdOrderByCreatedAtDesc(channelId).stream()
+        List<MessageResponseDto> temp1 = (opsHashChatMessage.get(MESSAGE,
+            String.valueOf(channelId)));
+        List<MessageResponseDto> temp2 = messageRepository.findTop100ByChannelIdOrderByCreatedAtDesc(
+                channelId).stream()
             .map(MessageResponseDto::new).collect(Collectors.toList());
-        if(temp1 != null){
+        if (temp1 != null) {
             messageResponseDtos.addAll(temp1);   // redis에 저장된 메시지
         }
         messageResponseDtos.addAll(temp2);       // RDS db에 저장된 메시지 최신순 100개
@@ -61,10 +62,9 @@ public class MessageService {
         String email = jwtDecoder.decodeUsername(token);
         Member member = memberRepository.findByEmail(email)
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-        Channel channel = channelRepository.findById(channelId)
-            .orElseThrow(() -> new CustomException(ErrorCode.CHANNEL_NOT_FOUND));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");  // LocalDateTime 직렬화 오류
+        SimpleDateFormat sdf = new SimpleDateFormat(
+            "yyyy-MM-dd HH:mm:ss.SSS");  // LocalDateTime 직렬화 오류
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
@@ -82,22 +82,30 @@ public class MessageService {
         redisTemplate.convertAndSend(channelTopic.getTopic(), messageResponseDto);
 
         redisPublisher.publishSave(messageResponseDto);  // redis에 메시지를 저장
-        redisToRds(String.valueOf(channelId), channel, member);  // redis에 메시지가 100개 이상 저장되면 RDS DB에 저장하고 Redis 데이터 삭제
+        redisToRds(String.valueOf(channelId));
+            // redis에 메시지가 100개 이상 저장되면 RDS DB에 저장하고 Redis 데이터 삭제
     }
 
-    public void redisToRds(String channelId, Channel channel, Member member) {
+    private void redisToRds(String channelId) {
         HashOperations<String, String, List<MessageResponseDto>> opsHashChatMessage = redisTemplate.opsForHash();
 
         List<MessageResponseDto> messageResponseDtos = opsHashChatMessage.get(MESSAGE, channelId);
-        if(messageResponseDtos != null) {
+
+        Channel channel = channelRepository.findById(Long.parseLong(channelId))
+            .orElseThrow(() -> new CustomException(ErrorCode.CHANNEL_NOT_FOUND));
+
+        if (messageResponseDtos != null) {
             log.info("데이터수={}", messageResponseDtos.size());
         }
-
-        if(messageResponseDtos != null && messageResponseDtos.size() >= 100){
-            for(MessageResponseDto messageResponseDto : messageResponseDtos){
+        if (messageResponseDtos != null && messageResponseDtos.size() >= 100) {
+            Long senderId;
+            for (MessageResponseDto messageResponseDto : messageResponseDtos) {
+                senderId = messageResponseDto.getMemberId();
+                Member sender = memberRepository.findById(senderId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
                 messageRepository.save(Message.builder()
                     .content(messageResponseDto.getContent())
-                    .member(member)
+                    .member(sender)
                     .channel(channel)
                     .createdAt(messageResponseDto.getCreatedAt())
                     .build());
