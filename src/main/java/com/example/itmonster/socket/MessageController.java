@@ -19,17 +19,19 @@ public class MessageController {
 
     @ResponseBody
     @GetMapping("/api/channels/{channelId}")
-    public List<MessageResponseDto> readMessages(@PathVariable Long channelId){
+    public List<MessageResponseDto> readMessages(@PathVariable Long channelId) {
         return messageService.readMessages(channelId);
     }
 
     @MessageMapping(value = {"/channels/{channelId}"})
-    public void addMessage(@RequestBody MessageRequestDto messageRequestDto, @DestinationVariable Long channelId,
-        @Header("Authorization") String token){
-//    public void sendMessage(@RequestBody MessageRequestDto messageRequestDto, @DestinationVariable Long channelId){
-//        String token = messageRequestDto.getToken().substring(7); // 백엔드 테스트용
+    public void addMessage(@RequestBody MessageRequestDto messageRequestDto,
+        @DestinationVariable Long channelId,
+        @Header("Authorization") String token) {
         System.out.println(token);
         token = token.substring(7);
+//    public void sendMessage(@RequestBody MessageRequestDto messageRequestDto,
+//        @DestinationVariable Long channelId) {
+//        String token = messageRequestDto.getToken().substring(7); // 백엔드 테스트용
         messageService.sendMessage(messageRequestDto, channelId, token);
     }
 }

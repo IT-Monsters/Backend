@@ -181,19 +181,19 @@ public class QuestService {
         return result;
     }
 
-    public Quest validateQuest(Long questId) {
+    private Quest validateQuest(Long questId) {
         return questRepository.findById(questId)
             .orElseThrow(() -> new CustomException(ErrorCode.QUEST_NOT_FOUND));
     }
 
-    public boolean validateAuthor(Member member, Quest quest) { // 수정,삭제 권한 확인(글쓴이인지 확인)
+    private boolean validateAuthor(Member member, Quest quest) { // 수정,삭제 권한 확인(글쓴이인지 확인)
         if (!member.getId().equals(quest.getMember().getId())) {
             throw new CustomException(ErrorCode.INVALID_AUTHORITY);
         }
         return true;
     }
 
-    public QuestResponseDto toQuestResponseDto(Quest quest){
+    private QuestResponseDto toQuestResponseDto(Quest quest){
         List<StackDto> stackDtos = quest.getStacks().stream().map(StackDto::new)
             .collect(Collectors.toList());
         List<String> temp = new ArrayList<>();
@@ -216,7 +216,7 @@ public class QuestService {
             .build();
     }
     // 0915 수정추가분
-    public MainQuestResponseDto toMainQuestResponseDto(Quest quest){
+    private MainQuestResponseDto toMainQuestResponseDto(Quest quest){
         List<StackDto> stackDtos = quest.getStacks().stream().map(StackDto::new)
             .collect(Collectors.toList());
         List<String> temp = new ArrayList<>();
@@ -239,7 +239,7 @@ public class QuestService {
             .build();
     }
 
-    public RecentQuestResponseDto toRecentQuestResponseDto(Quest quest){
+    private RecentQuestResponseDto toRecentQuestResponseDto(Quest quest){
         List<StackDto> stackDtos = quest.getStacks().stream().map(StackDto::new)
             .collect(Collectors.toList());
         List<String> temp = new ArrayList<>();
@@ -262,14 +262,7 @@ public class QuestService {
             .build();
     }
 
-
-
-
-
-
-
-
-    public void saveStack(Quest quest, QuestRequestDto questRequestDto){
+    private void saveStack(Quest quest, QuestRequestDto questRequestDto){
         List<String> stacks = questRequestDto.getStacks();
         for (String stack : stacks) {
             stackOfQuestRepository.save(
