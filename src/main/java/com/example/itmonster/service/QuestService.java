@@ -2,7 +2,9 @@ package com.example.itmonster.service;
 
 import com.example.itmonster.controller.request.QuestRequestDto;
 import com.example.itmonster.controller.response.ClassDto;
+import com.example.itmonster.controller.response.MainQuestResponseDto;
 import com.example.itmonster.controller.response.QuestResponseDto;
+import com.example.itmonster.controller.response.RecentQuestResponseDto;
 import com.example.itmonster.controller.response.StackDto;
 import com.example.itmonster.domain.*;
 import com.example.itmonster.exceptionHandler.CustomException;
@@ -95,21 +97,21 @@ public class QuestService {
 
     @Cacheable(value = "favoriteQuestCaching")
     @Transactional(readOnly = true) // 메인페이지용 북마크 높은 3개 조회 // 기술스택 추가해야됨 !!
-    public List<QuestResponseDto> readFavorite3Quest() {
+    public List<MainQuestResponseDto> readFavorite3Quest() {
         List<Quest> quests = questRepository.findTop3ByOrderByBookmarkCntDesc();
-        List<QuestResponseDto> result = new ArrayList<>();
+        List<MainQuestResponseDto> result = new ArrayList<>();
         for (Quest quest : quests) {
-            result.add(toQuestResponseDto(quest));
+            result.add(toMainQuestResponseDto(quest));
         }
         return result;
     }
 
     @Transactional(readOnly = true) // 메인페이지용 게시글 최신순 3개 조회 // 기술스택 추가해야됨 !!
-    public List<QuestResponseDto> readRecent3Quest() {
+    public List<RecentQuestResponseDto> readRecent3Quest() {
         List<Quest> quests = questRepository.findTop3ByOrderByModifiedAtDesc();
-        List<QuestResponseDto> result = new ArrayList<>();
+        List<RecentQuestResponseDto> result = new ArrayList<>();
         for (Quest quest : quests) {
-            result.add(toQuestResponseDto(quest));
+            result.add(toRecentQuestResponseDto(quest));
         }
         return result;
     }
@@ -213,6 +215,59 @@ public class QuestService {
             .stacks(temp)
             .build();
     }
+    // 0915 수정추가분
+    public MainQuestResponseDto toMainQuestResponseDto(Quest quest){
+        List<StackDto> stackDtos = quest.getStacks().stream().map(StackDto::new)
+            .collect(Collectors.toList());
+        List<String> temp = new ArrayList<>();
+        for (StackDto stackDto : stackDtos) {
+            temp.add(stackDto.getStackName());
+        }
+        return MainQuestResponseDto.builder()
+            .mainQuestId(quest.getId())
+            .title(quest.getTitle())
+            .nickname(quest.getMember().getNickname())
+            .content(quest.getContent())
+            .duration(quest.getDuration())
+            .status(quest.getStatus())
+            .classes(new ClassDto(quest))
+            .bookmarkCnt(bookmarkRepository.countAllByQuest(quest))
+            .commentCnt(commentRepository.countAllByQuest(quest))
+            .createdAt(quest.getCreatedAt())
+            .modifiedAt(quest.getModifiedAt())
+            .stacks(temp)
+            .build();
+    }
+
+    public RecentQuestResponseDto toRecentQuestResponseDto(Quest quest){
+        List<StackDto> stackDtos = quest.getStacks().stream().map(StackDto::new)
+            .collect(Collectors.toList());
+        List<String> temp = new ArrayList<>();
+        for (StackDto stackDto : stackDtos) {
+            temp.add(stackDto.getStackName());
+        }
+        return RecentQuestResponseDto.builder()
+            .recentQuestId(quest.getId())
+            .title(quest.getTitle())
+            .nickname(quest.getMember().getNickname())
+            .content(quest.getContent())
+            .duration(quest.getDuration())
+            .status(quest.getStatus())
+            .classes(new ClassDto(quest))
+            .bookmarkCnt(bookmarkRepository.countAllByQuest(quest))
+            .commentCnt(commentRepository.countAllByQuest(quest))
+            .createdAt(quest.getCreatedAt())
+            .modifiedAt(quest.getModifiedAt())
+            .stacks(temp)
+            .build();
+    }
+
+
+
+
+
+
+
 
     public void saveStack(Quest quest, QuestRequestDto questRequestDto){
         List<String> stacks = questRequestDto.getStacks();

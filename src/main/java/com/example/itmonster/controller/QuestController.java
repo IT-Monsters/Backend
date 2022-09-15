@@ -1,7 +1,9 @@
 package com.example.itmonster.controller;
 
 import com.example.itmonster.controller.request.QuestRequestDto;
+import com.example.itmonster.controller.response.MainQuestResponseDto;
 import com.example.itmonster.controller.response.QuestResponseDto;
+import com.example.itmonster.controller.response.RecentQuestResponseDto;
 import com.example.itmonster.controller.response.SearchResponseDto;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.service.QuestService;
@@ -39,12 +41,12 @@ public class QuestController {
     }
 
     @GetMapping("/main")
-    public ResponseEntity<List<QuestResponseDto>> readFavorite3Quest(){
+    public ResponseEntity<List<MainQuestResponseDto>> readFavorite3Quest(){
         return ResponseEntity.ok(questService.readFavorite3Quest());
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<List<QuestResponseDto>> readRecent3Quest(){
+    public ResponseEntity<List<RecentQuestResponseDto>> readRecent3Quest(){
         return ResponseEntity.ok(questService.readRecent3Quest());
     }
 
