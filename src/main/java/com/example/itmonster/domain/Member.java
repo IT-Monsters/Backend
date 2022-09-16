@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Formula;
 
 
 @NoArgsConstructor
@@ -52,7 +53,7 @@ public class Member extends Timestamped {
 	@Enumerated(value = EnumType.STRING) //DB갈 때 올 때 값을 String으로 변환해줘야함
 	private RoleEnum role;
 
-	@Column(nullable = false)
+	@Formula("(select count(*) from follow where follow.me_id=id)")
 	private Long followCounter;
 
 
@@ -85,14 +86,6 @@ public class Member extends Timestamped {
 
 	public void updateStack(List<StackOfMember> stackOfMemberList) {
 		this.stackOfMemberList = stackOfMemberList;
-	}
-
-	public void addFollowCounter() {
-		this.followCounter += 1L;
-	}
-
-	public void subFollowCounter() {
-		this.followCounter -= 1L;
 	}
 
 }

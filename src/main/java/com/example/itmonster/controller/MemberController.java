@@ -81,6 +81,11 @@ public class MemberController {
 		return memberService.socialUserInfo(userDetails);
 	}
 
+//	@GetMapping("/api/myPage/{memberId}")
+//	public ResponseEntity getMyPage(@PathVariable Long memberId){
+//		return memberService.getMyPage(memberId);
+//	}
+
 	//서버 동작상태 확인
 	@GetMapping("/health")
 	public String healthy() {

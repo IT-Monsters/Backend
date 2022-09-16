@@ -22,13 +22,15 @@ public class Folio { // 회원가입 할때
     @Column(nullable = false)
     private String title;
 
-    private String content;
+//    private String content;
+//
+//    private String fileUrl;
 
-    private String fileUrl;
-
+    private String notionUrl;
     private String githubUrl;
+    private String blogUrl;
 
-    private Long career;
+//    private Long career;
 
     @OneToOne
     private Member member;

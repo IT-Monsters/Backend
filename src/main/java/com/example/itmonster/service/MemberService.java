@@ -54,7 +54,7 @@ public class MemberService {
         String profileUrl = s3Service.getSavedS3ImageUrl(requestDto.getProfileImage());
 
         checkEmailPattern(requestDto.getEmail());//username 정규식 맞지 않는 경우 오류메시지 전달
-        checkNicknamePatter(requestDto.getNickname());//nickname 정규식 맞지 않는 경우 오류메시지 전달
+        checkNicknamePattern(requestDto.getNickname());//nickname 정규식 맞지 않는 경우 오류메시지 전달
         checkPasswordPattern(requestDto.getPassword());//password 정규식 맞지 않는 경우 오류메시지 전달
 
         String password = passwordEncoder.encode(requestDto.getPassword()); // 패스워드 암호화
@@ -85,7 +85,6 @@ public class MemberService {
                     .me(me)
                     .follwing(member)
                     .build());
-            member.addFollowCounter();
             memberRepository.save(member);
             return ResponseEntity.ok(FollowResponseDto.builder()
                     .follow(true).build());
@@ -95,7 +94,6 @@ public class MemberService {
             Follow follow = followRepository.findByFollwingIdAndMeId(
                     memberId, me.getId());
             followRepository.delete(follow);
-            member.subFollowCounter();
             memberRepository.save(member);
 
             return ResponseEntity.ok(FollowResponseDto.builder().follow(false).build());
@@ -154,7 +152,7 @@ public class MemberService {
     }
 
     public ResponseEntity checkNickname(SignupRequestDto requestDto) {
-        checkNicknamePatter(requestDto.getNickname());
+        checkNicknamePattern(requestDto.getNickname());
         return new ResponseEntity("사용 가능한 닉네임입니다.", HttpStatus.OK);
     }
 
@@ -169,6 +167,21 @@ public class MemberService {
                 .folioTitle(member.getNickname() + "님의 포트폴리오 제목")
                 .build();
     }
+
+//    public ResponseEntity getMyPage(Long memberId){
+//        Member member = memberRepository.findById(memberId).orElseThrow(
+//            () -> new CustomException(ErrorCode.USER_NOT_FOUND));
+//        Folio folio = folio
+//
+//        MyPageResponseDto myPageResponseDto = MyPageResponseDto.builder()
+//            .memberId(memberId)
+//            .title(member.getNickname() + "님의 포트폴리오 제목")
+//            .build();
+//
+//
+//
+//        return ResponseEntity.ok("");
+//    }
 
 
     //소셜로그인 사용자 정보 조회
@@ -200,7 +213,7 @@ public class MemberService {
     }
 
 
-    public void checkNicknamePatter(String nickname) {
+    public void checkNicknamePattern(String nickname) {
         if (nickname == null) throw new CustomException(ErrorCode.EMPTY_NICKNAME);
         if (nickname.equals("")) throw new CustomException(ErrorCode.EMPTY_NICKNAME);
         if (2 > nickname.length() || 8 < nickname.length()) throw new CustomException(ErrorCode.NICKNAME_LEGNTH);

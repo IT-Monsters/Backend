@@ -13,6 +13,7 @@ public class RecentQuestResponseDto {
 	private Long recentQuestId;
 	private String title;
 	private String nickname;
+	private String profileImg;
 	private String content;
 	private Long duration;
 	private boolean status;

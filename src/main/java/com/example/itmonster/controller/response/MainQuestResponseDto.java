@@ -13,6 +13,7 @@ public class MainQuestResponseDto implements Serializable { // 댓글 조회, �
 	private Long mainQuestId;
 	private String title;
 	private String nickname;
+	private String profileImg;
 	private String content;
 	private Long duration;
 	private boolean status;
