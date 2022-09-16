@@ -36,30 +36,33 @@ public class MemberController {
 		return memberService.checkUsername(requestDto);
 	}
 
+	//닉네임 중복체크
 	@PostMapping("/api/members/checkNickname")
 	public ResponseEntity checkNickname(@RequestBody SignupRequestDto requestDto) {
 		return memberService.checkNickname(requestDto);
 	}
 
+	//멤버 팔로우
 	@PostMapping("/api/members/{memberId}/follow")
 	public ResponseEntity followMember(@PathVariable Long memberId,
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
 		return memberService.followMember(memberId, userDetails.getMember());
 	}
 
-
+	// 스택 추가
 	@PostMapping("/api/members/addStack")
 	public ResponseEntity addStack(@RequestBody StackDto requestDto,
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
 		return memberService.addStack(requestDto, userDetails.getMember());
 	}
 
+	//이달의 회원 팔로우기준 top3
 	@GetMapping("/api/monster/month")
 	public ResponseEntity showTop3Following() {
 		return ResponseEntity.ok(memberService.showTop3Following());
 	}
 
-
+	// 현재 로그인된 유저 정보 확인
 	@GetMapping("/api/members/status")
 	public ResponseEntity memberInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 		return ResponseEntity.ok(memberService.memberInfo(userDetails.getMember()));
@@ -78,6 +81,7 @@ public class MemberController {
 		return memberService.socialUserInfo(userDetails);
 	}
 
+	//서버 동작상태 확인
 	@GetMapping("/health")
 	public String healthy() {
 		return "healthy";
