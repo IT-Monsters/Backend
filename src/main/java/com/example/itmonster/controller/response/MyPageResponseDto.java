@@ -11,7 +11,7 @@ public class MyPageResponseDto {
 
 	private Long memberId;
 	private String profileUrl;
-	private List<String> stackList;
+	private List<StackDto> stackList;
 	private String title;
 	private String notionUrl;
 	private String githubUrl;

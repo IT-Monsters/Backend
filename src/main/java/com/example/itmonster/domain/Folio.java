@@ -1,6 +1,7 @@
 package com.example.itmonster.domain;
 
 
+import com.example.itmonster.controller.request.FolioRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,5 +35,13 @@ public class Folio { // 회원가입 할때
 
     @OneToOne
     private Member member;
+
+    public void updateFolio(FolioRequestDto folioRequestDto){
+        this.title = folioRequestDto.getTitle();
+        this.notionUrl = folioRequestDto.getNotionUrl();
+        this.githubUrl = folioRequestDto.getBlogUrl();
+        this.blogUrl = folioRequestDto.getBlogUrl();
+
+    }
 
 }

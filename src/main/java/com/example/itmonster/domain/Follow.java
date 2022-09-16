@@ -28,7 +28,7 @@ public class Follow {
     // 내가 팔로우한 사람.
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Member follwing;
+    private Member following;
 
 
 }

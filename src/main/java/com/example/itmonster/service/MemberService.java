@@ -1,16 +1,21 @@
 package com.example.itmonster.service;
 
+import com.example.itmonster.controller.request.MemberStacksDto;
 import com.example.itmonster.controller.request.SignupRequestDto;
+import com.example.itmonster.controller.response.CompletedQuestDto;
 import com.example.itmonster.controller.response.FollowResponseDto;
 import com.example.itmonster.controller.response.MemberResponseDto;
+import com.example.itmonster.controller.response.MyPageResponseDto;
 import com.example.itmonster.controller.response.SocialLoginResponseDto;
 import com.example.itmonster.controller.response.StackDto;
+import com.example.itmonster.domain.Folio;
 import com.example.itmonster.domain.Follow;
 import com.example.itmonster.domain.Member;
 import com.example.itmonster.domain.RoleEnum;
 import com.example.itmonster.domain.StackOfMember;
 import com.example.itmonster.exceptionHandler.CustomException;
 import com.example.itmonster.exceptionHandler.ErrorCode;
+import com.example.itmonster.repository.FolioRepository;
 import com.example.itmonster.repository.FollowRepository;
 import com.example.itmonster.repository.MemberRepository;
 import com.example.itmonster.repository.StackOfMemberRepository;
@@ -39,6 +44,9 @@ public class MemberService {
     private final FollowRepository followRepository;
     private final PasswordEncoder passwordEncoder;
     private final AwsS3Service s3Service;
+    private final FolioRepository folioRepository;
+    private final QuestService questService;
+
 
     String emailPattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"; //이메일 정규식 패턴
     String nicknamePattern = "^[a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣~!@#$%^&*]{2,8}$"; // 영어대소문자 , 한글 , 특수문자포함 2~8자까지
@@ -70,6 +78,12 @@ public class MemberService {
                 .build();
         memberRepository.save(member);
 
+        // 빈 포트폴리오 생성
+        folioRepository.save(Folio.builder()
+            .title(member.getNickname() + "님의 포트폴리오입니다.")
+            .member(member)
+            .build());
+
         return new ResponseEntity<>("회원가입을 축하합니다", HttpStatus.OK);
     }
 
@@ -79,11 +93,11 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new CustomException(ErrorCode.USER_NOT_FOUND)); // 팔로우 할 멤버 확인
 
-        if (followRepository.findByFollwingIdAndMeId(  // 팔로우 한 적 없으면 팔로우등록
+        if (followRepository.findByFollowingIdAndMeId(  // 팔로우 한 적 없으면 팔로우등록
                 memberId, me.getId()) == null) {
             followRepository.save(Follow.builder()
                     .me(me)
-                    .follwing(member)
+                    .following(member)
                     .build());
             memberRepository.save(member);
             return ResponseEntity.ok(FollowResponseDto.builder()
@@ -91,7 +105,7 @@ public class MemberService {
 
         } else { //팔로우 한적 있으면 취소
 
-            Follow follow = followRepository.findByFollwingIdAndMeId(
+            Follow follow = followRepository.findByFollowingIdAndMeId(
                     memberId, me.getId());
             followRepository.delete(follow);
             memberRepository.save(member);
@@ -101,16 +115,27 @@ public class MemberService {
     }
 
     @Transactional
-    public ResponseEntity addStack(StackDto requestDto, Member member) { // 기술스택 추가
-        if (stackOfMemberRepository.existsByMemberIdAndStackName(member.getId(), requestDto.getStackName())) {
-            return ResponseEntity.ok(requestDto.getStackName() + "은(는) 이미 추가된 스택정보입니다.");
+    public ResponseEntity<String> addStack(MemberStacksDto memberStacksDto, Member member) { // 기술스택 추가
+        List<String> Stacks = memberStacksDto.getStacks();
+        String response = "";
+        for(String stackname:Stacks){
+            if(stackOfMemberRepository.existsByMemberIdAndStackName(member.getId(), stackname)){
+                response += "["+ stackname +"] 중복됨,";
+
+
+            }else {
+
+                StackOfMember stack = StackOfMember.builder()
+                .stackName(stackname)
+                .member(member).build();
+                stackOfMemberRepository.save(stack);
+
+                response += "["+ stackname +"] 추가됨";
+            }
+
         }
 
-        StackOfMember stack = StackOfMember.builder()
-                .stackName(requestDto.getStackName())
-                .member(member).build();
-        stackOfMemberRepository.save(stack);
-        return ResponseEntity.ok(requestDto.getStackName() + "을(를) 스택정보에 추가하였습니다.");
+        return ResponseEntity.ok(response);
     }
 
     public List<StackDto> getStackList(Member member){
@@ -168,20 +193,30 @@ public class MemberService {
                 .build();
     }
 
-//    public ResponseEntity getMyPage(Long memberId){
-//        Member member = memberRepository.findById(memberId).orElseThrow(
-//            () -> new CustomException(ErrorCode.USER_NOT_FOUND));
-//        Folio folio = folio
+    public MyPageResponseDto getMyPage(Long memberId){
+        Member member = memberRepository.findById(memberId).orElseThrow(
+            () -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        Folio folio = folioRepository.findByMemberId(memberId);
+        List<CompletedQuestDto> completedQuestDtos = new ArrayList<>();
+//      완료된 퀘스트 가져오기 로직
+//        for(CompletedQuestDto completedQuestDto : completedQuestDtos){
+//          completedQuestDtos.add(CompletedQuestDto.builder()
+//              .questId()
+//              .questTitle().build())
 //
-//        MyPageResponseDto myPageResponseDto = MyPageResponseDto.builder()
-//            .memberId(memberId)
-//            .title(member.getNickname() + "님의 포트폴리오 제목")
-//            .build();
-//
-//
-//
-//        return ResponseEntity.ok("");
-//    }
+//        }
+
+        return MyPageResponseDto.builder()
+            .memberId(memberId)
+            .profileUrl(member.getProfileImg())
+            .stackList(getStackList(member))
+            .title(folio.getTitle())
+            .notionUrl(folio.getNotionUrl())
+            .githubUrl(folio.getGithubUrl())
+            .blogUrl(folio.getBlogUrl())
+            .completedQuestList(completedQuestDtos)
+            .build();
+    }
 
 
     //소셜로그인 사용자 정보 조회
