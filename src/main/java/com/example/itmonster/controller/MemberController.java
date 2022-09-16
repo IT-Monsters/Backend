@@ -1,12 +1,10 @@
 package com.example.itmonster.controller;
 
+import com.example.itmonster.controller.request.MemberStacksDto;
 import com.example.itmonster.controller.request.SignupRequestDto;
-import com.example.itmonster.controller.response.MemberResponseDto;
-import com.example.itmonster.controller.response.StackDto;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.service.MemberService;
 import java.io.IOException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -51,9 +49,9 @@ public class MemberController {
 
 	// 스택 추가
 	@PostMapping("/api/members/addStack")
-	public ResponseEntity addStack(@RequestBody StackDto requestDto,
+	public ResponseEntity<String> addStack(@RequestBody MemberStacksDto memberStacksDto,
 		@AuthenticationPrincipal UserDetailsImpl userDetails) {
-		return memberService.addStack(requestDto, userDetails.getMember());
+		return memberService.addStack(memberStacksDto, userDetails.getMember());
 	}
 
 	//이달의 회원 팔로우기준 top3
@@ -81,10 +79,10 @@ public class MemberController {
 		return memberService.socialUserInfo(userDetails);
 	}
 
-//	@GetMapping("/api/myPage/{memberId}")
-//	public ResponseEntity getMyPage(@PathVariable Long memberId){
-//		return memberService.getMyPage(memberId);
-//	}
+	@GetMapping("/api/myPage/{memberId}")
+	public ResponseEntity getMyPage(@PathVariable Long memberId){
+		return ResponseEntity.ok(memberService.getMyPage(memberId));
+	}
 
 	//서버 동작상태 확인
 	@GetMapping("/health")

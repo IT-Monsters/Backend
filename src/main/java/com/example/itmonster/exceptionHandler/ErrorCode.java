@@ -37,6 +37,8 @@ public enum ErrorCode {
 
     FAILED_MESSAGE(HttpStatus.BAD_REQUEST, "메시지 전송에 실패했습니다."),
 
+    EMPTY_FOLIO(HttpStatus.BAD_REQUEST,"포트폴리오가 존재하지 않습니다."),
+
 
     INVALID_OFFER_REQUEST(HttpStatus.BAD_REQUEST, "자신의 게시글에는 합류요청이 불가능합니다."),
     /*

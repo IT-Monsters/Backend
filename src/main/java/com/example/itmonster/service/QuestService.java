@@ -76,12 +76,6 @@ public class QuestService {
             .channel(channel)
             .build());
 
-        // 빈 포트폴리오 생성
-        folioRepository.save(Folio.builder()
-            .title(member.getNickname() + "님의 포트폴리오입니다.")
-            .member(member)
-            .build());
-
         return true;
     }
 
