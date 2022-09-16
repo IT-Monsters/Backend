@@ -207,6 +207,7 @@ public class QuestService {
             .content(quest.getContent())
             .duration(quest.getDuration())
             .status(quest.getStatus())
+            .profileImg( quest.getMember().getProfileImg() )
             .classes(new ClassDto(quest))
             .bookmarkCnt(bookmarkRepository.countAllByQuest(quest))
             .commentCnt(commentRepository.countAllByQuest(quest))
