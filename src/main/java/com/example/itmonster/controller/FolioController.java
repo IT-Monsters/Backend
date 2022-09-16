@@ -4,7 +4,6 @@ import com.example.itmonster.controller.request.FolioRequestDto;
 import com.example.itmonster.controller.response.FolioResponseDto;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.service.FolioService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,16 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class FolioController {
 
-	private FolioService folioService;
+	private final FolioService folioService;
 
 
-	@PutMapping("/api/folio}")
+	@PutMapping("/api/folio")
 	public ResponseEntity<FolioResponseDto> updateFolio(@RequestBody FolioRequestDto requestDto,
 										@AuthenticationPrincipal UserDetailsImpl userDetails){
-
-		return ResponseEntity.ok(folioService.updateFolio(requestDto,userDetails.getMember()));
+		FolioResponseDto responseDto = folioService.updateFolio(requestDto,userDetails.getMember());
+		return ResponseEntity.ok(responseDto);
 	}
-
-
 
 }

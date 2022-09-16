@@ -117,25 +117,23 @@ public class MemberService {
     @Transactional
     public ResponseEntity<String> addStack(MemberStacksDto memberStacksDto, Member member) { // 기술스택 추가
         List<String> Stacks = memberStacksDto.getStacks();
-        String response = "";
+        StringBuilder response = new StringBuilder();
         for(String stackname:Stacks){
             if(stackOfMemberRepository.existsByMemberIdAndStackName(member.getId(), stackname)){
-                response += "["+ stackname +"] 중복됨,";
+                response.append("[").append(stackname).append("] 중복됨\n");
 
 
             }else {
-
                 StackOfMember stack = StackOfMember.builder()
                 .stackName(stackname)
                 .member(member).build();
                 stackOfMemberRepository.save(stack);
-
-                response += "["+ stackname +"] 추가됨";
+                response.append("[").append(stackname).append("] 추가됨\n");
             }
 
         }
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(response.toString());
     }
 
     public List<StackDto> getStackList(Member member){

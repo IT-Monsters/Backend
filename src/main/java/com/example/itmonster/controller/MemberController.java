@@ -2,7 +2,6 @@ package com.example.itmonster.controller;
 
 import com.example.itmonster.controller.request.MemberStacksDto;
 import com.example.itmonster.controller.request.SignupRequestDto;
-import com.example.itmonster.controller.response.StackDto;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.service.MemberService;
 import java.io.IOException;

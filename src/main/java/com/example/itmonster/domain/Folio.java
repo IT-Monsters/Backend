@@ -24,9 +24,7 @@ public class Folio { // 회원가입 할때
     private String title;
 
 //    private String content;
-//
 //    private String fileUrl;
-
     private String notionUrl;
     private String githubUrl;
     private String blogUrl;
@@ -36,11 +34,11 @@ public class Folio { // 회원가입 할때
     @OneToOne
     private Member member;
 
-    public void updateFolio(FolioRequestDto folioRequestDto){
-        this.title = folioRequestDto.getTitle();
-        this.notionUrl = folioRequestDto.getNotionUrl();
-        this.githubUrl = folioRequestDto.getBlogUrl();
-        this.blogUrl = folioRequestDto.getBlogUrl();
+    public void updateFolio(String title, String notion, String github , String blog){
+        this.title = title;
+        this.notionUrl = notion;
+        this.githubUrl = github;
+        this.blogUrl = blog;
 
     }
 

@@ -16,18 +16,21 @@ public class FolioService {
 	private final FolioRepository folioRepository;
 
 	@Transactional
-	public FolioResponseDto updateFolio(FolioRequestDto folioRequestDto, Member member){
+	public FolioResponseDto updateFolio(FolioRequestDto folioRequestDto, Member member) {
 		Folio folio = folioRepository.findByMemberId(member.getId());
-		folio.updateFolio(folioRequestDto);
+		folio.updateFolio(folioRequestDto.getTitle(), folioRequestDto.getNotionUrl(),
+			folioRequestDto.getGithubUrl(), folioRequestDto.getBlogUrl());
 		folioRepository.save(folio);
 
-		return FolioResponseDto.builder()
+		FolioResponseDto response = FolioResponseDto.builder()
 			.nickname(member.getNickname())
 			.title(folio.getTitle())
 			.blogUrl(folio.getBlogUrl())
 			.notionUrl(folio.getNotionUrl())
 			.githubUrl(folio.getGithubUrl())
 			.build();
+
+		return response;
 	}
 
 
