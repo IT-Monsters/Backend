@@ -19,11 +19,17 @@ public class SquadResponseDto {
 
     private Long memberId;
 
+    private String nickname;
+
+    private String profileImg;
+
     public SquadResponseDto( Squad squad ){
         squadId = squad.getId();
         questId = squad.getQuest().getId();
         questTitle = squad.getQuest().getTitle();
         memberId = squad.getMember().getId();
+        nickname = squad.getMember().getNickname();
+        profileImg = squad.getMember().getProfileImg();
     }
 
 
