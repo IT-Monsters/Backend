@@ -1,11 +1,13 @@
 package com.example.itmonster.security;
 
+import com.example.itmonster.repository.StackOfMemberRepository;
 import com.example.itmonster.security.filter.FormLoginFilter;
 import com.example.itmonster.security.filter.JwtAuthFilter;
 import com.example.itmonster.security.jwt.HeaderTokenExtractor;
 import com.example.itmonster.security.provider.FormLoginAuthProvider;
 import com.example.itmonster.security.provider.JWTAuthProvider;
 import com.example.itmonster.security.provider.CustomUserDetailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

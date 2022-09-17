@@ -1,7 +1,6 @@
 package com.example.itmonster.controller.response;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +8,8 @@ import lombok.Getter;
 @Getter
 @Builder
 public class MainQuestResponseDto implements Serializable { // 댓글 조회, 기술스택 추가해야됨 !!
+	private static final long serialVersionUID = 3871711230607435382L;
+
 
 	private Long mainQuestId;
 	private String title;
@@ -20,8 +21,6 @@ public class MainQuestResponseDto implements Serializable { // 댓글 조회, �
 	private ClassDto classes;
 	private Long bookmarkCnt;
 	private Long commentCnt; //<댓글 기능 추가 후>
-	private LocalDateTime createdAt;
-	private LocalDateTime modifiedAt;
 	private List<String> stacks;
 }
 

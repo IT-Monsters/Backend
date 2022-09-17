@@ -45,7 +45,6 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final AwsS3Service s3Service;
     private final FolioRepository folioRepository;
-    private final QuestService questService;
 
 
     String emailPattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$"; //이메일 정규식 패턴
@@ -153,14 +152,13 @@ public class MemberService {
     public List<MemberResponseDto> showTop3Following() {
         List<Member> members = memberRepository.findTop3ByOrderByFollowCounter();
         List<MemberResponseDto> responseDtoList = new ArrayList<>();
-
         for (Member member : members) {
             responseDtoList.add(MemberResponseDto.builder()
                     .nickname(member.getNickname())
                     .profileImage(member.getProfileImg())
                     .stacks(getStackList(member))
                     .followCnt(member.getFollowCounter())
-                    .folioTitle(member.getNickname() + "님의 포트폴리오 제목")
+                    .folioTitle(folioRepository.findByMemberId(member.getId()).getTitle())
                     .build());
 
         }

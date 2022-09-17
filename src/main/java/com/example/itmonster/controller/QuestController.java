@@ -4,7 +4,6 @@ import com.example.itmonster.controller.request.QuestRequestDto;
 import com.example.itmonster.controller.response.MainQuestResponseDto;
 import com.example.itmonster.controller.response.QuestResponseDto;
 import com.example.itmonster.controller.response.RecentQuestResponseDto;
-import com.example.itmonster.controller.response.SearchResponseDto;
 import com.example.itmonster.security.UserDetailsImpl;
 import com.example.itmonster.service.QuestService;
 import java.util.List;
