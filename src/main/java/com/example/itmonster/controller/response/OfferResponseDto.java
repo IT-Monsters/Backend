@@ -15,9 +15,11 @@ public class OfferResponseDto {
 
     private Long questId;
 
-    private String quest_title;
+    private String questTitle;
 
     private Long offeredMemberId;
+
+    private String offeredMemberNickname;
 
     private String profileImg;
 
@@ -28,8 +30,9 @@ public class OfferResponseDto {
         offerId = offer.getId();
         offeredMemberId = offer.getOfferedMember().getId();
         questId = offer.getQuest().getId();
+        offeredMemberNickname = offer.getOfferedMember().getNickname();
         profileImg = offer.getOfferedMember().getProfileImg();
-        quest_title = offer.getQuest().getTitle();
+        questTitle = offer.getQuest().getTitle();
         classType = offer.getClassType();
     }
 
